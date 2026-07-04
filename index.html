@@ -17,23 +17,51 @@
   #runway{height:840vh;position:relative}
   .fixed{position:fixed;inset:0;overflow:hidden}
 
-  #sky{z-index:0;background:radial-gradient(130% 95% at 50% 6%,#0c1738 0%,#08102a 42%,#04060e 100%)}
+  #sky{z-index:0;background:
+     radial-gradient(150% 62% at 50% 44%, rgba(48,86,142,.42), rgba(24,46,90,.16) 42%, transparent 70%),
+     linear-gradient(180deg, #02040c 0%, #050c1f 30%, #0a1836 54%, #0c1f42 68%, #060f28 100%)}
   #sky::before,#sky::after{content:"";position:absolute;inset:0}
-  #sky::before{opacity:.55;background-image:
-     radial-gradient(1.2px 1.2px at 20% 30%,#cdd6ff,transparent),
-     radial-gradient(1px 1px at 70% 18%,#aab4e8,transparent),
-     radial-gradient(1.4px 1.4px at 40% 12%,#fff,transparent),
-     radial-gradient(1px 1px at 85% 38%,#b9c2f0,transparent),
-     radial-gradient(1.2px 1.2px at 55% 33%,#fff,transparent),
-     radial-gradient(1px 1px at 12% 46%,#99a3d6,transparent),
-     radial-gradient(1px 1px at 92% 10%,#fff,transparent),
-     radial-gradient(1px 1px at 33% 40%,#c9d2ff,transparent),
-     radial-gradient(1.3px 1.3px at 62% 8%,#fff,transparent);
+  #sky::before{opacity:.72;background-image:
+     radial-gradient(1.4px 1.4px at 8% 14%,#fff,transparent),
+     radial-gradient(1px 1px at 15% 32%,#aab4e8,transparent),
+     radial-gradient(1.2px 1.2px at 20% 8%,#fff,transparent),
+     radial-gradient(1px 1px at 27% 22%,#c9d2ff,transparent),
+     radial-gradient(1.5px 1.5px at 33% 41%,#fff,transparent),
+     radial-gradient(1px 1px at 38% 12%,#b9c2f0,transparent),
+     radial-gradient(1.2px 1.2px at 44% 28%,#fff,transparent),
+     radial-gradient(1px 1px at 50% 6%,#fff,transparent),
+     radial-gradient(1.3px 1.3px at 55% 34%,#dfe6ff,transparent),
+     radial-gradient(1px 1px at 60% 18%,#99a3d6,transparent),
+     radial-gradient(1.4px 1.4px at 66% 10%,#fff,transparent),
+     radial-gradient(1px 1px at 71% 30%,#aab4e8,transparent),
+     radial-gradient(1.2px 1.2px at 77% 20%,#fff,transparent),
+     radial-gradient(1px 1px at 83% 39%,#c9d2ff,transparent),
+     radial-gradient(1.5px 1.5px at 88% 14%,#fff,transparent),
+     radial-gradient(1px 1px at 93% 26%,#b9c2f0,transparent),
+     radial-gradient(1px 1px at 5% 44%,#fff,transparent),
+     radial-gradient(1.2px 1.2px at 12% 52%,#aab4e8,transparent),
+     radial-gradient(1px 1px at 24% 48%,#fff,transparent),
+     radial-gradient(1px 1px at 47% 45%,#c9d2ff,transparent),
+     radial-gradient(1.3px 1.3px at 63% 50%,#fff,transparent),
+     radial-gradient(1px 1px at 74% 46%,#99a3d6,transparent),
+     radial-gradient(1px 1px at 90% 49%,#fff,transparent),
+     radial-gradient(1.2px 1.2px at 30% 4%,#fff,transparent),
+     radial-gradient(1px 1px at 42% 55%,#aab4e8,transparent),
+     radial-gradient(1px 1px at 58% 40%,#fff,transparent),
+     radial-gradient(1.4px 1.4px at 96% 8%,#fff,transparent),
+     radial-gradient(1px 1px at 2% 24%,#c9d2ff,transparent);
      background-repeat:no-repeat}
-  #sky::after{opacity:.4;animation:tw 4.5s ease-in-out infinite;background-image:
-     radial-gradient(1.3px 1.3px at 26% 22%,#fff,transparent),
-     radial-gradient(1.3px 1.3px at 78% 30%,#fff,transparent),
-     radial-gradient(1.3px 1.3px at 48% 20%,#fff,transparent);background-repeat:no-repeat}
+  #sky::after{opacity:.55;animation:tw 4.5s ease-in-out infinite;background-image:
+     radial-gradient(1.4px 1.4px at 18% 20%,#fff,transparent),
+     radial-gradient(1.4px 1.4px at 36% 16%,#fff,transparent),
+     radial-gradient(1.4px 1.4px at 52% 26%,#fff,transparent),
+     radial-gradient(1.4px 1.4px at 68% 12%,#fff,transparent),
+     radial-gradient(1.4px 1.4px at 80% 34%,#fff,transparent),
+     radial-gradient(1.4px 1.4px at 26% 42%,#fff,transparent),
+     radial-gradient(1.4px 1.4px at 46% 9%,#fff,transparent),
+     radial-gradient(1.4px 1.4px at 92% 22%,#fff,transparent),
+     radial-gradient(1.4px 1.4px at 10% 36%,#fff,transparent),
+     radial-gradient(1.4px 1.4px at 60% 48%,#fff,transparent);background-repeat:no-repeat}
   @keyframes tw{0%,100%{opacity:.15}50%{opacity:.6}}
   #city{z-index:1}
   #city canvas{display:block}
@@ -781,7 +809,7 @@
 
   try{
     scene=new THREE.Scene();
-    scene.fog=new THREE.Fog(0x0a1330, 40, 540);
+    scene.fog=new THREE.Fog(0x0d1c3e, 70, 820);
     camera=new THREE.PerspectiveCamera(62, innerWidth/innerHeight, 0.1, 2000);
     renderer=new THREE.WebGLRenderer({canvas:cv, antialias:true, alpha:true});
     renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
@@ -855,15 +883,32 @@
     }
 
     // dense canyon of varied structures; inner faces held clear of the camera lane
-    for(var z=300; z>-352; z-=12){
+    for(var z=320; z>-430; z-=12){
       for(var side=-1; side<=1; side+=2){
         for(var b=0;b<4;b++){
-          var w=4.5+Math.random()*7, d=4.5+Math.random()*7;
-          var x=side*(9 + w/2 + Math.pow(Math.random(),1.3)*120);
-          var h=8+Math.pow(Math.random(),1.9)*56;
+          var w=4.5+Math.random()*7.5, d=4.5+Math.random()*7.5;
+          var x=side*(9 + w/2 + Math.pow(Math.random(),1.35)*200);
+          var h=8+Math.pow(Math.random(),1.9)*58;
           addBuilding(x, z+(Math.random()-.5)*8, w, d, h, -1);
         }
       }
+    }
+    // distant horizon skyline — cheap unlit silhouettes that fan out and fade into the fog
+    var farMat=new THREE.MeshBasicMaterial({color:0x0e1c38});
+    for(var fi=0; fi<210; fi++){
+      var fz=-405 - Math.random()*300;
+      var spread=170 + (Math.abs(fz)-405)*1.0;
+      var fx=(Math.random()*2-1)*spread;
+      var fw=7+Math.random()*20, fh=18+Math.pow(Math.random(),1.5)*118;
+      var fm=new THREE.Mesh(box,farMat); fm.position.set(fx,0,fz); fm.scale.set(fw,fh,fw); scene.add(fm);
+    }
+    // lateral shadow fill — dark building masses along both flanks so the frame edges never read empty
+    for(var li=0; li<300; li++){
+      var lz=300 - Math.random()*740;                          // spans the whole travelled corridor
+      var lside=Math.random()<0.5?-1:1;
+      var lx=lside*(190 + Math.pow(Math.random(),0.75)*250);   // 190..440 out, beyond the lit canyon
+      var lw=8+Math.random()*26, lh=16+Math.pow(Math.random(),1.7)*128;
+      var lm=new THREE.Mesh(box,farMat); lm.position.set(lx,0,lz); lm.scale.set(lw,lh,lw); scene.add(lm);
     }
     // 7 landmark stage towers, all ahead of the start so each is approached in turn
     var STZ=[100,50,0,-50,-100,-150,-200];
@@ -876,6 +921,23 @@
     winWarmMat=mkPoints(warm,0xffcf87,0.85,0.9);
     winCoolMat=mkPoints(cool,0x8fb8ff,0.75,0.75);
     beaconMat=mkPoints(beacons,0xff5d6e,1.7,0.9);
+
+    // ---- dense starfield dome (follows the camera so stars read as infinitely far) ----
+    var starPos=[], starCol=[];
+    for(var si=0; si<2600; si++){
+      var sth=Math.random()*Math.PI*2, sph=Math.acos(Math.random());     // upper hemisphere
+      var SR=1400, ss=Math.sin(sph);
+      starPos.push(SR*ss*Math.cos(sth), 40+SR*Math.cos(sph)*0.92, SR*ss*Math.sin(sth));
+      var sb=0.55+Math.random()*0.45, tc=Math.random();
+      if(tc<0.16){ starCol.push(sb,sb*0.84,sb*0.68); }        // warm
+      else if(tc<0.4){ starCol.push(sb*0.78,sb*0.88,sb); }    // blue-white
+      else { starCol.push(sb,sb,sb); }                        // white
+    }
+    var starGeo=new THREE.BufferGeometry();
+    starGeo.setAttribute("position",new THREE.Float32BufferAttribute(starPos,3));
+    starGeo.setAttribute("color",new THREE.Float32BufferAttribute(starCol,3));
+    var starField=new THREE.Points(starGeo,new THREE.PointsMaterial({size:1.7,sizeAttenuation:false,vertexColors:true,transparent:true,opacity:0.95,depthWrite:false,fog:false}));
+    scene.add(starField);
 
     var grid=new THREE.GridHelper(1500,90,0x3a4a72,0x18203a);
     grid.material.transparent=true; grid.material.opacity=0.10; scene.add(grid);
@@ -915,6 +977,7 @@
       var cx = Math.sin(p*Math.PI*1.6)*4;                // gentle sway, stays well inside the clear avenue
       var bank = Math.cos(p*Math.PI*1.6)*0.045;
       camera.position.set(cx,cy,cz);
+      if(starField) starField.position.set(cx,cy,cz);
       camera.up.set(Math.sin(bank),Math.cos(bank),0);
       camera.lookAt(cx*0.4, cy-11, cz-80);
 
