@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurexis — Autopilot Flight</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --gold:#E7B94D; --gold2:#F6D27E; --ink:#F2F2F0; --muted:#9a9a95;
+    --sans:"Space Grotesk","Space Mono",ui-sans-serif,system-ui,sans-serif;
+    --mono:"Space Mono",ui-monospace,monospace;
+    --disp:"Anton",sans-serif; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#04060e;color:var(--ink);font-family:var(--mono);overflow-x:hidden}
+  #runway{height:840vh;position:relative}
+  .fixed{position:fixed;inset:0;overflow:hidden}
+
+  #sky{z-index:0;background:radial-gradient(130% 95% at 50% 6%,#0c1738 0%,#08102a 42%,#04060e 100%)}
+  #sky::before,#sky::after{content:"";position:absolute;inset:0}
+  #sky::before{opacity:.55;background-image:
+     radial-gradient(1.2px 1.2px at 20% 30%,#cdd6ff,transparent),
+     radial-gradient(1px 1px at 70% 18%,#aab4e8,transparent),
+     radial-gradient(1.4px 1.4px at 40% 12%,#fff,transparent),
+     radial-gradient(1px 1px at 85% 38%,#b9c2f0,transparent),
+     radial-gradient(1.2px 1.2px at 55% 33%,#fff,transparent),
+     radial-gradient(1px 1px at 12% 46%,#99a3d6,transparent),
+     radial-gradient(1px 1px at 92% 10%,#fff,transparent),
+     radial-gradient(1px 1px at 33% 40%,#c9d2ff,transparent),
+     radial-gradient(1.3px 1.3px at 62% 8%,#fff,transparent);
+     background-repeat:no-repeat}
+  #sky::after{opacity:.4;animation:tw 4.5s ease-in-out infinite;background-image:
+     radial-gradient(1.3px 1.3px at 26% 22%,#fff,transparent),
+     radial-gradient(1.3px 1.3px at 78% 30%,#fff,transparent),
+     radial-gradient(1.3px 1.3px at 48% 20%,#fff,transparent);background-repeat:no-repeat}
+  @keyframes tw{0%,100%{opacity:.15}50%{opacity:.6}}
+  #city{z-index:1}
+  #city canvas{display:block}
+  #wires{position:fixed;inset:0;z-index:2;pointer-events:none}
+
+  .card{position:fixed;z-index:3;min-width:238px;max-width:302px;padding:15px 17px;
+    border-radius:16px;opacity:0;transform:translateY(8px) scale(.985);
+    transition:opacity .45s cubic-bezier(.2,.8,.2,1),transform .45s cubic-bezier(.2,.8,.2,1);pointer-events:none;
+    background:linear-gradient(158deg,rgba(24,28,44,.8),rgba(9,12,20,.87));
+    -webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);
+    border:1px solid rgba(255,255,255,.1);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 24px 64px -28px rgba(0,0,0,.9),0 0 42px -14px var(--c,#E7B94D)}
+  .card::after{content:"";position:absolute;left:0;top:16px;bottom:16px;width:2px;border-radius:2px;
+    background:linear-gradient(180deg,var(--c,#E7B94D),transparent);box-shadow:0 0 12px var(--c,#E7B94D)}
+  .card.on{opacity:1;transform:none}
+  .card .h{display:flex;align-items:center;gap:10px;margin-bottom:5px}
+  .card .em{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:0 0 auto;
+    background:linear-gradient(180deg,var(--gold2),var(--gold));
+    box-shadow:0 4px 12px -4px rgba(231,185,77,.55),inset 0 1px 0 rgba(255,255,255,.5)}
+  .card .em svg{width:18px;height:18px}
+  .card .stwrap{display:flex;flex-direction:column;gap:1px}
+  .card .st{font-size:.58rem;letter-spacing:.24em;color:var(--gold);text-transform:uppercase}
+  .card .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--c,#E7B94D);
+    box-shadow:0 0 8px var(--c,#E7B94D);margin-right:6px;vertical-align:middle}
+  .card .live{font-size:.54rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+  .card .ti{font-family:var(--sans);font-weight:600;font-size:1.05rem;color:var(--ink);letter-spacing:.005em}
+  .card .ds{font-family:var(--sans);font-weight:400;font-size:.82rem;line-height:1.5;color:#b7bbc7;margin-top:4px}
+
+  .cock{position:fixed;inset:0;z-index:4;pointer-events:none}
+  .canopy-top{position:absolute;top:0;left:0;right:0;height:13%;
+    background:linear-gradient(180deg,#0b0f1a 42%,rgba(11,15,26,0));
+    clip-path:polygon(0 0,100% 0,100% 52%,63% 52%,50% 100%,37% 52%,0 52%)}
+  .canopy-top::after{content:"";position:absolute;left:34%;right:34%;top:36%;height:3px;
+    background:linear-gradient(90deg,transparent,rgba(255,77,94,.5),transparent)}
+  .strut{position:absolute;top:0;bottom:0;width:21%}
+  .strut.l{left:0;clip-path:polygon(0 0,60% 0,30% 100%,0 100%);
+    background:linear-gradient(96deg,#0b0f18 0%,#1a2236 52%,#0a0e17 100%)}
+  .strut.r{right:0;clip-path:polygon(40% 0,100% 0,100% 100%,70% 100%);
+    background:linear-gradient(264deg,#0b0f18 0%,#1a2236 52%,#0a0e17 100%)}
+  .strut .panel{position:absolute;inset:0;opacity:.5;
+    background:repeating-linear-gradient(122deg,transparent 0 46px,rgba(0,0,0,.35) 46px 48px)}
+  .strut.r .panel{background:repeating-linear-gradient(238deg,transparent 0 46px,rgba(0,0,0,.35) 46px 48px)}
+  .strut .glow{position:absolute;top:7%;bottom:15%;width:11px;border-radius:7px;
+    background:linear-gradient(180deg,#dfe9ff,#8fa9ff 42%,#4b6bd6);
+    box-shadow:0 0 26px 5px rgba(120,150,255,.6);animation:pulse 3.4s ease-in-out infinite}
+  .strut.l .glow{right:33%;transform:rotate(10deg)}
+  .strut.r .glow{left:33%;transform:rotate(-10deg)}
+  @keyframes pulse{0%,100%{opacity:.85;box-shadow:0 0 22px 4px rgba(120,150,255,.5)}
+    50%{opacity:1;box-shadow:0 0 32px 7px rgba(140,170,255,.72)}}
+  .strut .bolts{position:absolute;top:9%;bottom:18%;width:2px;
+    background:radial-gradient(circle,rgba(180,200,255,.6) 1px,transparent 1.4px) 0 0/8px 40px repeat-y}
+  .strut.l .bolts{right:20%}.strut.r .bolts{left:20%}
+
+  /* ---- cockpit dashboard = vehicle hull ---- */
+  .dash{position:absolute;left:0;right:0;bottom:0;height:25%;
+    background:linear-gradient(0deg,#05070f 44%,#0a0e1a 76%,rgba(10,14,26,0));
+    clip-path:polygon(0 100%,0 50%,10% 44%,22% 44%,29% 18%,42% 9%,58% 9%,71% 18%,78% 44%,90% 44%,100% 50%,100% 100%)}
+  .dash::before{content:"";position:absolute;left:0;right:0;top:44%;height:2px;
+    background:linear-gradient(90deg,transparent,rgba(140,170,255,.4),transparent)}
+  .dash::after{content:"";position:absolute;left:6%;right:6%;bottom:0;height:100%;pointer-events:none;
+    background:radial-gradient(62% 82% at 50% 100%,rgba(120,150,255,.10),transparent 70%)}
+
+  /* protruding central console — the 'car' center stack */
+  .console{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:27%;height:84%;
+    background:linear-gradient(180deg,#141d30 0%,#0c1220 58%,#070b14 100%);
+    clip-path:polygon(20% 0,80% 0,100% 100%,0 100%);
+    box-shadow:inset 0 1px 0 rgba(150,175,255,.3), 0 -3px 26px rgba(0,0,0,.6)}
+  .console .rib{position:absolute;left:14%;right:14%;height:2px;background:rgba(150,175,255,.16)}
+  .console .r1{top:15%}.console .r2{top:25%}
+  .console .badge{position:absolute;left:50%;top:9%;transform:translateX(-50%);
+    width:26px;height:26px;border-radius:7px;display:grid;place-items:center;
+    background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1c1404;font-weight:700;font-size:.74rem}
+  .console .yoke{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);
+    width:48%;height:18px;border:2px solid rgba(150,175,255,.35);border-bottom:0;border-radius:24px 24px 0 0;
+    box-shadow:0 0 14px rgba(120,150,255,.25), inset 0 6px 10px -6px rgba(140,170,255,.4)}
+
+  /* red instrument screens built into the hull shoulders */
+  .screen{position:absolute;bottom:20%;height:42%;width:17%;border-radius:12px;overflow:hidden;
+    border:1px solid rgba(255,95,110,.3);
+    background:radial-gradient(120% 80% at 50% 0%,rgba(255,120,130,.14),transparent 55%),
+      linear-gradient(158deg,rgba(42,11,17,.74),rgba(12,5,8,.84));
+    box-shadow:inset 0 0 44px -6px rgba(255,77,94,.32),inset 0 1px 0 rgba(255,150,160,.28),0 14px 36px -16px rgba(0,0,0,.85)}
+  .screen.l{left:7%;transform:skewX(10deg)}
+  .screen.r{right:7%;transform:skewX(-10deg)}
+  .radar{position:absolute;left:12px;top:50%;width:40px;height:40px;margin-top:-20px;border-radius:50%;
+    border:1px solid rgba(255,125,135,.5);background:radial-gradient(circle,rgba(255,77,94,.14),transparent 70%);
+    box-shadow:inset 0 0 16px rgba(255,77,94,.35),0 0 12px -3px rgba(255,77,94,.55)}
+  .radar::before{content:"";position:absolute;inset:7px;border-radius:50%;border:1px solid rgba(255,125,135,.26)}
+  .radar::after{content:"";position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px;border-radius:50%;
+    background:#ff9aa4;box-shadow:0 0 8px 2px rgba(255,125,135,.8);animation:blip 2s ease-in-out infinite}
+  @keyframes blip{0%,100%{opacity:.5;transform:scale(.75)}50%{opacity:1;transform:scale(1.25)}}
+  .sweep{position:absolute;inset:1px;border-radius:50%;
+    background:conic-gradient(from 0deg,rgba(255,130,140,.6),rgba(255,130,140,.06) 36%,transparent 44%);
+    animation:spin 2.8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .rlines{position:absolute;right:8px;top:16%;bottom:16%;left:48%}
+  .rlines i{position:absolute;left:0;height:2px;border-radius:2px;
+    background:linear-gradient(90deg,rgba(255,130,140,.85),rgba(255,130,140,.12));
+    box-shadow:0 0 6px -1px rgba(255,125,135,.6);animation:flick 2.4s ease-in-out infinite}
+  @keyframes flick{0%,100%{opacity:.35}50%{opacity:.92}}
+  .readout{position:absolute;inset:9px;overflow:hidden;font-family:var(--mono);font-size:8px;line-height:1.8;
+    color:rgba(255,168,176,.9);letter-spacing:.09em;text-shadow:0 0 6px rgba(255,77,94,.45)}
+  .readout .roll{animation:roll 6s linear infinite}
+  @keyframes roll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+
+  .scrollmod{position:absolute;left:50%;bottom:36%;transform:translateX(-50%);text-align:center;z-index:2}
+  .scrollmod .arw{width:34px;height:34px;margin:0 auto 6px;border:1px solid var(--gold);border-radius:9px;
+    display:grid;place-items:center;color:var(--gold);font-size:1rem;background:rgba(8,11,20,.6);
+    animation:bob 1.8s ease-in-out infinite}
+  .scrollmod .lbl{font-size:.56rem;letter-spacing:.3em;color:var(--muted)}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+  .nav{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:center;
+    gap:34px;padding:20px 26px;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase}
+  .nav a{color:var(--ink);text-decoration:none;opacity:.85}
+  .nav a:hover{opacity:1;color:var(--gold)}
+  .nav .brand{font-family:"Anton",sans-serif;font-weight:400;font-size:1.15rem;letter-spacing:.18em;
+    color:var(--ink);text-transform:uppercase;display:inline-flex;align-items:center;gap:9px;padding:0 4px}
+  .nav .brand::before{content:"";width:12px;height:12px;background:linear-gradient(135deg,var(--gold2),var(--gold));
+    transform:rotate(45deg);box-shadow:0 0 10px rgba(231,185,77,.6)}
+  .nav .snd{position:absolute;left:26px;color:var(--muted);letter-spacing:.26em;font-size:.72rem;
+    background:none;border:0;cursor:pointer;pointer-events:auto;font-family:inherit}
+  .nav .demo{position:absolute;right:16px;top:50%;transform:translateY(-50%);display:flex;align-items:center;
+    background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1c1404;font-weight:700;
+    padding:11px 22px;border-radius:11px;letter-spacing:.08em;pointer-events:auto;cursor:pointer;border:0;
+    font-family:var(--mono);text-transform:uppercase;font-size:.72rem;
+    box-shadow:0 10px 26px -10px rgba(231,185,77,.65),inset 0 1px 0 rgba(255,255,255,.45);
+    transition:transform .2s ease,box-shadow .2s ease}
+  .nav .demo:hover{transform:translateY(-50%) scale(1.04);
+    box-shadow:0 14px 34px -10px rgba(231,185,77,.8),inset 0 1px 0 rgba(255,255,255,.45)}
+
+  /* ---- Features mega-dropdown (all 7 stages) ---- */
+  .nav .feat{position:relative;display:inline-flex;align-items:center;pointer-events:auto}
+  .nav .feat-btn{display:inline-flex;align-items:center;gap:8px;color:var(--ink);opacity:.85;
+    background:none;border:0;font:inherit;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;padding:0}
+  .nav .feat-btn:hover,.nav .feat:hover .feat-btn,.nav .feat.open .feat-btn{opacity:1;color:var(--gold)}
+  .nav .feat-btn .cx{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2.4;
+    stroke-linecap:round;stroke-linejoin:round;transition:transform .25s ease}
+  .nav .feat:hover .feat-btn .cx,.nav .feat.open .feat-btn .cx{transform:rotate(180deg)}
+
+  .feat-menu{position:absolute;top:100%;left:-46px;min-width:352px;
+    padding:30px 32px 26px 52px;z-index:50;isolation:isolate;
+    opacity:0;visibility:hidden;transform:translateY(-8px);
+    transition:opacity .28s ease,transform .28s ease,visibility 0s linear .28s;pointer-events:none}
+  .feat-menu::before{content:"";position:absolute;left:0;right:0;top:14px;bottom:0;z-index:-1;
+    background:linear-gradient(180deg,rgba(11,18,14,.975),rgba(6,11,8,.975));
+    border:1px solid rgba(231,185,77,.16);border-top:2px solid rgba(231,185,77,.55);
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+    clip-path:polygon(14% 0,100% 0,100% 100%,0 100%,0 26%);
+    box-shadow:0 34px 80px -26px rgba(0,0,0,.92)}
+  .nav .feat:hover .feat-menu,.nav .feat:focus-within .feat-menu,.nav .feat.open .feat-menu{
+    opacity:1;visibility:visible;transform:none;pointer-events:auto;transition-delay:0s}
+
+  .feat-row{display:flex;align-items:center;gap:17px;padding:12px 12px;border-radius:9px;
+    color:var(--muted);text-decoration:none;cursor:pointer;
+    transition:color .2s ease,background .2s ease,transform .2s ease}
+  .feat-row:hover,.feat-row:focus-visible{color:var(--ink);background:rgba(255,255,255,.045);
+    transform:translateX(5px);outline:none}
+  .feat-row .fic{width:27px;height:27px;flex:0 0 auto;display:grid;place-items:center;color:inherit}
+  .feat-row .fic svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:2}
+  .feat-row:hover .fic,.feat-row:focus-visible .fic{color:var(--rc,#E7B94D)}
+  .feat-row .fn{font-family:var(--sans);font-size:1rem;font-weight:600;letter-spacing:.01em;white-space:nowrap}
+
+  .hero{position:fixed;top:25%;left:0;right:0;z-index:5;text-align:center;pointer-events:none}
+  .hero .mk{font-family:var(--mono);font-size:.74rem;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;
+    margin-bottom:16px;display:inline-flex;align-items:center;gap:12px}
+  .hero .mk::before,.hero .mk::after{content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+  .hero .mk::after{background:linear-gradient(90deg,var(--gold),transparent)}
+  .hero h1{font-family:var(--disp);font-weight:400;text-transform:uppercase;
+    font-size:clamp(2.6rem,8.5vw,7rem);line-height:.9;letter-spacing:.005em;
+    background:linear-gradient(180deg,#fff 0%,#e2e8ff 52%,#a6b6ec 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 46px rgba(120,150,255,.45))}
+
+  .grain{position:fixed;inset:0;z-index:6;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px}
+  .vig{position:fixed;inset:0;z-index:6;pointer-events:none;
+    background:radial-gradient(135% 100% at 50% 42%,transparent 50%,rgba(0,0,0,.74))}
+  .aberr{position:fixed;inset:0;z-index:6;pointer-events:none;mix-blend-mode:screen;opacity:.5;
+    background:linear-gradient(90deg,rgba(255,0,40,.05),transparent 6%,transparent 94%,rgba(0,180,255,.05))}
+
+  .endcta{position:fixed;left:50%;top:50%;z-index:5;transform:translate(-50%,-50%) scale(.96);
+    text-align:center;opacity:0;transition:opacity .5s,transform .5s;pointer-events:none}
+  .endcta.on{opacity:1;transform:translate(-50%,-50%);pointer-events:auto}
+  .endcta .mk{font-family:var(--mono);font-size:.72rem;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;
+    margin-bottom:16px;display:inline-flex;align-items:center;gap:12px}
+  .endcta .mk::before,.endcta .mk::after{content:"";width:26px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+  .endcta .mk::after{background:linear-gradient(90deg,var(--gold),transparent)}
+  .endcta h2{font-family:var(--disp);font-size:clamp(2rem,7vw,5rem);text-transform:uppercase;margin-bottom:26px;line-height:.9;
+    background:linear-gradient(180deg,#fff 0%,#e2e8ff 52%,#a6b6ec 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 42px rgba(120,150,255,.4))}
+  .endcta button{font-family:var(--sans);font-weight:700;font-size:.9rem;letter-spacing:.14em;text-transform:uppercase;
+    color:#231803;background:linear-gradient(180deg,#fbe4a3,#F6D27E 42%,#E7B94D);border:0;border-radius:14px;
+    padding:17px 40px;cursor:pointer;position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:12px;
+    box-shadow:0 16px 44px -16px rgba(231,185,77,.85),inset 0 1px 0 rgba(255,255,255,.65),inset 0 -1px 0 rgba(150,95,0,.35);
+    transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s ease,filter .22s ease}
+  .endcta button::before{content:"";position:absolute;top:0;left:-70%;width:55%;height:100%;pointer-events:none;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-18deg)}
+  .endcta button:hover{transform:translateY(-3px) scale(1.02);filter:brightness(1.04);
+    box-shadow:0 24px 56px -16px rgba(231,185,77,1),inset 0 1px 0 rgba(255,255,255,.65)}
+  .endcta button:hover::before{animation:sheen .7s ease}
+  .endcta button:active{transform:translateY(-1px) scale(.99)}
+  .endcta button .arw{display:inline-block;transition:transform .22s ease;font-size:1.05em}
+  .endcta button:hover .arw{transform:translateX(5px)}
+  @keyframes sheen{from{left:-70%}to{left:130%}}
+
+  .toast{position:fixed;left:50%;bottom:30px;z-index:9;transform:translate(-50%,14px);
+    background:rgba(13,20,32,.96);border:1px solid rgba(231,185,77,.4);color:var(--ink);
+    font-size:.8rem;font-weight:700;padding:11px 18px;border-radius:999px;opacity:0;pointer-events:none;
+    transition:opacity .25s,transform .25s}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  .rail{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:5;display:flex;
+    flex-direction:column;gap:9px;pointer-events:none}
+  .rail b{width:7px;height:7px;border-radius:50%;border:1px solid rgba(231,185,77,.5);transition:all .3s}
+  .rail b.act{background:var(--gold);box-shadow:0 0 10px var(--gold);border-color:var(--gold)}
+
+  #fallback{position:fixed;inset:0;z-index:1;display:none;align-items:flex-end;justify-content:center}
+  #fallback svg{width:100%;height:64%}
+
+  @media (max-width:640px){
+    .nav{gap:15px;font-size:.64rem}.nav .snd{display:none}
+    .strut{width:27%}.card{min-width:180px;max-width:210px}.rail{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){ .scrollmod .arw,.sweep,.strut .glow,#sky::after{animation:none} }
+</style>
+</head>
+<body>
+  <div id="runway"></div>
+  <div class="fixed" id="sky"></div>
+  <div class="fixed" id="city"><canvas id="cv"></canvas></div>
+
+  <div id="fallback" aria-hidden="true">
+    <svg viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice"><g fill="none" stroke="#8fa9ff" stroke-width="1" opacity=".7"></g></svg>
+  </div>
+
+  <svg id="wires"></svg>
+
+  <div class="card" data-i="0"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Stage 01</span><span class="live"><span class="dot"></span>Reading</span></span></div><div class="ti">Profile</div><div class="ds">Reads your founder signature — how you decide, build, and bet.</div></div>
+  <div class="card" data-i="1"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Stage 02</span><span class="live"><span class="dot"></span>Scanning</span></span></div><div class="ti">Discover</div><div class="ds">Finds the opportunity that actually fits who you are.</div></div>
+  <div class="card" data-i="2"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Stage 03</span><span class="live"><span class="dot"></span>Planning</span></span></div><div class="ti">Blueprint</div><div class="ds">Turns the opportunity into a concrete delivery plan.</div></div>
+  <div class="card" data-i="3"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Stage 04</span><span class="live"><span class="dot"></span>Building</span></span></div><div class="ti">Forge</div><div class="ds">Builds the product itself — app, agent, billing, live.</div></div>
+  <div class="card" data-i="4"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Stage 05</span><span class="live"><span class="dot"></span>Hardening</span></span></div><div class="ti">Sentinel</div><div class="ds">Hardens and verifies security before anything ships.</div></div>
+  <div class="card" data-i="5"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Stage 06</span><span class="live"><span class="dot"></span>Live</span></span></div><div class="ti">Dashboard</div><div class="ds">Hands you the controls — one console for the whole venture.</div></div>
+  <div class="card" data-i="6"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Stage 07</span><span class="live"><span class="dot"></span>Growing</span></span></div><div class="ti">Studio</div><div class="ds">Grows it in-market — content, GEO, and compounding memory.</div></div>
+
+  <div class="cock">
+    <div class="canopy-top"></div>
+    <div class="strut l"><span class="panel"></span><span class="bolts"></span><span class="glow"></span></div>
+    <div class="strut r"><span class="panel"></span><span class="bolts"></span><span class="glow"></span></div>
+    <div class="dash">
+      <div class="console">
+        <span class="badge">A</span>
+        <span class="rib r1"></span><span class="rib r2"></span>
+        <div class="scrollmod"><div class="arw">↧</div><div class="lbl">Scroll Down</div></div>
+        <span class="yoke"></span>
+      </div>
+      <div class="screen l"><span class="radar"><span class="sweep"></span></span><span class="rlines"><i style="top:20%;width:70%"></i><i style="top:44%;width:90%;animation-delay:.5s"></i><i style="top:68%;width:52%;animation-delay:1s"></i></span></div>
+      <div class="screen r"><div class="readout"><div class="roll">SYS/CORE ONLINE<br>THRUST 84%<br>NAV LOCK · CITY-09<br>SCAN: 7 TARGETS<br>FUEL NOMINAL<br>ALT 420m ↓<br>SYS/CORE ONLINE<br>THRUST 84%<br>NAV LOCK · CITY-09<br>SCAN: 7 TARGETS<br>FUEL NOMINAL<br>ALT 420m ↓</div></div></div>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <button class="snd" id="snd">‖‖ Sound: Off</button>
+    <a href="#">About</a>
+    <span class="brand">Aurexis</span>
+    <div class="feat" id="featWrap">
+      <button class="feat-btn" id="featBtn" aria-haspopup="true" aria-expanded="false">Features<svg class="cx" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="feat-menu" id="featMenu" role="menu" aria-label="The seven stages"></div>
+    </div>
+    <button class="demo" id="demoTop">Begin Your Journey</button>
+  </nav>
+
+  <div class="hero" id="hero">
+    <div class="mk">The Opportunity-to-Reality Engine</div>
+    <h1>Venture Building<br>On Autopilot</h1>
+  </div>
+
+  <div class="rail" id="rail"></div>
+
+  <div class="endcta" id="endcta">
+    <div class="mk">End of the line · Destination reached</div>
+    <h2>Ready for takeoff.</h2>
+    <button id="launch"><span class="lbl">Launch the Engine</span><span class="arw">▸</span></button>
+  </div>
+
+  <div class="grain"></div><div class="vig"></div><div class="aberr"></div>
+  <div class="toast" id="toast"></div>
+
+  <!-- overlay: hosts the prototype (Launch the Engine) or the Google Form (Begin Your Journey) -->
+  <style>
+    .ov{position:fixed; inset:0; z-index:99999; display:none; background:rgba(4,6,12,.94);
+      -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
+    .ov.open{display:flex; flex-direction:column; animation:ovin .3s ease}
+    @keyframes ovin{from{opacity:0}}
+    .ovbar{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 18px;
+      background:rgba(0,0,0,.5); border-bottom:1px solid rgba(231,185,77,.35)}
+    .ovbar .t{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.72rem; letter-spacing:.18em;
+      text-transform:uppercase; color:#E7B94D}
+    .ovx{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.78rem; color:#E7B94D;
+      background:rgba(231,185,77,.14); border:1px solid rgba(231,185,77,.45); padding:8px 15px; border-radius:9px;
+      cursor:pointer; transition:background .2s}
+    .ovx:hover{background:rgba(231,185,77,.26)}
+    .ov iframe{flex:1; width:100%; border:0; background:#05060a; display:block}
+    .ov.form iframe{background:#fff}
+
+    /* ---- stage explorer (7 stages + Deploy gate) ---- */
+    .xpl{position:fixed;inset:0;z-index:99998;display:none;flex-direction:column;
+      background:linear-gradient(180deg,#070c1a,#04060e);color:var(--ink);
+      font-family:"Space Mono",ui-monospace,monospace}
+    .xpl.open{display:flex;animation:ovin .3s ease}
+    .xpl-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;
+      padding:15px 22px;border-bottom:1px solid rgba(231,185,77,.28);background:rgba(0,0,0,.4)}
+    .xpl-brand{font-family:"Anton",sans-serif;letter-spacing:.16em;text-transform:uppercase;
+      font-size:1.02rem;display:inline-flex;align-items:center;gap:11px}
+    .xpl-brand::before{content:"";width:12px;height:12px;transform:rotate(45deg);
+      background:linear-gradient(135deg,var(--gold2),var(--gold));box-shadow:0 0 10px rgba(231,185,77,.6)}
+    .xpl-close{font-family:inherit;font-size:.76rem;color:var(--gold);letter-spacing:.06em;
+      background:rgba(231,185,77,.14);border:1px solid rgba(231,185,77,.45);padding:9px 16px;
+      border-radius:9px;cursor:pointer;transition:background .2s}
+    .xpl-close:hover{background:rgba(231,185,77,.26)}
+    .xpl-body{flex:1;display:flex;min-height:0}
+    .xpl-rail{width:266px;flex:0 0 auto;overflow-y:auto;padding:16px 12px;
+      border-right:1px solid rgba(231,185,77,.16);background:rgba(0,0,0,.25)}
+    .xr{display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:11px 12px;
+      border-radius:9px;background:none;border:0;border-left:2px solid transparent;color:var(--muted);
+      cursor:pointer;font-family:inherit;transition:background .2s,color .2s}
+    .xr:hover{background:rgba(255,255,255,.04);color:var(--ink)}
+    .xr.on{background:rgba(255,255,255,.06);color:var(--ink);border-left-color:var(--rc,#E7B94D)}
+    .xr-ic{width:24px;height:24px;flex:0 0 auto;display:grid;place-items:center;color:var(--muted)}
+    .xr.on .xr-ic,.xr:hover .xr-ic{color:var(--rc,#E7B94D)}
+    .xr-ic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2}
+    .xr-n{font-size:.55rem;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;display:block;opacity:.75}
+    .xr-t{font-family:var(--sans);font-size:.94rem;font-weight:600;letter-spacing:.01em;display:block}
+    .xr.gate{margin:4px 0;border-top:1px dashed rgba(231,185,77,.2);border-bottom:1px dashed rgba(231,185,77,.2)}
+    .xr.gate .xr-t{color:var(--gold2)}
+    .xpl-detail{flex:1;overflow-y:auto;padding:clamp(22px,4vw,52px)}
+    .xd-wrap{max-width:720px}
+    .xd-kicker{font-size:.62rem;letter-spacing:.26em;color:var(--gold);text-transform:uppercase;margin-bottom:13px}
+    .xd-headline{font-family:var(--sans);font-weight:600;line-height:1.14;letter-spacing:-.01em;
+      font-size:clamp(1.55rem,3.3vw,2.4rem);margin-bottom:18px;
+      background:linear-gradient(180deg,#fff,#c9d2e8);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .xd-what{font-family:var(--sans);font-size:1.02rem;line-height:1.65;color:#c4c9d6;margin-bottom:26px;max-width:62ch}
+    .xd-caps{list-style:none;display:grid;gap:12px;margin-bottom:24px}
+    .xd-caps li{position:relative;padding-left:22px;font-family:var(--sans);font-size:.92rem;line-height:1.55;color:#a8adba}
+    .xd-caps li::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border-radius:2px;
+      background:var(--rc,#E7B94D);box-shadow:0 0 10px -1px var(--rc,#E7B94D)}
+    .xd-caps b{color:var(--ink);font-weight:600}
+    .xd-edge{display:flex;gap:12px;align-items:flex-start;padding:15px 17px;border-radius:14px;margin-bottom:22px;
+      background:linear-gradient(120deg,rgba(231,185,77,.11),rgba(231,185,77,.03));
+      border:1px solid rgba(231,185,77,.24);box-shadow:0 0 34px -16px rgba(231,185,77,.55)}
+    .xd-edge-tag{font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:#1c1404;
+      background:linear-gradient(180deg,var(--gold2),var(--gold));padding:4px 8px;border-radius:5px;
+      font-weight:700;flex:0 0 auto;margin-top:1px;white-space:nowrap}
+    .xd-edge-tx{font-family:var(--sans);font-size:.9rem;line-height:1.5;color:#ecdcb2}
+    .xd-tech{font-family:var(--mono);font-size:.82rem;color:#9fc0ff;letter-spacing:.02em;padding:13px 16px;border-radius:12px;
+      background:linear-gradient(120deg,rgba(30,42,70,.6),rgba(15,21,37,.72));
+      border:1px solid rgba(140,170,255,.22);margin-bottom:24px;overflow-x:auto;white-space:nowrap;
+      box-shadow:inset 0 0 26px -14px rgba(140,170,255,.6)}
+    .xd-tech::before{content:"\21b3  ";color:var(--gold)}
+    .xd-fly{font-family:inherit;font-weight:700;font-size:.82rem;letter-spacing:.05em;color:#1c1404;
+      background:linear-gradient(180deg,var(--gold2),var(--gold));border:0;padding:13px 26px;cursor:pointer;
+      border-radius:2px;box-shadow:0 14px 40px -16px rgba(231,185,77,.7)}
+    .xpl-foot{padding:14px 24px;border-top:1px solid rgba(231,185,77,.16);background:rgba(0,0,0,.35);
+      font-size:.74rem;line-height:1.5;color:var(--muted);text-align:center}
+    .xpl-foot b{color:var(--gold2);font-weight:700}
+    @media (max-width:820px){
+      .xpl-body{flex-direction:column}
+      .xpl-rail{width:100%;display:flex;flex-direction:row;overflow-x:auto;gap:8px;padding:11px;
+        border-right:0;border-bottom:1px solid rgba(231,185,77,.16)}
+      .xr{width:auto;flex:0 0 auto;flex-direction:column;align-items:center;gap:6px;min-width:92px;
+        border-left:0;border-bottom:2px solid transparent;text-align:center}
+      .xr.on{border-left:0;border-bottom-color:var(--rc,#E7B94D)}
+      .xr.gate{margin:0;border-top:0;border-bottom:2px solid transparent}
+      .xr-t{font-size:.66rem}
+    }
+  </style>
+  <div class="ov" id="ov" aria-hidden="true">
+    <div class="ovbar"><span class="t" id="ovTitle"></span><button class="ovx" id="ovClose">&#10005; Close</button></div>
+    <iframe id="ovFrame" title="Aurexis"></iframe>
+  </div>
+
+  <!-- stage explorer: the full 7-stage + Deploy-gate feature breakdown -->
+  <div class="xpl" id="xpl" aria-hidden="true" role="dialog" aria-modal="true" aria-label="The Aurexis run — stage explorer">
+    <div class="xpl-bar">
+      <span class="xpl-brand">Aurexis &middot; The Run</span>
+      <button class="xpl-close" id="xplClose">&#10005; Close</button>
+    </div>
+    <div class="xpl-body">
+      <div class="xpl-rail" id="xplRail" role="tablist" aria-label="Stages"></div>
+      <div class="xpl-detail" id="xplDetail"></div>
+    </div>
+    <div class="xpl-foot" id="xplFoot"></div>
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+"use strict";
+(function(){
+  var RM = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var cv=document.getElementById("cv");
+  var _tt; function toast(m){ var t=document.getElementById("toast"); t.textContent=m; t.className="toast show";
+    clearTimeout(_tt); _tt=setTimeout(function(){ t.className="toast"; },2200); }
+
+  var GLY=[
+    '<svg viewBox="0 0 24 24" fill="none" stroke="#1c1404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.8 3.1-6 7-6s7 2.2 7 6"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none" stroke="#1c1404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none" stroke="#1c1404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M9.5 11h6M9.5 14h6M9.5 17h4"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none" stroke="#1c1404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4l6 6-3 3-6-6z"/><path d="M11 7l-7 7 3 3 7-7"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none" stroke="#1c1404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none" stroke="#1c1404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15a8 8 0 0116 0"/><path d="M12 15l4-3"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none" stroke="#1c1404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3 2 5 5 5 9l-2 5H9l-2-5c0-4 2-7 5-9z"/><circle cx="12" cy="10" r="1.6"/></svg>'
+  ];
+  var COL=['#E7B94D','#39e0a3','#8fb4ff','#ff9a4d','#ff5d6e','#ffd34d','#c78bff'];
+  var cards=[].slice.call(document.querySelectorAll(".card"));
+  cards.forEach(function(c){ var i=+c.dataset.i;
+    c.querySelector(".em").innerHTML=GLY[i]; c.style.setProperty("--c",COL[i]); });
+
+  /* ---- flight navigation helpers ---- */
+  var STAGE_Z=[100,50,0,-50,-100,-150,-200];
+  var STAGE_TITLES=["Profile","Discover","Blueprint","Forge","Sentinel","Dashboard","Studio"];
+  function goToProgress(t){ t=Math.max(0,Math.min(1,t));
+    var rw=document.getElementById("runway"); window.scrollTo({top:t*(rw.offsetHeight-innerHeight),behavior:RM?"auto":"smooth"}); }
+  function goToStage(i){ var e=(290-STAGE_Z[i])/560; e=Math.max(0,Math.min(1,e));
+    goToProgress(e<0.5?Math.sqrt(e/2):1-Math.sqrt((1-e)/2)); }
+
+  /* ---- full stage content: 7 stages + the Deploy gate ---- */
+  var GATE_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V7l8-4 8 4v14"/><path d="M3 21h18"/><path d="M10 21v-5a2 2 0 0 1 4 0v5"/></svg>';
+  var THRU="Profile you → source a real opportunity → spec it → build and verify it → prove it's secure → gate the deploy → operate it on real data → grow its reach. At every step, a number is either traced to a real fetch, scan, or probe, or it's marked honestly absent. That discipline is the whole product.";
+  var STAGES_FULL=[
+    { num:"01", name:"Profile", color:COL[0], icon:0, stage:0,
+      tag:"Stage 01 · Profile — who you are",
+      headline:"The run starts with you, read honestly.",
+      what:"A short, low-friction intake turns signals about how you actually work into a founder profile that shapes every decision downstream.",
+      caps:[["Fast intake","a handful of taps (what energizes you, risk appetite, domain), not a long questionnaire."],
+            ["A profile signature",'resolves you into a recognizable type (e.g. "The Builder") with a trait radar across Build, Strategy, Vision, Rigor, Boldness.'],
+            ["Every trait cited to your answers","each score traces back to what you actually said."],
+            ["Sets the lens for everything after","the opportunity Aurexis finds next is matched to this profile, not a generic idea."]],
+      edge:"nothing about you is invented — no personality guesswork, just a mapping of your own inputs.",
+      tech:"your answers → weighted trait model → matching input" },
+    { num:"02", name:"Discover", color:COL[1], icon:1, stage:1,
+      tag:"Stage 02 · Discover — a real opportunity",
+      headline:"An opportunity matched to you — sourced, not guessed.",
+      what:"Aurexis scans live developer ecosystems for demand that fits your profile and surfaces concrete, buildable opportunities, each stamped with the real data behind it.",
+      caps:[["Live signal, not a static list","pulled from the GitHub Search API in real time: repositories, new-project activity, stars."],
+            ["Ranked, matched candidates","opportunities scored against your profile, each with the actual numbers (e.g. 1.3k repos · 312 new · 18.4k stars)."],
+            ["Source-stamped","every signal shows the exact endpoint + timestamp so you can verify it yourself."],
+            ["Momentum, not just size","new-project activity shows where builders are starting — i.e. where demand is heating up."]],
+      edge:"this is developer-demand signal, not a dollar market size — no free source gives a trustworthy TAM, so it's marked unavailable rather than faked.",
+      tech:"api.github.com/search · live · timestamped" },
+    { num:"03", name:"Blueprint", color:COL[2], icon:2, stage:2,
+      tag:"Stage 03 · Blueprint — the build spec",
+      headline:"From opportunity to a spec you can actually build.",
+      what:"The chosen opportunity becomes a concrete, structured product specification — everything a builder needs, validated before anything is built.",
+      caps:[["A named product concept",'name, one-line definition, target user (e.g. "DisputeKit — evidence-ready chargeback packages for small sellers").'],
+            ["Core feature set","the specific capabilities the first version ships (intake · evidence gen · CE3.0 engine · tracker)."],
+            ["Screens + data model","the actual pages and the data structures behind them, not hand-waving."],
+            ["Schema-validated","structurally checked so it's genuinely buildable."]],
+      edge:"the output is a validated artifact, not a paragraph of aspirations — if it isn't structurally sound, it doesn't pass.",
+      tech:"opportunity → spec (screens · features · data model) → ✓ schema-validated" },
+    { num:"04", name:"Forge", color:COL[3], icon:3, stage:3,
+      tag:"Stage 04 · Forge — build the product",
+      headline:"Your product, actually built — and verified real.",
+      what:"Forge takes the blueprint and produces a working product, orchestrating a production builder rather than pretending to hand-write everything, then proving the result is live.",
+      caps:[["Spec → working app","the blueprint is handed to a production builder (v0 by Vercel) that generates the real components."],
+            ["Orchestrated, not faked","Aurexis drives the whole build (submit blueprint → generate components → wire features)."],
+            ["Reachability-verified","it doesn't call a queued job \"done\"; it confirms the preview URL actually responds."],
+            ["Honest failure","a build that doesn't come up is reported as not-yet-successful, never dressed up as success."]],
+      edge:'"built" means a URL you can open, verified reachable — not a green check on an accepted job.',
+      tech:"blueprint → v0 build → ✓ preview URL verified reachable" },
+    { num:"05", name:"Sentinel", color:COL[4], icon:4, stage:4,
+      tag:"Stage 05 · Sentinel — security audit",
+      headline:"Proven secure before it's allowed near the world.",
+      what:"Sentinel runs real security scanners across the freshly built product and produces a trustable score — the gatekeeper for going live.",
+      caps:[["Real scanners","dependency scanning, secrets detection, and static analysis (SAST) on the actual codebase."],
+            ["A trustable score","a single defensible number (e.g. 86/100) backed by the individual scan results."],
+            ["Findings you can act on","issues surfaced by severity (e.g. 2 low, resolved), not a black-box pass/fail."],
+            ["Never executes your code","Sentinel inspects; it does not run untrusted code, by design."]],
+      edge:"the score comes from real tools, not a vibe-check — and safety is enforced by a hard rule.",
+      tech:"dependency · secrets · SAST → security score" },
+    { num:"⟐", name:"Deploy", color:"#E7B94D", icon:0, deploy:true, fly:0.64,
+      tag:"⟐ Deploy — the gate  (between 05 and 06)",
+      headline:"Live is earned, not assumed.",
+      what:"Deploy promotes the product to a live URL — but only if security clears the bar, then confirms the world can actually reach it.",
+      caps:[["Gated on security","promotion only happens when Sentinel's score clears the threshold."],
+            ["Reachability-confirmed","a live check verifies the deployed URL responds before it's marked live."],
+            ["Halting is a valid outcome","if it isn't safe, it doesn't ship, and that's reported plainly."]],
+      edge:"a halt is a legitimate result, not a failure to hide.",
+      tech:"security ≥ threshold → promote → reachability check → live URL" },
+    { num:"06", name:"Dashboard", color:COL[5], icon:5, stage:5,
+      tag:"Stage 06 · Dashboard — live control",
+      headline:"Operate on real data — including the truth of an empty room.",
+      what:"Once live, the Dashboard is your operating surface, showing real telemetry from the running product.",
+      caps:[["Real operational metrics","uptime, latency (p50), and status pulled from the live deployment."],
+            ["Live, streaming reads","numbers update from the actual product, not a mockup."],
+            ["Honest empty states",'on a new product, tiles like Active users and Revenue read "no data yet" instead of a fabricated figure.'],
+            ["Grows with you","sparse on day one by design; it fills in as real usage accrues."]],
+      edge:'this is where "nothing simulated" is most visible — an empty product shows empty tiles, never invented traction.',
+      tech:'live deployment → telemetry + honest "no data yet" states' },
+    { num:"07", name:"Studio", color:COL[6], icon:6, stage:6,
+      tag:"Stage 07 · Studio — get recommended",
+      headline:"Get recommended by AI — starting from an honest zero.",
+      what:"Studio works to get your product surfaced and recommended inside AI assistants (generative-engine optimization), measuring real visibility as it grows.",
+      caps:[["AI-answer visibility","checks whether assistants (e.g. Claude, Perplexity) actually surface and recommend your product."],
+            ["Web-grounded","based on real mentions the product has earned, not self-reported."],
+            ["Honest baseline","a day-old product reads ~0% because it hasn't earned mentions yet — the true starting line."],
+            ["A growth surface","the number climbs only as the product earns real coverage to ground on."]],
+      edge:"~0% on a new deployment is the truth, not a bug — reach the product hasn't earned is never inflated.",
+      tech:"assistant queries + web grounding → AI-visibility % (honest ~0% at launch)" }
+  ];
+
+  (function(){
+    var menu=document.getElementById("featMenu"); if(!menu) return;
+
+    /* --- dropdown rows --- */
+    var dhtml="";
+    for(var fi=0;fi<7;fi++){ var ic=GLY[fi].replace(/#1c1404/g,"currentColor");
+      dhtml+='<a class="feat-row" role="menuitem" href="#" data-stage="'+fi+'" style="--rc:'+COL[fi]+'">'
+           +'<span class="fic">'+ic+'</span><span class="fn">'+STAGE_TITLES[fi]+'</span></a>'; }
+    menu.innerHTML=dhtml;
+    var wrap=document.getElementById("featWrap"), btn=document.getElementById("featBtn");
+    function closeF(){ wrap.classList.remove("open"); btn.setAttribute("aria-expanded","false"); }
+    function toggleF(){ var o=wrap.classList.toggle("open"); btn.setAttribute("aria-expanded",o?"true":"false"); }
+    btn.addEventListener("click",function(e){ e.stopPropagation(); toggleF(); });
+    document.addEventListener("click",function(e){ if(!wrap.contains(e.target)) closeF(); });
+
+    /* --- stage explorer --- */
+    var xpl=document.getElementById("xpl"), rail=document.getElementById("xplRail"),
+        detail=document.getElementById("xplDetail"), foot=document.getElementById("xplFoot"), cur=0;
+    function iconOf(s){ return s.deploy?GATE_ICON:GLY[s.icon].replace(/#1c1404/g,"currentColor"); }
+    var rhtml="";
+    STAGES_FULL.forEach(function(s,idx){
+      rhtml+='<button class="xr'+(s.deploy?" gate":"")+'" role="tab" data-idx="'+idx+'" style="--rc:'+s.color+'">'
+        +'<span class="xr-ic">'+iconOf(s)+'</span>'
+        +'<span><span class="xr-n">'+s.num+'</span><span class="xr-t">'+s.name+'</span></span></button>';
+    });
+    rail.innerHTML=rhtml;
+    var railBtns=[].slice.call(rail.children);
+    foot.innerHTML='<b>One continuous run.</b> '+THRU;
+
+    function render(i){ cur=i; var s=STAGES_FULL[i];
+      railBtns.forEach(function(b,j){ b.classList.toggle("on",j===i);
+        if(j===i){ b.setAttribute("aria-selected","true"); } else { b.removeAttribute("aria-selected"); } });
+      var caps=s.caps.map(function(c){ return '<li><b>'+c[0]+'</b> — '+c[1]+'</li>'; }).join("");
+      detail.style.setProperty("--rc",s.color);
+      detail.innerHTML='<div class="xd-wrap">'
+        +'<div class="xd-kicker">'+s.tag+'</div>'
+        +'<h2 class="xd-headline">'+s.headline+'</h2>'
+        +'<p class="xd-what">'+s.what+'</p>'
+        +'<ul class="xd-caps">'+caps+'</ul>'
+        +'<div class="xd-edge"><span class="xd-edge-tag">Honest edge</span><span class="xd-edge-tx">'+s.edge+'</span></div>'
+        +'<div class="xd-tech">'+s.tech+'</div>'
+        +'<button class="xd-fly" id="xdFly">▸ Fly to this stage</button>'
+        +'</div>';
+      detail.scrollTop=0;
+      document.getElementById("xdFly").addEventListener("click",function(){
+        closeExplorer(); if(typeof s.fly==="number") goToProgress(s.fly); else goToStage(s.stage); });
+    }
+    function openExplorer(i){ render(i||0); xpl.classList.add("open"); xpl.setAttribute("aria-hidden","false"); document.body.style.overflow="hidden"; }
+    function closeExplorer(){ xpl.classList.remove("open"); xpl.setAttribute("aria-hidden","true"); document.body.style.overflow=""; }
+    rail.addEventListener("click",function(e){ var b=e.target.closest(".xr"); if(!b) return; render(+b.dataset.idx); });
+    document.getElementById("xplClose").addEventListener("click",closeExplorer);
+
+    /* dropdown row → open the explorer at that stage (Deploy is index 5, so 06/07 shift up) */
+    var STAGE_TO_FULL=[0,1,2,3,4,6,7];
+    menu.addEventListener("click",function(e){ var row=e.target.closest(".feat-row"); if(!row) return;
+      e.preventDefault(); if(row.blur) row.blur(); closeF(); openExplorer(STAGE_TO_FULL[+row.dataset.stage]); });
+
+    addEventListener("keydown",function(e){
+      if(e.key==="Escape"){ if(xpl.classList.contains("open")) closeExplorer(); else closeF(); return; }
+      if(!xpl.classList.contains("open")) return;
+      if(e.key==="ArrowDown"||e.key==="ArrowRight"){ e.preventDefault(); render((cur+1)%STAGES_FULL.length); }
+      else if(e.key==="ArrowUp"||e.key==="ArrowLeft"){ e.preventDefault(); render((cur-1+STAGES_FULL.length)%STAGES_FULL.length); }
+    });
+  })();
+
+  var rail=document.getElementById("rail");
+  for(var r=0;r<7;r++){ rail.appendChild(document.createElement("b")); }
+  var railDots=[].slice.call(rail.children);
+
+  var actx=null, master=null, mDelay=null, padOsc=[], sndOn=false, mStep=0, mTimer=0;
+  var SCALE=[329.63,392.00,440.00,523.25,587.33,659.25,783.99];              // gentle pentatonic, upper register
+  var CHORDS=[[130.81,164.81,196.00],[110.00,130.81,164.81],[146.83,174.61,220.00],[98.00,146.83,196.00]]; // C · Am · F · G
+  function initAudio(){ if(actx) return true;
+    try{ actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return false; }
+    master=actx.createGain(); master.gain.value=0; master.connect(actx.destination);
+    mDelay=actx.createDelay(1.0); mDelay.delayTime.value=0.42;                // spacious echo
+    var fb=actx.createGain(); fb.gain.value=0.34; var wet=actx.createGain(); wet.gain.value=0.3;
+    mDelay.connect(fb); fb.connect(mDelay); mDelay.connect(wet); wet.connect(master);
+    var padLp=actx.createBiquadFilter(); padLp.type="lowpass"; padLp.frequency.value=820; // warm pad bed
+    var padGain=actx.createGain(); padGain.gain.value=0.4; padLp.connect(padGain); padGain.connect(master); padGain.connect(mDelay);
+    padOsc=[]; var base=CHORDS[0];
+    for(var i=0;i<3;i++){ var o=actx.createOscillator(); o.type="triangle"; o.frequency.value=base[i];
+      var og=actx.createGain(); og.gain.value=0.5; o.connect(og); og.connect(padLp); o.start(); padOsc.push(o); }
+    return true; }
+  function mNote(freq,dur,vol){ var t=actx.currentTime+0.02;
+    var o=actx.createOscillator(), g=actx.createGain(); o.type="sine"; o.frequency.value=freq;
+    o.connect(g); g.connect(master); g.connect(mDelay);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+0.05); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.start(t); o.stop(t+dur+0.05); }
+  function mTick(){ if(!sndOn||!actx) return; var t=actx.currentTime;
+    if(mStep%8===0){ var ch=CHORDS[((mStep/8)|0)%CHORDS.length]; for(var i=0;i<3;i++) padOsc[i].frequency.setTargetAtTime(ch[i],t,0.7); }
+    if(mStep%2===0 && Math.random()<0.66) mNote(SCALE[(Math.random()*SCALE.length)|0],1.8,0.07);
+    mStep++; }
+  function blip(){ if(!actx||!sndOn) return; try{ var o=actx.createOscillator(),g=actx.createGain();
+    o.type="sine"; o.frequency.value=880; o.connect(g); g.connect(master);
+    var t=actx.currentTime; g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(.05,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+.18);
+    o.start(t); o.stop(t+.2); }catch(e){} }
+  document.getElementById("snd").addEventListener("click",function(){
+    if(!initAudio()){ toast("Audio unavailable"); return; }
+    if(actx.state==="suspended") actx.resume();
+    sndOn=!sndOn; master.gain.setTargetAtTime(sndOn?0.16:0.0, actx.currentTime, 0.6);
+    if(sndOn && !mTimer){ mStep=0; mTick(); mTimer=setInterval(mTick,900); }
+    else if(!sndOn && mTimer){ clearInterval(mTimer); mTimer=0; }
+    this.textContent = sndOn ? "\u2016\u2016 Sound: On" : "\u2016\u2016 Sound: Off"; });
+
+  /* --- Launch the Engine → prototype  ·  Begin Your Journey → Google Form --- */
+  var FORM_URL  = "https://docs.google.com/forms/d/e/1FAIpQLSfrUt3OG37jJKtuVnT4yRfppAU-UnTvz0n4TUfDbEt3wAnmZA/viewform?embedded=true";
+  var PROTO_URL = "engine.html"; /* the interactive engine prototype, served from public/ */
+  var ov=document.getElementById("ov"), ovFrame=document.getElementById("ovFrame"), ovTitle=document.getElementById("ovTitle");
+  function openOverlay(url,title,isForm){
+    ovTitle.textContent=title; ov.classList.toggle("form",!!isForm);
+    if(ovFrame.getAttribute("src")!==url) ovFrame.setAttribute("src",url);
+    ov.classList.add("open"); ov.setAttribute("aria-hidden","false"); document.body.style.overflow="hidden";
+  }
+  function closeOverlay(){ ov.classList.remove("open"); ov.setAttribute("aria-hidden","true"); document.body.style.overflow=""; }
+  document.getElementById("ovClose").addEventListener("click",closeOverlay);
+  addEventListener("keydown",function(e){ if(e.key==="Escape" && ov.classList.contains("open")) closeOverlay(); });
+  document.getElementById("launch").addEventListener("click",function(){ openOverlay(PROTO_URL,"Aurexis Engine \u00b7 Prototype",false); });
+  document.getElementById("demoTop").addEventListener("click",function(){ openOverlay(FORM_URL,"Begin Your Journey \u00b7 Request Access",true); });
+
+  function webglOK(){ try{ var c=document.createElement("canvas");
+    return !!(window.WebGLRenderingContext && (c.getContext("webgl")||c.getContext("experimental-webgl"))); }catch(e){ return false; } }
+  function fallback(){ document.getElementById("city").style.display="none";
+    var fb=document.getElementById("fallback"); fb.style.display="flex";
+    var g=fb.querySelector("g"),d="",x=0; while(x<1200){ var w=16+Math.random()*44,h=50+Math.random()*300;
+      d+='<rect x="'+x+'" y="'+(400-h)+'" width="'+(w-3)+'" height="'+h+'"/>'; x+=w; } g.innerHTML=d; }
+
+  if(typeof THREE==="undefined" || !webglOK()){ fallback(); return; }
+
+  var scene,camera,renderer,raf,winWarmMat,winCoolMat,beaconMat,gateMat;
+  var stageTowers=[], wasOn=[false,false,false,false,false,false,false];
+  var cardW=[], cardH=[];
+  var wires=document.getElementById("wires");
+
+  try{
+    scene=new THREE.Scene();
+    scene.fog=new THREE.Fog(0x0a1330, 40, 540);
+    camera=new THREE.PerspectiveCamera(62, innerWidth/innerHeight, 0.1, 2000);
+    renderer=new THREE.WebGLRenderer({canvas:cv, antialias:true, alpha:true});
+    renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+    renderer.setSize(innerWidth,innerHeight);
+    renderer.setClearColor(0x000000,0);
+
+    scene.add(new THREE.AmbientLight(0x4a5578, 1.0));
+    var key=new THREE.DirectionalLight(0xcfdcff,1.15); key.position.set(-0.6,1.4,0.8); scene.add(key);
+    var rim=new THREE.DirectionalLight(0x6a7cc0,0.7); rim.position.set(1,0.8,-1.6); scene.add(rim);
+    var under=new THREE.DirectionalLight(0xff9a4d,0.28); under.position.set(0,-1,0.2); scene.add(under); // warm bounce from the road
+
+    var box=new THREE.BoxGeometry(1,1,1); box.translate(0,0.5,0);
+    var edgeGeo=new THREE.EdgesGeometry(box);
+    var FACE=[0x39445e,0x424d68,0x333d55,0x4a5674].map(function(c){ return new THREE.MeshLambertMaterial({color:c}); });
+    var edgeCool=new THREE.LineBasicMaterial({color:0x8ea3d6,transparent:true,opacity:0.26});
+    var edgeGold=new THREE.LineBasicMaterial({color:0xE7B94D,transparent:true,opacity:0.95});
+    var edgeLat =new THREE.LineBasicMaterial({color:0xaab8e0,transparent:true,opacity:0.6});
+    var pickFace=function(){ return FACE[(Math.random()*FACE.length)|0]; };
+
+    var warm=[], cool=[], beacons=[];
+    function gridWin(cx,cz,w,d,h,baseY){ baseY=baseY||0;
+      var cols=Math.max(2,Math.round(w/1.8)), rows=Math.max(2,Math.round(h/2.4));
+      for(var zf=-1; zf<=1; zf+=2){ for(var ci=0; ci<cols; ci++){ for(var ri=0; ri<rows; ri++){
+        if(Math.random()<0.5) continue;
+        (Math.random()<0.6?warm:cool).push(cx+(-(w/2)+(ci+0.5)*(w/cols)), baseY+1+(ri+0.5)*((h-1.5)/rows), cz+zf*(d/2+0.05)); }}}
+      var sideN=Math.max(1,Math.round(rows*0.5));
+      for(var xf=-1; xf<=1; xf+=2){ for(var r2=0;r2<sideN;r2++){ if(Math.random()<0.5) continue;
+        (Math.random()<0.6?warm:cool).push(cx+xf*(w/2+0.05), baseY+1+Math.random()*(h-1.5), cz+(Math.random()-.5)*d*0.7); }}
+    }
+    function ringWin(cx,cz,rad,h,baseY){ baseY=baseY||0;
+      var rings=Math.max(3,Math.round(h/2.6)), per=Math.max(6,Math.round(rad*4));
+      for(var ri=0; ri<rings; ri++){ var wy=baseY+1+(ri+0.5)*((h-1.5)/rings);
+        for(var a=0;a<per;a++){ if(Math.random()<0.55) continue; var ang=(a/per)*6.283;
+          (Math.random()<0.6?warm:cool).push(cx+Math.cos(ang)*(rad+0.05), wy, cz+Math.sin(ang)*(rad+0.05)); }}
+    }
+    function boxAt(cx,cz,w,d,h,baseY,gold){ var m=new THREE.Mesh(box,pickFace());
+      m.position.set(cx,baseY||0,cz); m.scale.set(w,h,d);
+      m.add(new THREE.LineSegments(edgeGeo, gold?edgeGold:edgeCool)); scene.add(m); return m; }
+    function coneAt(cx,cz,rad,ht,baseY,seg,gold){ var g=new THREE.ConeGeometry(rad,ht,seg||4);
+      var m=new THREE.Mesh(g,pickFace()); if((seg||4)===4) m.rotation.y=0.785; m.position.set(cx,baseY+ht/2,cz);
+      m.add(new THREE.LineSegments(new THREE.EdgesGeometry(g), gold?edgeGold:edgeCool)); scene.add(m); return m; }
+    function cylAt(cx,cz,rT,rB,ht,baseY,seg,gold){ var g=new THREE.CylinderGeometry(rT,rB,ht,seg||14);
+      var m=new THREE.Mesh(g,pickFace()); if((seg||14)<=4) m.rotation.y=0.785; m.position.set(cx,baseY+ht/2,cz);
+      m.add(new THREE.LineSegments(new THREE.EdgesGeometry(g), gold?edgeGold:edgeCool)); scene.add(m); return m; }
+    function latticeTower(cx,cz,base,h,gold){ var col=gold?edgeGold:edgeLat;
+      var g=new THREE.CylinderGeometry(base*0.12, base*0.5, h, 4, 1, true);
+      var fr=new THREE.LineSegments(new THREE.EdgesGeometry(g),col); fr.rotation.y=0.785; fr.position.set(cx,h/2,cz); scene.add(fr);
+      for(var i=1;i<=3;i++){ var yy=h*(i/4), rr=base*(0.5-0.32*(i/4));
+        var ring=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(rr*2,0.4,rr*2)),col);
+        ring.rotation.y=0.785; ring.position.set(cx,yy,cz); scene.add(ring); }
+      var ant=new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,h*0.3,6),FACE[0]); ant.position.set(cx,h+h*0.15,cz); scene.add(ant);
+      beacons.push(cx,h+h*0.3,cz);
+      for(var k=0;k<6;k++){ cool.push(cx+(Math.random()-.5)*base, 2+Math.random()*h, cz+(Math.random()-.5)*base); }
+    }
+
+    function addBuilding(cx,cz,w,d,h,stageIndex){
+      if(stageIndex>=0){
+        if(stageIndex%2===0){ var bH=h*0.72; boxAt(cx,cz,w,d,bH,0,true); gridWin(cx,cz,w,d,bH,0); coneAt(cx,cz,Math.max(w,d)*0.62,h-bH,bH,4,true); }
+        else { latticeTower(cx,cz,w*1.1,h,true); }
+        stageTowers.push({top:new THREE.Vector3(cx,h*0.6,cz), i:stageIndex}); beacons.push(cx,h+8,cz); return;
+      }
+      var r=Math.random();
+      if(r<0.55){ boxAt(cx,cz,w,d,h,0,false); gridWin(cx,cz,w,d,h,0); }
+      else if(r<0.68){ var steps=2+((Math.random()*2)|0), yb=0, cw=w, cd=d, seg=h/(steps+0.6);
+        for(var i=0;i<steps;i++){ var sh=seg*(1+(steps-1-i)*0.15); boxAt(cx,cz,cw,cd,sh,yb,false); gridWin(cx,cz,cw,cd,sh,yb); yb+=sh; cw*=0.7; cd*=0.7; } }
+      else if(r<0.78){ var bH2=h*0.78; boxAt(cx,cz,w,d,bH2,0,false); gridWin(cx,cz,w,d,bH2,0); coneAt(cx,cz,Math.max(w,d)*0.6,h-bH2,bH2,4,false); }
+      else if(r<0.86){ cylAt(cx,cz,w*0.3,w*0.5,h,0,4,false); ringWin(cx,cz,w*0.42,h,0); }
+      else if(r<0.94){ cylAt(cx,cz,w*0.5,w*0.5,h,0,14,false); ringWin(cx,cz,w*0.5,h,0); }
+      else if(r<0.985){ var bh=h*0.85; boxAt(cx,cz,w*0.7,d*0.7,bh,0,false); gridWin(cx,cz,w*0.7,d*0.7,bh,0); coneAt(cx,cz,0.5,h-bh,bh,4,false); beacons.push(cx,h+1,cz); }
+      else { latticeTower(cx,cz,w,h*1.2,false); }
+    }
+
+    // dense canyon of varied structures; inner faces held clear of the camera lane
+    for(var z=300; z>-352; z-=12){
+      for(var side=-1; side<=1; side+=2){
+        for(var b=0;b<4;b++){
+          var w=4.5+Math.random()*7, d=4.5+Math.random()*7;
+          var x=side*(9 + w/2 + Math.pow(Math.random(),1.3)*120);
+          var h=8+Math.pow(Math.random(),1.9)*56;
+          addBuilding(x, z+(Math.random()-.5)*8, w, d, h, -1);
+        }
+      }
+    }
+    // 7 landmark stage towers, all ahead of the start so each is approached in turn
+    var STZ=[100,50,0,-50,-100,-150,-200];
+    for(var s=0;s<7;s++){ var side2=(s%2===0)?-1:1; addBuilding(side2*(14+(s%3)*3), STZ[s], 9,9, 118+(s%3)*24, s); }
+
+    function mkPoints(arr,color,size,op){ var g=new THREE.BufferGeometry();
+      g.setAttribute("position",new THREE.Float32BufferAttribute(arr,3));
+      var m=new THREE.PointsMaterial({color:color,size:size,sizeAttenuation:true,transparent:true,opacity:op,depthWrite:false});
+      scene.add(new THREE.Points(g,m)); return m; }
+    winWarmMat=mkPoints(warm,0xffcf87,0.85,0.9);
+    winCoolMat=mkPoints(cool,0x8fb8ff,0.75,0.75);
+    beaconMat=mkPoints(beacons,0xff5d6e,1.7,0.9);
+
+    var grid=new THREE.GridHelper(1500,90,0x3a4a72,0x18203a);
+    grid.material.transparent=true; grid.material.opacity=0.10; scene.add(grid);
+
+    // ---- glowing central road ----
+    var roadZc=-60, roadLen=640;
+    var road=new THREE.Mesh(new THREE.BoxGeometry(11,0.4,roadLen), new THREE.MeshBasicMaterial({color:0xff8a3d,transparent:true,opacity:0.85}));
+    road.position.set(0,0.2,roadZc); scene.add(road);
+    var rcore=new THREE.Mesh(new THREE.BoxGeometry(4,0.5,roadLen), new THREE.MeshBasicMaterial({color:0xffd27a,transparent:true,opacity:0.95}));
+    rcore.position.set(0,0.28,roadZc); scene.add(rcore);
+    var dashMat=new THREE.MeshBasicMaterial({color:0xfff2cc});
+    for(var dz=244; dz>-372; dz-=14){ var dsh=new THREE.Mesh(new THREE.BoxGeometry(0.7,0.55,5),dashMat); dsh.position.set(0,0.34,dz); scene.add(dsh); }
+    var lampPts=[]; for(var lz=244; lz>-372; lz-=8){ lampPts.push(-5.6,1.1,lz, 5.6,1.1,lz); }
+    var lgeo=new THREE.BufferGeometry(); lgeo.setAttribute("position",new THREE.Float32BufferAttribute(lampPts,3));
+    scene.add(new THREE.Points(lgeo,new THREE.PointsMaterial({color:0xffb85c,size:1.1,sizeAttenuation:true,transparent:true,opacity:0.9,depthWrite:false})));
+
+    // ---- destination gate at the end of the road (glows in on arrival) ----
+    gateMat=new THREE.MeshBasicMaterial({color:0xE7B94D,transparent:true,opacity:0});
+    var gg=new THREE.BoxGeometry(2.4,96,2.4);
+    var gL=new THREE.Mesh(gg,gateMat); gL.position.set(-7,48,-300); scene.add(gL);
+    var gR=new THREE.Mesh(gg,gateMat); gR.position.set(7,48,-300); scene.add(gR);
+    var gBar=new THREE.Mesh(new THREE.BoxGeometry(16.4,2.4,2.4),gateMat); gBar.position.set(0,92,-300); scene.add(gBar);
+
+    var maxScroll=function(){ return document.getElementById("runway").offsetHeight - innerHeight; };
+    var prog=0,targetProg=0;
+    function onScroll(){ var m=maxScroll(); targetProg=m>0?Math.min(1,Math.max(0,scrollY/m)):0; }
+    addEventListener("scroll",onScroll,{passive:true}); onScroll();
+    function easeInOut(t){ return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2; }
+    var tmp=new THREE.Vector3();
+
+    function frame(now){
+      prog += (targetProg-prog)*0.075;
+      var p=prog, e=easeInOut(p);
+
+      var cz = 340 - e*560;
+      var cy = 100 - easeInOut(Math.min(1,p*1.15))*64;   // 100 -> 36, glides through the canyon above street clutter
+      var cx = Math.sin(p*Math.PI*1.6)*4;                // gentle sway, stays well inside the clear avenue
+      var bank = Math.cos(p*Math.PI*1.6)*0.045;
+      camera.position.set(cx,cy,cz);
+      camera.up.set(Math.sin(bank),Math.cos(bank),0);
+      camera.lookAt(cx*0.4, cy-11, cz-80);
+
+      document.getElementById("hero").style.opacity=String(Math.max(0,1-p*16));
+      document.getElementById("endcta").className="endcta"+(p>0.93?" on":"");
+      if(gateMat) gateMat.opacity=Math.max(0,Math.min(1,(p-0.78)/0.22))*0.85;
+
+      if(!RM){ var f=0.72+Math.sin(now*0.002)*0.24;
+        winWarmMat.opacity=f; winCoolMat.opacity=0.5+Math.sin(now*0.0016+1.5)*0.22;
+        beaconMat.opacity=0.5+Math.abs(Math.sin(now*0.004))*0.5; }
+
+      var W=innerWidth,H=innerHeight,lines="",activeStage=-1;
+      var cand=[];
+      for(var i=0;i<stageTowers.length;i++){
+        var stt=stageTowers[i];
+        tmp.copy(stt.top).project(camera);
+        var inFront=tmp.z<1, sx=(tmp.x*0.5+0.5)*W, sy=(-tmp.y*0.5+0.5)*H;
+        var dz=camera.position.z - stt.top.z;
+        if(inFront && dz>14 && dz<205 && sx>-120 && sx<W+120 && sy>-60 && sy<H+60){
+          cand.push({idx:stt.i, sx:sx, sy:sy, dz:dz});
+        }
+      }
+      cand.sort(function(a,b){ return a.dz-b.dz; });
+      var showN=Math.min(3,cand.length), onSet={};
+      for(var ci=0; ci<showN; ci++){ var c=cand[ci]; var ci2=c.idx; onSet[ci2]=1;
+        if(ci===0) activeStage=ci2;
+        var card=cards[ci2], sx=c.sx, sy=c.sy;
+        card.classList.add("on");
+        if(cardW[ci2]==null){ cardW[ci2]=card.offsetWidth||260; cardH[ci2]=card.offsetHeight||150; }
+        var cw=cardW[ci2], ch=cardH[ci2];
+        var cardX = (sx < W*0.5) ? sx+46 : sx-46-cw;          // place away from the anchor
+        cardX = Math.max(16, Math.min(W-cw-16, cardX));        // clamp fully on-screen (real width)
+        var cardY = Math.max(74, Math.min(H-ch-16, sy-ch*0.4));
+        card.style.left=cardX+"px"; card.style.top=cardY+"px";
+        var nearX = (cardX + cw*0.5 < sx) ? cardX+cw : cardX;  // connect from the edge facing the tower
+        var ly = Math.max(cardY+14, Math.min(cardY+ch-14, sy));
+        var midx = nearX + (nearX<sx ? 20 : -20);
+        lines+='<line x1="'+nearX+'" y1="'+ly+'" x2="'+midx+'" y2="'+ly+'" stroke="'+COL[ci2]+'" stroke-width="1.4"/>'
+             +'<line x1="'+midx+'" y1="'+ly+'" x2="'+sx+'" y2="'+sy+'" stroke="'+COL[ci2]+'" stroke-width="1.4" opacity=".7"/>'
+             +'<circle cx="'+sx+'" cy="'+sy+'" r="5.5" fill="'+COL[ci2]+'"/>'
+             +'<circle cx="'+sx+'" cy="'+sy+'" r="10" fill="none" stroke="'+COL[ci2]+'" opacity=".5"/>';
+        if(!wasOn[ci2]){ wasOn[ci2]=true; blip(); }
+      }
+      for(var k2=0;k2<cards.length;k2++){ if(!onSet[k2]){ cards[k2].classList.remove("on"); wasOn[k2]=false; } }
+      wires.innerHTML=lines;
+      for(var d2=0;d2<railDots.length;d2++) railDots[d2].className = (d2===activeStage)?"act":"";
+
+      renderer.render(scene,camera);
+      raf=requestAnimationFrame(frame);
+    }
+    raf=requestAnimationFrame(frame);
+
+    document.addEventListener("visibilitychange",function(){
+      if(document.hidden){ if(raf) cancelAnimationFrame(raf); raf=0; }
+      else if(!raf){ raf=requestAnimationFrame(frame); } });
+    addEventListener("resize",function(){
+      camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth,innerHeight);
+      cardW=[]; cardH=[];
+      wires.setAttribute("width",innerWidth); wires.setAttribute("height",innerHeight); });
+    wires.setAttribute("width",innerWidth); wires.setAttribute("height",innerHeight);
+
+  }catch(err){ if(raf) cancelAnimationFrame(raf); fallback(); }
+})();
+</script>
+</body>
+</html>
