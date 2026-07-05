@@ -91,73 +91,103 @@
   .card .ds{font-family:var(--sans);font-weight:400;font-size:.82rem;line-height:1.5;color:#b7bbc7;margin-top:4px}
 
   .cock{position:fixed;inset:0;z-index:4;pointer-events:none}
-  .canopy-top{position:absolute;top:0;left:0;right:0;height:13%;
-    background:linear-gradient(180deg,#0b0f1a 42%,rgba(11,15,26,0));
-    clip-path:polygon(0 0,100% 0,100% 52%,63% 52%,50% 100%,37% 52%,0 52%)}
-  .canopy-top::after{content:"";position:absolute;left:34%;right:34%;top:36%;height:3px;
-    background:linear-gradient(90deg,transparent,rgba(255,77,94,.5),transparent)}
-  .strut{position:absolute;top:0;bottom:0;width:21%}
+
+  /* ---- top canopy: machined header bar with a red-vented center pod ---- */
+  .canopy-top{position:absolute;top:0;left:0;right:0;height:13.5%;
+    background:linear-gradient(180deg,#07090f 0%,#0b0e16 58%,#060810 100%);
+    clip-path:polygon(0 0,100% 0,100% 44%,57.5% 44%,54.5% 100%,45.5% 100%,42.5% 44%,0 44%)}
+  .canopy-top::before{content:"";position:absolute;left:48.6%;right:48.6%;top:38%;bottom:10%;
+    background:linear-gradient(180deg,#ff97a2,#e6293c 62%,#8f1220);
+    box-shadow:0 0 18px 4px rgba(255,60,80,.55),0 0 44px 10px rgba(255,60,80,.25);
+    animation:ventpulse 3.2s ease-in-out infinite}
+  .canopy-top::after{content:"";position:absolute;left:0;right:0;top:calc(44% - 2px);height:2px;
+    background:linear-gradient(90deg,transparent 2%,rgba(150,175,255,.22) 18%,rgba(150,175,255,.22) 82%,transparent 98%)}
+  @keyframes ventpulse{0%,100%{opacity:.85}50%{opacity:1}}
+
+  /* ---- side struts: dark steel with white-hot strips blooming red ---- */
+  .strut{position:absolute;top:0;bottom:0;width:22%}
   .strut.l{left:0;clip-path:polygon(0 0,60% 0,30% 100%,0 100%);
-    background:linear-gradient(96deg,#0b0f18 0%,#1a2236 52%,#0a0e17 100%)}
+    background:linear-gradient(96deg,#080b12 0%,#161d2e 52%,#070a11 100%)}
   .strut.r{right:0;clip-path:polygon(40% 0,100% 0,100% 100%,70% 100%);
-    background:linear-gradient(264deg,#0b0f18 0%,#1a2236 52%,#0a0e17 100%)}
-  .strut .panel{position:absolute;inset:0;opacity:.5;
-    background:repeating-linear-gradient(122deg,transparent 0 46px,rgba(0,0,0,.35) 46px 48px)}
-  .strut.r .panel{background:repeating-linear-gradient(238deg,transparent 0 46px,rgba(0,0,0,.35) 46px 48px)}
-  .strut .glow{position:absolute;top:7%;bottom:15%;width:11px;border-radius:7px;
-    background:linear-gradient(180deg,#dfe9ff,#8fa9ff 42%,#4b6bd6);
-    box-shadow:0 0 26px 5px rgba(120,150,255,.6);animation:pulse 3.4s ease-in-out infinite}
+    background:linear-gradient(264deg,#080b12 0%,#161d2e 52%,#070a11 100%)}
+  .strut .panel{position:absolute;inset:0;opacity:.45;
+    background:repeating-linear-gradient(122deg,transparent 0 38px,rgba(0,0,0,.4) 38px 40px)}
+  .strut.r .panel{background:repeating-linear-gradient(238deg,transparent 0 38px,rgba(0,0,0,.4) 38px 40px)}
+  .strut .glow{position:absolute;top:6%;bottom:36%;width:12px;border-radius:8px;
+    background:linear-gradient(180deg,#fff 0%,#ffe9ec 34%,#ff6d7c 72%,#b81d2f 100%);
+    box-shadow:0 0 26px 5px rgba(255,77,94,.55),0 0 64px 16px rgba(255,60,80,.22);
+    animation:pulse 3.4s ease-in-out infinite}
   .strut.l .glow{right:33%;transform:rotate(10deg)}
   .strut.r .glow{left:33%;transform:rotate(-10deg)}
-  @keyframes pulse{0%,100%{opacity:.85;box-shadow:0 0 22px 4px rgba(120,150,255,.5)}
-    50%{opacity:1;box-shadow:0 0 32px 7px rgba(140,170,255,.72)}}
+  .strut .glow2{position:absolute;bottom:6%;height:16%;width:9px;border-radius:6px;
+    background:linear-gradient(180deg,#ff8b98,#c11f31);
+    box-shadow:0 0 18px 4px rgba(255,70,90,.45);animation:pulse 3.4s ease-in-out infinite reverse}
+  .strut.l .glow2{right:44%;transform:rotate(14deg)}
+  .strut.r .glow2{left:44%;transform:rotate(-14deg)}
+  @keyframes pulse{0%,100%{opacity:.85;box-shadow:0 0 22px 4px rgba(255,77,94,.45)}
+    50%{opacity:1;box-shadow:0 0 34px 8px rgba(255,90,105,.65)}}
   .strut .bolts{position:absolute;top:9%;bottom:18%;width:2px;
-    background:radial-gradient(circle,rgba(180,200,255,.6) 1px,transparent 1.4px) 0 0/8px 40px repeat-y}
+    background:radial-gradient(circle,rgba(180,200,255,.5) 1px,transparent 1.4px) 0 0/8px 40px repeat-y}
   .strut.l .bolts{right:20%}.strut.r .bolts{left:20%}
 
-  /* ---- cockpit dashboard = vehicle hull ---- */
-  .dash{position:absolute;left:0;right:0;bottom:0;height:25%;
-    background:linear-gradient(0deg,#05070f 44%,#0a0e1a 76%,rgba(10,14,26,0));
-    clip-path:polygon(0 100%,0 50%,10% 44%,22% 44%,29% 18%,42% 9%,58% 9%,71% 18%,78% 44%,90% 44%,100% 50%,100% 100%)}
-  .dash::before{content:"";position:absolute;left:0;right:0;top:44%;height:2px;
-    background:linear-gradient(90deg,transparent,rgba(140,170,255,.4),transparent)}
-  .dash::after{content:"";position:absolute;left:6%;right:6%;bottom:0;height:100%;pointer-events:none;
-    background:radial-gradient(62% 82% at 50% 100%,rgba(120,150,255,.10),transparent 70%)}
+  /* ---- dashboard hull: heavy angular cowl ---- */
+  .dash{position:absolute;left:0;right:0;bottom:0;height:27%;
+    background:linear-gradient(0deg,#030409 46%,#080b13 100%);
+    clip-path:polygon(0 100%,0 46%,7% 40%,20% 40%,26% 14%,40% 6%,60% 6%,74% 14%,80% 40%,93% 40%,100% 46%,100% 100%);
+    filter:drop-shadow(0 -1.5px 0 rgba(216,229,255,.5)) drop-shadow(0 -2px 8px rgba(150,180,255,.14))}
+  .dash::before{content:"";position:absolute;left:0;right:0;top:40%;height:2px;
+    background:linear-gradient(90deg,transparent,rgba(150,175,255,.18),transparent)}
+  .dash::after{content:"";position:absolute;left:10%;right:10%;bottom:0;height:100%;pointer-events:none;
+    background:radial-gradient(56% 78% at 50% 100%,rgba(255,77,94,.09),transparent 70%)}
 
-  /* protruding central console — the 'car' center stack */
-  .console{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:27%;height:84%;
-    background:linear-gradient(180deg,#141d30 0%,#0c1220 58%,#070b14 100%);
-    clip-path:polygon(20% 0,80% 0,100% 100%,0 100%);
-    box-shadow:inset 0 1px 0 rgba(150,175,255,.3), 0 -3px 26px rgba(0,0,0,.6)}
-  .console .rib{position:absolute;left:14%;right:14%;height:2px;background:rgba(150,175,255,.16)}
-  .console .r1{top:15%}.console .r2{top:25%}
-  .console .badge{position:absolute;left:50%;top:9%;transform:translateX(-50%);
-    width:26px;height:26px;border-radius:7px;display:grid;place-items:center;
-    background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1c1404;font-weight:700;font-size:.74rem}
-  .console .yoke{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);
-    width:48%;height:18px;border:2px solid rgba(150,175,255,.35);border-bottom:0;border-radius:24px 24px 0 0;
-    box-shadow:0 0 14px rgba(120,150,255,.25), inset 0 6px 10px -6px rgba(140,170,255,.4)}
+  /* protruding central console */
+  .console{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:24%;height:92%;
+    background:linear-gradient(180deg,#131a2a 0%,#0b101c 58%,#060910 100%);
+    clip-path:polygon(24% 0,76% 0,100% 100%,0 100%);
+    box-shadow:inset 0 1px 0 rgba(150,175,255,.26), 0 -3px 30px rgba(0,0,0,.65);
+    filter:drop-shadow(0 -1.5px 0 rgba(216,229,255,.55))}
+  .console .cap{position:absolute;top:-2px;width:26px;height:5px;border-radius:2px;
+    background:linear-gradient(90deg,#eef4ff,#93a9d4);box-shadow:0 0 8px rgba(210,225,255,.55)}
+  .console .cap.l{left:calc(24% - 13px);transform:rotate(-22deg)}
+  .console .cap.r{right:calc(24% - 13px);transform:rotate(22deg)}
+  .console .rib{position:absolute;left:16%;right:16%;height:2px;background:rgba(150,175,255,.13)}
+  .console .r1{top:26%}.console .r2{top:33%}
+  .console .badge{position:absolute;left:50%;top:10%;transform:translateX(-50%) rotate(45deg);
+    width:19px;height:19px;
+    background:linear-gradient(135deg,var(--gold2),var(--gold));
+    box-shadow:0 0 16px rgba(231,185,77,.75)}
+  .console::after{content:"";position:absolute;left:32%;right:32%;bottom:7%;height:4px;
+    background:rgba(0,0,0,.55);border-radius:2px;box-shadow:0 -8px 0 rgba(0,0,0,.4)}
 
   /* red instrument screens built into the hull shoulders */
-  .screen{position:absolute;bottom:20%;height:42%;width:17%;border-radius:12px;overflow:hidden;
-    border:1px solid rgba(255,95,110,.3);
+  .screen{position:absolute;bottom:18%;height:46%;width:18%;border-radius:12px;overflow:hidden;
+    border:1px solid rgba(255,95,110,.32);
     background:radial-gradient(120% 80% at 50% 0%,rgba(255,120,130,.14),transparent 55%),
-      linear-gradient(158deg,rgba(42,11,17,.74),rgba(12,5,8,.84));
-    box-shadow:inset 0 0 44px -6px rgba(255,77,94,.32),inset 0 1px 0 rgba(255,150,160,.28),0 14px 36px -16px rgba(0,0,0,.85)}
-  .screen.l{left:7%;transform:skewX(10deg)}
-  .screen.r{right:7%;transform:skewX(-10deg)}
-  .radar{position:absolute;left:12px;top:50%;width:40px;height:40px;margin-top:-20px;border-radius:50%;
-    border:1px solid rgba(255,125,135,.5);background:radial-gradient(circle,rgba(255,77,94,.14),transparent 70%);
-    box-shadow:inset 0 0 16px rgba(255,77,94,.35),0 0 12px -3px rgba(255,77,94,.55)}
-  .radar::before{content:"";position:absolute;inset:7px;border-radius:50%;border:1px solid rgba(255,125,135,.26)}
-  .radar::after{content:"";position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px;border-radius:50%;
-    background:#ff9aa4;box-shadow:0 0 8px 2px rgba(255,125,135,.8);animation:blip 2s ease-in-out infinite}
-  @keyframes blip{0%,100%{opacity:.5;transform:scale(.75)}50%{opacity:1;transform:scale(1.25)}}
-  .sweep{position:absolute;inset:1px;border-radius:50%;
-    background:conic-gradient(from 0deg,rgba(255,130,140,.6),rgba(255,130,140,.06) 36%,transparent 44%);
+      linear-gradient(158deg,rgba(42,11,17,.78),rgba(10,4,7,.88));
+    box-shadow:inset 0 0 44px -6px rgba(255,77,94,.34),inset 0 1px 0 rgba(255,150,160,.28),0 14px 36px -16px rgba(0,0,0,.85)}
+  .screen::before{content:"";position:absolute;left:7%;right:7%;top:0;height:3px;z-index:1;
+    background:linear-gradient(90deg,transparent,#ff5d6e 18%,#ff8b98 50%,#ff5d6e 82%,transparent);
+    box-shadow:0 0 14px 2px rgba(255,77,94,.65)}
+  .screen.l{left:6.5%;transform:skewX(10deg)}
+  .screen.r{right:6.5%;transform:skewX(-10deg)}
+  /* spiderweb tactical radar */
+  .radarbox{position:absolute;right:5%;top:50%;transform:translateY(-50%);height:88%;aspect-ratio:1}
+  .web{position:absolute;inset:0;width:100%;height:100%}
+  .web circle{fill:none;stroke:rgba(255,110,122,.32);stroke-width:.7}
+  .web .spokes line{stroke:rgba(255,110,122,.2);stroke-width:.6}
+  .web .net{fill:rgba(255,77,94,.07);stroke:rgba(255,145,155,.85);stroke-width:1.1;
+    filter:drop-shadow(0 0 2.5px rgba(255,90,104,.8))}
+  .web .net.dim{fill:none;stroke:rgba(255,120,132,.4);stroke-width:.8;filter:none}
+  .web .blip{fill:#ff9aa4;filter:drop-shadow(0 0 3px rgba(255,125,135,.9));
+    transform-box:fill-box;transform-origin:center;animation:blip 2s ease-in-out infinite}
+  .web .blip:nth-of-type(2){animation-delay:.6s}
+  .web .blip:nth-of-type(3){animation-delay:1.2s}
+  @keyframes blip{0%,100%{opacity:.4;transform:scale(.75)}50%{opacity:1;transform:scale(1.3)}}
+  .sweep{position:absolute;inset:2%;border-radius:50%;
+    background:conic-gradient(from 0deg,rgba(255,130,140,.5),rgba(255,130,140,.05) 36%,transparent 44%);
     animation:spin 2.8s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
-  .rlines{position:absolute;right:8px;top:16%;bottom:16%;left:48%}
+  .rlines{position:absolute;left:7%;top:18%;bottom:18%;width:34%}
   .rlines i{position:absolute;left:0;height:2px;border-radius:2px;
     background:linear-gradient(90deg,rgba(255,130,140,.85),rgba(255,130,140,.12));
     box-shadow:0 0 6px -1px rgba(255,125,135,.6);animation:flick 2.4s ease-in-out infinite}
@@ -167,11 +197,47 @@
   .readout .roll{animation:roll 6s linear infinite}
   @keyframes roll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
 
-  .scrollmod{position:absolute;left:50%;bottom:36%;transform:translateX(-50%);text-align:center;z-index:2}
-  .scrollmod .arw{width:34px;height:34px;margin:0 auto 6px;border:1px solid var(--gold);border-radius:9px;
-    display:grid;place-items:center;color:var(--gold);font-size:1rem;background:rgba(8,11,20,.6);
+  /* screen glass: fine scanlines + vignette */
+  .screen::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.24) 0 1px,transparent 1px 3px),
+      radial-gradient(120% 95% at 50% 50%,transparent 55%,rgba(0,0,0,.5))}
+
+  /* highlighted alert strip on the right screen */
+  .warnbar{position:absolute;left:8%;right:8%;top:10%;z-index:1;
+    background:linear-gradient(180deg,#f2374b,#c31c2e);color:#1c0306;
+    font-family:var(--mono);font-weight:700;font-size:7.5px;letter-spacing:.08em;text-transform:uppercase;
+    padding:3px 7px;border-radius:2px;box-shadow:0 0 14px rgba(255,60,80,.55)}
+  .screen.r .readout{top:26%}
+
+  /* console-flank greebles: paired chips + vent stack */
+  .chips{position:absolute;left:calc(38% - 46px);bottom:52%;display:flex;flex-direction:column;gap:7px}
+  .chips i{width:24px;height:10px;border-radius:3px;background:linear-gradient(180deg,#39445e,#1a2133);
+    box-shadow:inset 0 1px 0 rgba(210,225,255,.35)}
+  .chips i.hot{background:linear-gradient(180deg,#ff6d7c,#c11f31);box-shadow:0 0 10px rgba(255,70,90,.6),inset 0 1px 0 rgba(255,200,205,.6)}
+  .gstack{position:absolute;left:calc(62% + 20px);bottom:50%;display:flex;flex-direction:column;gap:5px;
+    padding:7px 6px;background:linear-gradient(180deg,#10151f,#080b12);border-radius:4px;
+    box-shadow:inset 0 1px 0 rgba(210,225,255,.28),0 4px 14px rgba(0,0,0,.5)}
+  .gstack i{width:26px;height:3px;border-radius:2px;background:rgba(205,220,245,.4)}
+  .gstack i:first-child{background:rgba(235,244,255,.75)}
+
+  /* operator side-panel, far left of the dash */
+  .sidecam{position:absolute;left:1.7%;bottom:24%;width:4.8%;min-width:46px;aspect-ratio:3/3.8;
+    transform:skewX(10deg);border-radius:8px;overflow:hidden;
+    border:1px solid rgba(255,95,110,.4);
+    background:linear-gradient(158deg,rgba(46,10,15,.85),rgba(12,4,7,.92));
+    box-shadow:inset 0 0 22px -4px rgba(255,77,94,.4),inset 0 1px 0 rgba(255,150,160,.3)}
+  .sidecam::after{content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px)}
+  .sidecam svg{position:absolute;inset:10% 12%;width:76%;height:80%}
+  .sidecam .fig{fill:rgba(255,105,118,.8);filter:drop-shadow(0 0 5px rgba(255,80,95,.7))}
+
+  .scrollmod{position:absolute;left:50%;bottom:30%;transform:translateX(-50%);text-align:center;z-index:2}
+  .scrollmod .arw{width:36px;height:36px;margin:0 auto 8px;border:1px solid rgba(231,185,77,.75);border-radius:10px;
+    display:grid;place-items:center;color:var(--gold);font-size:1.05rem;background:rgba(6,9,16,.72);
+    box-shadow:0 0 14px -2px rgba(231,185,77,.5),inset 0 0 10px rgba(231,185,77,.12);
     animation:bob 1.8s ease-in-out infinite}
-  .scrollmod .lbl{font-size:.56rem;letter-spacing:.3em;color:var(--muted)}
+  .scrollmod .lbl{font-size:.6rem;letter-spacing:.32em;color:#cfd3dc;text-transform:uppercase;
+    text-shadow:0 1px 6px rgba(0,0,0,.8)}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
 
   .nav{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:center;
@@ -279,14 +345,54 @@
   .rail b{width:7px;height:7px;border-radius:50%;border:1px solid rgba(231,185,77,.5);transition:all .3s}
   .rail b.act{background:var(--gold);box-shadow:0 0 10px var(--gold);border-color:var(--gold)}
 
+  /* ---- boot loader ---- */
+  .boot{position:fixed;inset:0;z-index:100000;background:#050708;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;font-family:var(--mono);transition:opacity .6s ease}
+  .boot.done{opacity:0;pointer-events:none}
+  .boot .bt-drop{position:absolute;top:0;left:50%;transform:translateX(-50%);width:2px;height:15vh;
+    background:linear-gradient(180deg,transparent,var(--gold));box-shadow:0 0 8px rgba(231,185,77,.55)}
+  .boot .bt-drop::after{content:"";position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);
+    width:5px;height:5px;background:var(--gold);border-radius:50%;box-shadow:0 0 10px var(--gold)}
+  .boot .bt-mark{width:19px;height:19px;transform:rotate(45deg);margin-bottom:36px;
+    background:linear-gradient(135deg,var(--gold2),var(--gold));box-shadow:0 0 20px rgba(231,185,77,.85)}
+  .boot .bt-title{font-family:var(--disp);font-weight:400;text-transform:uppercase;text-align:center;
+    font-size:clamp(2.4rem,7.5vw,5.4rem);line-height:.95;letter-spacing:.02em;color:var(--gold);
+    text-shadow:0 0 14px rgba(231,185,77,.9),0 0 46px rgba(231,185,77,.55),0 0 110px rgba(231,185,77,.3);
+    margin-bottom:46px}
+  .boot .bt-barwrap{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .boot .bt-cap{width:14px;height:34px;position:relative;flex:0 0 auto}
+  .boot .bt-cap::before,.boot .bt-cap::after{content:"";position:absolute;left:0;right:0;height:2px;
+    background:var(--gold);box-shadow:0 0 6px rgba(231,185,77,.6)}
+  .boot .bt-cap::before{top:0}.boot .bt-cap::after{bottom:0}
+  .boot .bt-cap i{position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:var(--gold)}
+  .boot .bt-barbox{position:relative}
+  .boot .bt-bar{display:flex;gap:5px;width:min(360px,58vw)}
+  .boot .bt-bar i{flex:1;height:27px;background:rgba(231,185,77,.09)}
+  .boot .bt-bar i.on{background:var(--gold);box-shadow:0 0 13px rgba(231,185,77,.75)}
+  .boot .bt-ptr{position:absolute;top:calc(100% + 6px);left:0;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--gold);
+    font-size:.7rem;letter-spacing:.08em;text-shadow:0 0 8px rgba(231,185,77,.6)}
+  .boot .bt-ptr::before{content:"";width:0;height:0;border:5px solid transparent;border-bottom-color:var(--gold)}
+  .boot .bt-snd{margin-top:10vh;background:none;border:0;cursor:pointer;font-family:var(--mono);
+    color:var(--gold);font-size:.8rem;letter-spacing:.24em;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:10px;text-shadow:0 0 10px rgba(231,185,77,.55)}
+  .boot .bt-snd svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round}
+  .boot .bt-ruler{margin-top:26px;width:220px;height:12px;opacity:.65;
+    background:repeating-linear-gradient(90deg,var(--gold) 0 2px,transparent 2px 12px);
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent)}
+  @media (prefers-reduced-motion:reduce){ .boot{transition:none} }
+
   #fallback{position:fixed;inset:0;z-index:1;display:none;align-items:flex-end;justify-content:center}
   #fallback svg{width:100%;height:64%}
 
   @media (max-width:640px){
     .nav{gap:15px;font-size:.64rem}.nav .snd{display:none}
     .strut{width:27%}.card{min-width:180px;max-width:210px}.rail{display:none}
+    .sidecam,.chips,.gstack{display:none}
   }
-  @media (prefers-reduced-motion:reduce){ .scrollmod .arw,.sweep,.strut .glow,#sky::after{animation:none} }
+  @media (prefers-reduced-motion:reduce){ .scrollmod .arw,.sweep,.strut .glow,.strut .glow2,.canopy-top::before,.web .blip,.rlines i,#sky::after{animation:none} }
 </style>
 </head>
 <body>
@@ -310,17 +416,35 @@
 
   <div class="cock">
     <div class="canopy-top"></div>
-    <div class="strut l"><span class="panel"></span><span class="bolts"></span><span class="glow"></span></div>
-    <div class="strut r"><span class="panel"></span><span class="bolts"></span><span class="glow"></span></div>
+    <div class="strut l"><span class="panel"></span><span class="bolts"></span><span class="glow"></span><span class="glow2"></span></div>
+    <div class="strut r"><span class="panel"></span><span class="bolts"></span><span class="glow"></span><span class="glow2"></span></div>
     <div class="dash">
+      <span class="sidecam" aria-hidden="true"><svg viewBox="0 0 60 74"><path class="fig" d="M30 14a9.5 9.5 0 1 1 0 19 9.5 9.5 0 0 1 0-19zM11 64c1.4-15 8.6-22 19-22s17.6 7 19 22z"/></svg></span>
+      <span class="chips" aria-hidden="true"><i class="hot"></i><i></i></span>
+      <span class="gstack" aria-hidden="true"><i></i><i></i><i></i></span>
       <div class="console">
-        <span class="badge">A</span>
+        <span class="cap l" aria-hidden="true"></span><span class="cap r" aria-hidden="true"></span>
+        <span class="badge" aria-hidden="true"></span>
         <span class="rib r1"></span><span class="rib r2"></span>
-        <div class="scrollmod"><div class="arw">↧</div><div class="lbl">Scroll Down</div></div>
-        <span class="yoke"></span>
+        <div class="scrollmod"><div class="arw">↕</div><div class="lbl">Scroll Down</div></div>
       </div>
-      <div class="screen l"><span class="radar"><span class="sweep"></span></span><span class="rlines"><i style="top:20%;width:70%"></i><i style="top:44%;width:90%;animation-delay:.5s"></i><i style="top:68%;width:52%;animation-delay:1s"></i></span></div>
-      <div class="screen r"><div class="readout"><div class="roll">SYS/CORE ONLINE<br>THRUST 84%<br>NAV LOCK · CITY-09<br>SCAN: 7 TARGETS<br>FUEL NOMINAL<br>ALT 420m ↓<br>SYS/CORE ONLINE<br>THRUST 84%<br>NAV LOCK · CITY-09<br>SCAN: 7 TARGETS<br>FUEL NOMINAL<br>ALT 420m ↓</div></div></div>
+      <div class="screen l">
+        <span class="rlines"><i style="top:20%;width:70%"></i><i style="top:44%;width:90%;animation-delay:.5s"></i><i style="top:68%;width:52%;animation-delay:1s"></i></span>
+        <span class="radarbox">
+          <svg class="web" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="14"/><circle cx="50" cy="50" r="26"/><circle cx="50" cy="50" r="38"/><circle cx="50" cy="50" r="47"/>
+            <g class="spokes"><line x1="50" y1="3" x2="50" y2="97"/><line x1="3" y1="50" x2="97" y2="50"/><line x1="16.8" y1="16.8" x2="83.2" y2="83.2"/><line x1="83.2" y1="16.8" x2="16.8" y2="83.2"/></g>
+            <polyline class="net" points="50,12 74,29 88,52 76,74 52,86 28,72 18,48 32,26 50,12"/>
+            <polyline class="net dim" points="50,28 63,38 68,52 61,66 49,71 37,64 33,50 39,36 50,28"/>
+            <circle class="blip" cx="63" cy="41" r="1.8"/><circle class="blip" cx="38" cy="60" r="1.6"/><circle class="blip" cx="55" cy="68" r="1.4"/>
+          </svg>
+          <span class="sweep"></span>
+        </span>
+      </div>
+      <div class="screen r">
+        <div class="warnbar">⚠ Sys response delayed · data link</div>
+        <div class="readout"><div class="roll">SYS/CORE ONLINE<br>THRUST 84%<br>NAV LOCK · CITY-09<br>SCAN: 7 TARGETS<br>FUEL NOMINAL<br>ALT 420m ↓<br>SYS/CORE ONLINE<br>THRUST 84%<br>NAV LOCK · CITY-09<br>SCAN: 7 TARGETS<br>FUEL NOMINAL<br>ALT 420m ↓</div></div>
+      </div>
     </div>
   </div>
 
@@ -350,6 +474,25 @@
 
   <div class="grain"></div><div class="vig"></div><div class="aberr"></div>
   <div class="toast" id="toast"></div>
+
+  <!-- boot loader -->
+  <div class="boot" id="boot" role="status" aria-label="Aurexis is initializing">
+    <span class="bt-drop" aria-hidden="true"></span>
+    <span class="bt-mark" aria-hidden="true"></span>
+    <h2 class="bt-title" aria-hidden="true">Aurexis is<br>Initializing</h2>
+    <div class="bt-barwrap" aria-hidden="true">
+      <span class="bt-cap"><i></i></span>
+      <div class="bt-barbox">
+        <div class="bt-bar" id="btBar"></div>
+        <div class="bt-ptr" id="btPtr"><span id="btPct">0%</span></div>
+      </div>
+      <span class="bt-cap"><i></i></span>
+    </div>
+    <button class="bt-snd" id="btSnd" type="button">Sound muted
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+    </button>
+    <div class="bt-ruler" aria-hidden="true"></div>
+  </div>
 
   <!-- overlay: hosts the prototype (Launch the Engine) or the Google Form (Begin Your Journey) -->
   <style>
@@ -778,6 +921,31 @@
     else if(!sndOn && mTimer){ clearInterval(mTimer); mTimer=0; }
     this.textContent = sndOn ? "\u2016\u2016 Sound: On" : "\u2016\u2016 Sound: Off"; });
 
+  /* ---- boot sequence: segmented fill, moving percent pointer, then fade ---- */
+  (function(){
+    var boot=document.getElementById("boot"); if(!boot) return;
+    var bar=document.getElementById("btBar"), ptr=document.getElementById("btPtr"), pctEl=document.getElementById("btPct");
+    var SEGS=12, segs=[];
+    for(var i=0;i<SEGS;i++){ var s=document.createElement("i"); bar.appendChild(s); segs.push(s); }
+    document.body.style.overflow="hidden";
+    document.getElementById("btSnd").addEventListener("click",function(){
+      var m=document.getElementById("snd"); if(m) m.click();
+      var on=m && /On/.test(m.textContent);
+      this.childNodes[0].nodeValue = on ? "Sound on " : "Sound muted ";
+    });
+    function finish(){ boot.classList.add("done"); document.body.style.overflow="";
+      setTimeout(function(){ if(boot.parentNode) boot.parentNode.removeChild(boot); },700); }
+    if(RM){ finish(); return; }
+    var p=0, t=setInterval(function(){
+      p+=2+Math.random()*5;
+      if(p>=100){ p=100; clearInterval(t); setTimeout(finish,380); }
+      pctEl.textContent=Math.round(p)+"%";
+      ptr.style.left=(p)+"%";
+      var lit=Math.round(p/100*SEGS);
+      for(var i=0;i<SEGS;i++) segs[i].className = i<lit ? "on" : "";
+    },90);
+  })();
+
   /* --- Launch the Engine → prototype  ·  Begin Your Journey → Google Form --- */
   var FORM_URL  = "https://docs.google.com/forms/d/e/1FAIpQLSfrUt3OG37jJKtuVnT4yRfppAU-UnTvz0n4TUfDbEt3wAnmZA/viewform?embedded=true";
   var PROTO_URL = "engine.html"; /* the interactive engine prototype, served from public/ */
@@ -816,34 +984,53 @@
     renderer.setSize(innerWidth,innerHeight);
     renderer.setClearColor(0x000000,0);
 
-    scene.add(new THREE.AmbientLight(0x4a5578, 1.0));
-    var key=new THREE.DirectionalLight(0xcfdcff,1.15); key.position.set(-0.6,1.4,0.8); scene.add(key);
+    scene.add(new THREE.AmbientLight(0x4a5578, 0.35));
+    scene.add(new THREE.HemisphereLight(0xaec1ff, 0x05070c, 0.8));   // strong sky/ground modeling — lit tops, deep shadow sides
+    var key=new THREE.DirectionalLight(0xcfdcff,1.4); key.position.set(-0.6,1.4,0.8); scene.add(key);
     var rim=new THREE.DirectionalLight(0x6a7cc0,0.7); rim.position.set(1,0.8,-1.6); scene.add(rim);
     var under=new THREE.DirectionalLight(0xff9a4d,0.28); under.position.set(0,-1,0.2); scene.add(under); // warm bounce from the road
 
     var box=new THREE.BoxGeometry(1,1,1); box.translate(0,0.5,0);
     var edgeGeo=new THREE.EdgesGeometry(box);
-    var FACE=[0x39445e,0x424d68,0x333d55,0x4a5674].map(function(c){ return new THREE.MeshLambertMaterial({color:c}); });
-    var edgeCool=new THREE.LineBasicMaterial({color:0x8ea3d6,transparent:true,opacity:0.26});
-    var edgeGold=new THREE.LineBasicMaterial({color:0xE7B94D,transparent:true,opacity:0.95});
+    var FACE=[0x3c4762,0x49556f,0x333d57,0x515d7a,0x414c69,0x2e3750].map(function(c){ return new THREE.MeshLambertMaterial({color:c}); });
+    var edgeCool=new THREE.LineBasicMaterial({color:0x9fb2df,transparent:true,opacity:0.3});
+    var edgeGold=new THREE.LineBasicMaterial({color:0xE7B94D,transparent:true,opacity:0.95}); // landmark towers glow gold
     var edgeLat =new THREE.LineBasicMaterial({color:0xaab8e0,transparent:true,opacity:0.6});
     var pickFace=function(){ return FACE[(Math.random()*FACE.length)|0]; };
 
-    var warm=[], cool=[], beacons=[];
-    function gridWin(cx,cz,w,d,h,baseY){ baseY=baseY||0;
-      var cols=Math.max(2,Math.round(w/1.8)), rows=Math.max(2,Math.round(h/2.4));
-      for(var zf=-1; zf<=1; zf+=2){ for(var ci=0; ci<cols; ci++){ for(var ri=0; ri<rows; ri++){
-        if(Math.random()<0.5) continue;
-        (Math.random()<0.6?warm:cool).push(cx+(-(w/2)+(ci+0.5)*(w/cols)), baseY+1+(ri+0.5)*((h-1.5)/rows), cz+zf*(d/2+0.05)); }}}
-      var sideN=Math.max(1,Math.round(rows*0.5));
-      for(var xf=-1; xf<=1; xf+=2){ for(var r2=0;r2<sideN;r2++){ if(Math.random()<0.5) continue;
-        (Math.random()<0.6?warm:cool).push(cx+xf*(w/2+0.05), baseY+1+Math.random()*(h-1.5), cz+(Math.random()-.5)*d*0.7); }}
+    var warm=[], cool=[], beacons=[], neonPos=[], neonCol=[];
+    var NEON=[[1,.28,.56],[.26,.96,.86],[1,.64,.26],[.64,.44,1],[1,.36,.42],[.4,.8,1]];
+    function roofNeon(cx,cz,w,d,topY){ var c=NEON[(Math.random()*NEON.length)|0];
+      var edge=Math.random()<0.5?1:-1, n=3+((Math.random()*5)|0);
+      for(var i=0;i<n;i++){ neonPos.push(cx-w/2+(i+0.5)*(w/n), topY+0.35, cz+edge*(d/2+0.03)); neonCol.push(c[0],c[1],c[2]); }
     }
+    // clustered window patches — most of a face stays dark, lit blocks read as occupied floors
+    function faceGrid(cx,cz,w,d,h,baseY){ baseY=baseY||0;
+      var rows=Math.max(3,Math.round(h/2.1));
+      function face(axis,fixed,span,colsN){
+        var cR=(Math.random()*rows)|0, cC=(Math.random()*colsN)|0;   // lit-cluster centre
+        var rh=1+((Math.random()*3)|0), rw=2+((Math.random()*4)|0);  // cluster reach
+        for(var ci=0; ci<colsN; ci++){ for(var ri=0; ri<rows; ri++){
+          var inC=Math.abs(ri-cR)<=rh && Math.abs(ci-cC)<=rw;
+          if(Math.random() >= (inC?0.72:0.05)) continue;
+          var wy=baseY+1+(ri+0.5)*((h-1.5)/rows);
+          var along=span.a+(ci+0.5)*((span.b-span.a)/colsN);
+          if(axis==='z') (Math.random()<0.7?warm:cool).push(along, wy, fixed);
+          else (Math.random()<0.7?warm:cool).push(fixed, wy, along);
+        }}
+      }
+      var cols=Math.max(2,Math.round(w/1.55)), dcols=Math.max(2,Math.round(d/1.55));
+      face('z', cz+d/2+0.05, {a:cx-w/2,b:cx+w/2}, cols);
+      face('z', cz-d/2-0.05, {a:cx-w/2,b:cx+w/2}, cols);
+      face('x', cx+w/2+0.05, {a:cz-d/2,b:cz+d/2}, dcols);
+      face('x', cx-w/2-0.05, {a:cz-d/2,b:cz+d/2}, dcols);
+    }
+    function gridWin(cx,cz,w,d,h,baseY){ faceGrid(cx,cz,w,d,h,baseY); }
     function ringWin(cx,cz,rad,h,baseY){ baseY=baseY||0;
-      var rings=Math.max(3,Math.round(h/2.6)), per=Math.max(6,Math.round(rad*4));
+      var rings=Math.max(3,Math.round(h/2.2)), per=Math.max(8,Math.round(rad*5));
       for(var ri=0; ri<rings; ri++){ var wy=baseY+1+(ri+0.5)*((h-1.5)/rings);
-        for(var a=0;a<per;a++){ if(Math.random()<0.55) continue; var ang=(a/per)*6.283;
-          (Math.random()<0.6?warm:cool).push(cx+Math.cos(ang)*(rad+0.05), wy, cz+Math.sin(ang)*(rad+0.05)); }}
+        for(var a=0;a<per;a++){ if(Math.random()<0.4) continue; var ang=(a/per)*6.283;
+          (Math.random()<0.58?warm:cool).push(cx+Math.cos(ang)*(rad+0.05), wy, cz+Math.sin(ang)*(rad+0.05)); }}
     }
     function boxAt(cx,cz,w,d,h,baseY,gold){ var m=new THREE.Mesh(box,pickFace());
       m.position.set(cx,baseY||0,cz); m.scale.set(w,h,d);
@@ -865,31 +1052,119 @@
       for(var k=0;k<6;k++){ cool.push(cx+(Math.random()-.5)*base, 2+Math.random()*h, cz+(Math.random()-.5)*base); }
     }
 
+    /* ---- architectural kit: parapets, floor bands, pilasters, roof machinery ----
+       all reuse the shared box/tank geometry so extra detail stays cheap */
+    var tankGeo=new THREE.CylinderGeometry(1,1,1,10);
+    var darkMat=new THREE.MeshLambertMaterial({color:0x222a3f});
+    function plainBox(cx,cz,w,d,h,baseY,mat){ var m=new THREE.Mesh(box,mat||darkMat);
+      m.position.set(cx,baseY||0,cz); m.scale.set(w,h,d); scene.add(m); return m; }
+    function parapet(cx,cz,w,d,topY){ plainBox(cx,cz,w+0.5,d+0.5,0.55,topY,darkMat); }        // roof lip
+    function belts(cx,cz,w,d,h,baseY,n){ for(var i=1;i<=n;i++)                                  // floor bands
+      plainBox(cx,cz,w+0.28,d+0.28,0.4,baseY+h*(i/(n+1)),darkMat); }
+    function pilasters(cx,cz,w,d,h,baseY){ var px=w/2-0.28, pz=d/2-0.28;                        // corner columns
+      plainBox(cx-px,cz-pz,0.62,0.62,h,baseY,darkMat); plainBox(cx+px,cz-pz,0.62,0.62,h,baseY,darkMat);
+      plainBox(cx-px,cz+pz,0.62,0.62,h,baseY,darkMat); plainBox(cx+px,cz+pz,0.62,0.62,h,baseY,darkMat); }
+    function roofKit(cx,cz,w,d,topY,tall){ var r=Math.random();
+      if(r<0.65) plainBox(cx+(Math.random()-.5)*w*0.3, cz+(Math.random()-.5)*d*0.3,
+        Math.max(1.4,w*0.32), Math.max(1.4,d*0.32), 1.6+Math.random()*1.8, topY, darkMat);      // mech penthouse
+      if(r>0.35){ var t=new THREE.Mesh(tankGeo,darkMat); t.scale.set(0.9,2.0,0.9);
+        t.position.set(cx-w*0.24, topY+1.0, cz+d*0.22); scene.add(t); }                          // water tank
+      if(tall && Math.random()<0.6){ plainBox(cx,cz,0.26,0.26,3.5+Math.random()*4,topY,darkMat); // mast
+        if(Math.random()<0.5) beacons.push(cx,topY+4.4,cz); }
+    }
+
+    /* per-floor plate lines — a light loop every storey so facades read as stacked floors */
+    var floorMat=new THREE.LineBasicMaterial({color:0xaebadf,transparent:true,opacity:0.16});
+    function floorLines(cx,cz,w,d,h,baseY){ baseY=baseY||0;
+      if(Math.abs(cx)>150) return;                     // far field: fog eats the detail anyway
+      var pts=[], hw=w/2+0.06, hd=d/2+0.06;
+      for(var y=baseY+2.4; y<baseY+h-0.8; y+=2.4){
+        pts.push(cx-hw,y,cz-hd, cx+hw,y,cz-hd,  cx+hw,y,cz-hd, cx+hw,y,cz+hd,
+                 cx+hw,y,cz+hd, cx-hw,y,cz+hd,  cx-hw,y,cz+hd, cx-hw,y,cz-hd);
+      }
+      if(!pts.length) return;
+      var g=new THREE.BufferGeometry(); g.setAttribute("position",new THREE.Float32BufferAttribute(pts,3));
+      scene.add(new THREE.LineSegments(g,floorMat));
+    }
+
+    /* full-perimeter roofline light ring */
+    function ringNeon(cx,cz,w,d,y){ var c=NEON[(Math.random()*NEON.length)|0];
+      var per=Math.max(3,Math.round(w/1.6));
+      for(var i=0;i<per;i++){ var xx=cx-w/2+(i+0.5)*(w/per);
+        neonPos.push(xx,y,cz-d/2-0.05, xx,y,cz+d/2+0.05); neonCol.push(c[0],c[1],c[2],c[0],c[1],c[2]); }
+      var perD=Math.max(3,Math.round(d/1.6));
+      for(var j=0;j<perD;j++){ var zz=cz-d/2+(j+0.5)*(d/perD);
+        neonPos.push(cx-w/2-0.05,y,zz, cx+w/2+0.05,y,zz); neonCol.push(c[0],c[1],c[2],c[0],c[1],c[2]); }
+    }
+    /* crown: distinct rooftop cap block ringed with light — base/shaft/crown composition */
+    function crown(cx,cz,w,d,topY){
+      var cw=w*0.68, cd=d*0.68, ch=2.2+Math.random()*2.2;
+      plainBox(cx,cz,cw,cd,ch,topY,pickFace());
+      parapet(cx,cz,cw,cd,topY+ch);
+      ringNeon(cx,cz,cw,cd,topY+ch*0.85);
+      if(Math.random()<0.5) plainBox(cx,cz,0.26,0.26,3+Math.random()*3,topY+ch,darkMat);
+    }
+
     function addBuilding(cx,cz,w,d,h,stageIndex){
       if(stageIndex>=0){
-        if(stageIndex%2===0){ var bH=h*0.72; boxAt(cx,cz,w,d,bH,0,true); gridWin(cx,cz,w,d,bH,0); coneAt(cx,cz,Math.max(w,d)*0.62,h-bH,bH,4,true); }
+        if(stageIndex%2===0){ var bH=h*0.72; boxAt(cx,cz,w,d,bH,0,true); gridWin(cx,cz,w,d,bH,0); floorLines(cx,cz,w,d,bH,0); coneAt(cx,cz,Math.max(w,d)*0.62,h-bH,bH,4,true); }
         else { latticeTower(cx,cz,w*1.1,h,true); }
         stageTowers.push({top:new THREE.Vector3(cx,h*0.6,cz), i:stageIndex}); beacons.push(cx,h+8,cz); return;
       }
-      var r=Math.random();
-      if(r<0.55){ boxAt(cx,cz,w,d,h,0,false); gridWin(cx,cz,w,d,h,0); }
-      else if(r<0.68){ var steps=2+((Math.random()*2)|0), yb=0, cw=w, cd=d, seg=h/(steps+0.6);
-        for(var i=0;i<steps;i++){ var sh=seg*(1+(steps-1-i)*0.15); boxAt(cx,cz,cw,cd,sh,yb,false); gridWin(cx,cz,cw,cd,sh,yb); yb+=sh; cw*=0.7; cd*=0.7; } }
-      else if(r<0.78){ var bH2=h*0.78; boxAt(cx,cz,w,d,bH2,0,false); gridWin(cx,cz,w,d,bH2,0); coneAt(cx,cz,Math.max(w,d)*0.6,h-bH2,bH2,4,false); }
-      else if(r<0.86){ cylAt(cx,cz,w*0.3,w*0.5,h,0,4,false); ringWin(cx,cz,w*0.42,h,0); }
-      else if(r<0.94){ cylAt(cx,cz,w*0.5,w*0.5,h,0,14,false); ringWin(cx,cz,w*0.5,h,0); }
-      else if(r<0.985){ var bh=h*0.85; boxAt(cx,cz,w*0.7,d*0.7,bh,0,false); gridWin(cx,cz,w*0.7,d*0.7,bh,0); coneAt(cx,cz,0.5,h-bh,bh,4,false); beacons.push(cx,h+1,cz); }
+      var r=Math.random(), detail=Math.abs(cx)<95;   // full trim near the flight lane, lean massing far out
+      if(r<0.30){ // tripartite slab — wider base, windowed shaft, crowned cap block
+        var bh2=2.4+Math.random()*1.8;
+        boxAt(cx,cz,w*1.18,d*1.18,bh2,0,false); parapet(cx,cz,w*1.18,d*1.18,bh2);
+        boxAt(cx,cz,w,d,h-bh2,bh2,false); gridWin(cx,cz,w,d,h-bh2,bh2); floorLines(cx,cz,w,d,h-bh2,bh2); parapet(cx,cz,w,d,h);
+        if(detail) crown(cx,cz,w,d,h);
+        else if(Math.random()<0.3) roofNeon(cx,cz,w,d,h);
+      }
+      else if(r<0.48){ // ribbed tower — vertical fin curtain wall
+        boxAt(cx,cz,w,d,h,0,false); gridWin(cx,cz,w,d,h,0); floorLines(cx,cz,w,d,h,0); parapet(cx,cz,w,d,h);
+        var fins=3+((Math.random()*3)|0);
+        for(var fi2=1; fi2<=fins; fi2++){
+          plainBox(cx-w/2+fi2*(w/(fins+1)), cz, 0.5, d+0.34, h*0.94, 0, pickFace());
+        }
+        if(detail) crown(cx,cz,w,d,h);
+      }
+      else if(r<0.64){ // set-back tower — classic three-tier art-deco massing
+        var t1=h*0.46, t2=h*0.32, t3=h*0.22, w2=w*0.76, d2=d*0.76, w3=w*0.55, d3=d*0.55;
+        boxAt(cx,cz,w,d,t1,0,false);        gridWin(cx,cz,w,d,t1,0);        floorLines(cx,cz,w,d,t1,0);        parapet(cx,cz,w,d,t1);
+        boxAt(cx,cz,w2,d2,t2,t1,false);     gridWin(cx,cz,w2,d2,t2,t1);     floorLines(cx,cz,w2,d2,t2,t1);     parapet(cx,cz,w2,d2,t1+t2);
+        boxAt(cx,cz,w3,d3,t3,t1+t2,false);  gridWin(cx,cz,w3,d3,t3,t1+t2);  floorLines(cx,cz,w3,d3,t3,t1+t2);  parapet(cx,cz,w3,d3,h);
+        if(detail) roofKit(cx,cz,w3,d3,h,h>40);
+        if(Math.random()<0.3) roofNeon(cx,cz,w3,d3,h);
+      }
+      else if(r<0.78){ // podium + tower: wide base, clean shaft
+        var ph=2.2+Math.random()*2.2, tw=w*0.8, td=d*0.8;
+        boxAt(cx,cz,w*1.25,d*1.25,ph,0,false); parapet(cx,cz,w*1.25,d*1.25,ph);
+        boxAt(cx,cz,tw,td,h-ph,ph,false); gridWin(cx,cz,tw,td,h-ph,ph); floorLines(cx,cz,tw,td,h-ph,ph); parapet(cx,cz,tw,td,h);
+        if(detail){ pilasters(cx,cz,tw,td,h-ph,ph); roofKit(cx,cz,tw,td,h,h>40); }
+        if(Math.random()<0.34) roofNeon(cx,cz,tw,td,h);
+      }
+      else if(r<0.90){ // L-shaped complex: main tower + lower wing with its own roof
+        var wh=h*(0.38+Math.random()*0.2), off=(Math.random()<0.5?-1:1);
+        boxAt(cx,cz,w*0.72,d,h,0,false); gridWin(cx,cz,w*0.72,d,h,0); floorLines(cx,cz,w*0.72,d,h,0); parapet(cx,cz,w*0.72,d,h);
+        boxAt(cx+off*w*0.62,cz,w*0.62,d*0.8,wh,0,false); gridWin(cx+off*w*0.62,cz,w*0.62,d*0.8,wh,0); floorLines(cx+off*w*0.62,cz,w*0.62,d*0.8,wh,0); parapet(cx+off*w*0.62,cz,w*0.62,d*0.8,wh);
+        if(detail){ roofKit(cx+off*w*0.62,cz,w*0.62,d*0.8,wh,false); if(h>34) roofKit(cx,cz,w*0.72,d,h,true); }
+        if(Math.random()<0.26) roofNeon(cx,cz,w*0.72,d,h);
+      }
+      else if(r<0.97){ // chamfered octagonal prism with crowned cap
+        cylAt(cx,cz,w*0.55,w*0.55,h,0,8,false); ringWin(cx,cz,w*0.55,h,0);
+        var cap=new THREE.Mesh(tankGeo,darkMat); cap.scale.set(w*0.62,0.5,w*0.62); cap.position.set(cx,h+0.25,cz); scene.add(cap);
+        if(detail) crown(cx,cz,w*0.66,w*0.66,h+0.5);
+      }
       else { latticeTower(cx,cz,w,h*1.2,false); }
     }
 
-    // dense canyon of varied structures; inner faces held clear of the camera lane
-    for(var z=320; z>-430; z-=12){
+    // sparse canyon — fewer, larger structures with clear air between them
+    for(var z=320; z>-430; z-=18){
       for(var side=-1; side<=1; side+=2){
-        for(var b=0;b<4;b++){
-          var w=4.5+Math.random()*7.5, d=4.5+Math.random()*7.5;
-          var x=side*(9 + w/2 + Math.pow(Math.random(),1.35)*200);
-          var h=8+Math.pow(Math.random(),1.9)*58;
-          addBuilding(x, z+(Math.random()-.5)*8, w, d, h, -1);
+        for(var b=0;b<2;b++){
+          var w=6.5+Math.random()*8.5, d=6.5+Math.random()*8.5;
+          var x=side*(10 + w/2 + Math.pow(Math.random(),1.35)*150);
+          var h=9+Math.pow(Math.random(),1.9)*58;
+          addBuilding(x, z+(Math.random()-.5)*9, w, d, h, -1);
         }
       }
     }
@@ -903,7 +1178,7 @@
       var fm=new THREE.Mesh(box,farMat); fm.position.set(fx,0,fz); fm.scale.set(fw,fh,fw); scene.add(fm);
     }
     // lateral shadow fill — dark building masses along both flanks so the frame edges never read empty
-    for(var li=0; li<300; li++){
+    for(var li=0; li<180; li++){
       var lz=300 - Math.random()*740;                          // spans the whole travelled corridor
       var lside=Math.random()<0.5?-1:1;
       var lx=lside*(190 + Math.pow(Math.random(),0.75)*250);   // 190..440 out, beyond the lit canyon
@@ -916,11 +1191,17 @@
 
     function mkPoints(arr,color,size,op){ var g=new THREE.BufferGeometry();
       g.setAttribute("position",new THREE.Float32BufferAttribute(arr,3));
-      var m=new THREE.PointsMaterial({color:color,size:size,sizeAttenuation:true,transparent:true,opacity:op,depthWrite:false});
+      var m=new THREE.PointsMaterial({color:color,size:size,sizeAttenuation:true,transparent:true,opacity:op,depthWrite:false,blending:THREE.AdditiveBlending});
       scene.add(new THREE.Points(g,m)); return m; }
-    winWarmMat=mkPoints(warm,0xffcf87,0.85,0.9);
-    winCoolMat=mkPoints(cool,0x8fb8ff,0.75,0.75);
-    beaconMat=mkPoints(beacons,0xff5d6e,1.7,0.9);
+    function mkPointsVC(pos,col,size,op){ var g=new THREE.BufferGeometry();
+      g.setAttribute("position",new THREE.Float32BufferAttribute(pos,3));
+      g.setAttribute("color",new THREE.Float32BufferAttribute(col,3));
+      var m=new THREE.PointsMaterial({size:size,sizeAttenuation:true,vertexColors:true,transparent:true,opacity:op,depthWrite:false,blending:THREE.AdditiveBlending});
+      scene.add(new THREE.Points(g,m)); return m; }
+    winWarmMat=mkPoints(warm,0xffd79a,0.98,0.85);
+    winCoolMat=mkPoints(cool,0x9fc2ff,0.86,0.72);
+    beaconMat=mkPoints(beacons,0xff5d6e,1.9,0.95);
+    if(neonPos.length) mkPointsVC(neonPos,neonCol,2.4,0.95);
 
     // ---- dense starfield dome (follows the camera so stars read as infinitely far) ----
     var starPos=[], starCol=[];
