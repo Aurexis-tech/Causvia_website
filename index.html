@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aurexis — Autopilot Flight</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 110'%3E%3Cpolygon points='50,4 95,29.5 95,80.5 50,106 5,80.5 5,29.5' fill='%230b0d15' stroke='%23e6293c' stroke-width='8'/%3E%3Ctext x='50' y='73' text-anchor='middle' font-family='Arial Black,Arial,sans-serif' font-size='52' font-weight='900' fill='%23ffffff'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -162,9 +163,8 @@
     width:36%;padding:11px 0 13px;border-radius:8px;display:grid;place-items:center;
     background:linear-gradient(180deg,#0e1526,#090e1a);
     box-shadow:inset 0 1px 0 rgba(216,229,255,.2),inset 0 0 18px rgba(0,0,0,.6)}
-  .console .badge{display:block;transform:rotate(45deg);width:22px;height:22px;
-    background:linear-gradient(135deg,var(--gold2),var(--gold));
-    box-shadow:0 0 20px rgba(231,185,77,.8)}
+  .console .badge{display:block;width:30px;height:33px;
+    filter:drop-shadow(0 0 10px rgba(230,41,60,.55))}
   .console .ind{position:absolute;left:50%;bottom:3.4%;transform:translateX(-50%);
     width:26%;height:3px;border-radius:2px;opacity:.85;
     background:linear-gradient(90deg,var(--gold) 0 32%,#e6293c 32% 56%,#2a3352 56% 100%)}
@@ -263,8 +263,8 @@
   .nav a:hover{opacity:1;color:var(--gold)}
   .nav .brand{font-family:"Anton",sans-serif;font-weight:400;font-size:1.15rem;letter-spacing:.18em;
     color:var(--ink);text-transform:uppercase;display:inline-flex;align-items:center;gap:9px;padding:0 4px}
-  .nav .brand::before{content:"";width:12px;height:12px;background:linear-gradient(135deg,var(--gold2),var(--gold));
-    transform:rotate(45deg);box-shadow:0 0 10px rgba(231,185,77,.6)}
+  .nav .brand .brandmark{width:28px;height:31px;flex:0 0 auto;
+    filter:drop-shadow(0 0 9px rgba(230,41,60,.45))}
   .nav .snd{position:absolute;left:26px;color:var(--muted);letter-spacing:.26em;font-size:.72rem;
     background:none;border:0;cursor:pointer;pointer-events:auto;font-family:inherit}
   .nav .demo{position:absolute;right:16px;top:50%;transform:translateY(-50%);display:flex;align-items:center;
@@ -370,8 +370,8 @@
     background:linear-gradient(180deg,transparent,var(--gold));box-shadow:0 0 8px rgba(231,185,77,.55)}
   .boot .bt-drop::after{content:"";position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);
     width:5px;height:5px;background:var(--gold);border-radius:50%;box-shadow:0 0 10px var(--gold)}
-  .boot .bt-mark{width:19px;height:19px;transform:rotate(45deg);margin-bottom:36px;
-    background:linear-gradient(135deg,var(--gold2),var(--gold));box-shadow:0 0 20px rgba(231,185,77,.85)}
+  .boot .bt-mark{width:78px;height:86px;margin-bottom:30px;
+    filter:drop-shadow(0 0 24px rgba(230,41,60,.5))}
   .boot .bt-title{font-family:var(--disp);font-weight:400;text-transform:uppercase;text-align:center;
     font-size:clamp(2.4rem,7.5vw,5.4rem);line-height:.95;letter-spacing:.02em;color:var(--gold);
     text-shadow:0 0 14px rgba(231,185,77,.9),0 0 46px rgba(231,185,77,.55),0 0 110px rgba(231,185,77,.3);
@@ -544,6 +544,30 @@
 </style>
 </head>
 <body>
+  <!-- Aurexis mark: hex badge, chrome sash, red segmented ring, glowing A -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <linearGradient id="lgChrome" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#f4f7fc"/><stop offset=".45" stop-color="#b9c2d4"/>
+        <stop offset=".55" stop-color="#8c96ab"/><stop offset="1" stop-color="#e8edf6"/>
+      </linearGradient>
+      <linearGradient id="lgRed" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ff5a67"/><stop offset="1" stop-color="#c11f31"/>
+      </linearGradient>
+      <radialGradient id="rgCore" cx=".5" cy=".45" r=".65">
+        <stop offset="0" stop-color="#3a0a12"/><stop offset="1" stop-color="#0b0d15"/>
+      </radialGradient>
+      <clipPath id="hexClip"><polygon points="50,8 91.5,31.5 91.5,78.5 50,102 8.5,78.5 8.5,31.5"/></clipPath>
+      <symbol id="aurexisMark" viewBox="0 0 100 110">
+        <polygon points="50,4 95,29.5 95,80.5 50,106 5,80.5 5,29.5" fill="none" stroke="url(#lgChrome)" stroke-width="5"/>
+        <g clip-path="url(#hexClip)"><rect x="-30" y="47" width="160" height="9" fill="url(#lgChrome)" transform="rotate(-24 50 55)"/></g>
+        <polygon points="50,15 85,35 85,75 50,95 15,75 15,35" fill="none" stroke="url(#lgRed)" stroke-width="4" stroke-dasharray="15 8" stroke-linecap="round"/>
+        <polygon points="50,24 77,39.5 77,70.5 50,86 23,70.5 23,39.5" fill="url(#rgCore)" stroke="url(#lgChrome)" stroke-width="3.5"/>
+        <text x="50" y="69" text-anchor="middle" font-family="Anton, Arial Black, sans-serif" font-size="38" fill="url(#lgRed)" style="filter:drop-shadow(0 0 5px rgba(255,40,60,.9))">A</text>
+      </symbol>
+    </defs>
+  </svg>
+
   <div id="runway"></div>
 
   <!-- ============ post-flight sections ============ -->
@@ -660,7 +684,7 @@
       <div class="console">
         <span class="cap l" aria-hidden="true"></span><span class="cap r" aria-hidden="true"></span>
         <span class="col l" aria-hidden="true"></span><span class="col r" aria-hidden="true"></span>
-        <span class="plate" aria-hidden="true"><span class="badge"></span></span>
+        <span class="plate" aria-hidden="true"><svg class="badge" viewBox="0 0 100 110"><use href="#aurexisMark"/></svg></span>
         <span class="rib r1"></span><span class="rib r2"></span>
         <div class="scrollmod"><div class="arw">↕</div><div class="lbl">Scroll Down</div></div>
         <span class="ind" aria-hidden="true"></span>
@@ -688,7 +712,7 @@
   <nav class="nav">
     <button class="snd" id="snd">‖‖ Sound: Off</button>
     <a href="#" id="aboutBtn">About</a>
-    <span class="brand">Aurexis</span>
+    <span class="brand"><svg class="brandmark" viewBox="0 0 100 110" aria-hidden="true"><use href="#aurexisMark"/></svg>Aurexis</span>
     <div class="feat" id="featWrap">
       <button class="feat-btn" id="featBtn" aria-haspopup="true" aria-expanded="false">Features<svg class="cx" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="feat-menu" id="featMenu" role="menu" aria-label="The seven stages"></div>
@@ -715,7 +739,7 @@
   <!-- boot loader -->
   <div class="boot" id="boot" role="status" aria-label="Aurexis is initializing">
     <span class="bt-drop" aria-hidden="true"></span>
-    <span class="bt-mark" aria-hidden="true"></span>
+    <svg class="bt-mark" viewBox="0 0 100 110" aria-hidden="true"><use href="#aurexisMark"/></svg>
     <h2 class="bt-title" aria-hidden="true">Aurexis is<br>Initializing</h2>
     <div class="bt-barwrap" aria-hidden="true">
       <span class="bt-cap"><i></i></span>
@@ -757,8 +781,7 @@
       padding:15px 22px;border-bottom:1px solid rgba(231,185,77,.28);background:rgba(0,0,0,.4)}
     .xpl-brand{font-family:"Anton",sans-serif;letter-spacing:.16em;text-transform:uppercase;
       font-size:1.02rem;display:inline-flex;align-items:center;gap:11px}
-    .xpl-brand::before{content:"";width:12px;height:12px;transform:rotate(45deg);
-      background:linear-gradient(135deg,var(--gold2),var(--gold));box-shadow:0 0 10px rgba(231,185,77,.6)}
+    .xpl-brand svg{width:22px;height:24px;filter:drop-shadow(0 0 7px rgba(230,41,60,.45))}
     .xpl-close{font-family:inherit;font-size:.76rem;color:var(--gold);letter-spacing:.06em;
       background:rgba(231,185,77,.14);border:1px solid rgba(231,185,77,.45);padding:9px 16px;
       border-radius:9px;cursor:pointer;transition:background .2s}
@@ -827,8 +850,7 @@
       padding:15px 22px;border-bottom:1px solid rgba(231,185,77,.28);background:rgba(0,0,0,.4)}
     .abt-brand{font-family:var(--disp);letter-spacing:.16em;text-transform:uppercase;font-size:1.02rem;
       display:inline-flex;align-items:center;gap:11px}
-    .abt-brand::before{content:"";width:12px;height:12px;transform:rotate(45deg);
-      background:linear-gradient(135deg,var(--gold2),var(--gold));box-shadow:0 0 10px rgba(231,185,77,.6)}
+    .abt-brand svg{width:22px;height:24px;filter:drop-shadow(0 0 7px rgba(230,41,60,.45))}
     .abt-close{font-family:var(--mono);font-size:.76rem;color:var(--gold);letter-spacing:.06em;
       background:rgba(231,185,77,.14);border:1px solid rgba(231,185,77,.45);padding:9px 16px;border-radius:9px;
       cursor:pointer;transition:background .2s}
@@ -877,7 +899,7 @@
   <!-- stage explorer: the full 7-stage + Deploy-gate feature breakdown -->
   <div class="xpl" id="xpl" aria-hidden="true" role="dialog" aria-modal="true" aria-label="The Aurexis run — stage explorer">
     <div class="xpl-bar">
-      <span class="xpl-brand">Aurexis &middot; The Run</span>
+      <span class="xpl-brand"><svg viewBox="0 0 100 110" aria-hidden="true"><use href="#aurexisMark"/></svg>Aurexis &middot; The Run</span>
       <button class="xpl-close" id="xplClose">&#10005; Close</button>
     </div>
     <div class="xpl-body">
@@ -890,7 +912,7 @@
   <!-- About overlay: mission + philosophy -->
   <div class="abt" id="abt" aria-hidden="true" role="dialog" aria-modal="true" aria-label="About Aurexis">
     <div class="abt-bar">
-      <span class="abt-brand">Aurexis &middot; About</span>
+      <span class="abt-brand"><svg viewBox="0 0 100 110" aria-hidden="true"><use href="#aurexisMark"/></svg>Aurexis &middot; About</span>
       <button class="abt-close" id="abtClose">&#10005; Close</button>
     </div>
     <div class="abt-scroll">
