@@ -552,6 +552,35 @@
   .orbit-diagram .ochip:hover .oln{stroke:#ff5765;filter:drop-shadow(0 0 7px rgba(255,60,80,.85))}
   @media (max-width:980px){ .wired-grid{grid-template-columns:1fr;gap:4.5rem} }
 
+  /* ---- claim band: angled divider with the bold headline ---- */
+  .sec-claim{background:
+    repeating-linear-gradient(0deg,transparent 0 46px,rgba(150,175,255,.028) 46px 47px),
+    repeating-linear-gradient(90deg,transparent 0 46px,rgba(150,175,255,.028) 46px 47px),
+    linear-gradient(180deg,#04060a,#05070c);overflow:hidden}
+  .claim-top{height:108px;background:linear-gradient(180deg,#16181e,#0c0e13);
+    clip-path:polygon(0 0,100% 0,100% 100%,71% 100%,63% 32%,37% 32%,29% 100%,0 100%);
+    filter:drop-shadow(0 2px 0 rgba(216,229,255,.14))}
+  .claim-inner{position:relative;z-index:1;text-align:center;padding:3.5rem 5vw 0;
+    display:flex;flex-direction:column;align-items:center;margin-bottom:-92px}
+  .claim-a{font-family:var(--disp);text-transform:uppercase;letter-spacing:.04em;
+    font-size:clamp(1.2rem,2.6vw,2.1rem);color:rgba(233,238,248,.5)}
+  .claim-b{font-family:var(--disp);font-weight:400;text-transform:uppercase;line-height:.95;margin-top:10px;
+    font-size:clamp(2.2rem,5.6vw,4.8rem);color:#ff2036;
+    text-shadow:0 0 14px rgba(255,32,54,.9),0 0 48px rgba(255,32,54,.5),0 0 110px rgba(255,32,54,.3)}
+  .claim-drop{position:relative;width:2px;height:72px;margin-top:26px;
+    background:linear-gradient(180deg,transparent,#e6293c);box-shadow:0 0 8px rgba(230,41,60,.5)}
+  .claim-drop::after{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);
+    border:5px solid transparent;border-top-color:#e6293c}
+  .claim-mark{width:46px;height:50px;margin-top:16px;filter:drop-shadow(0 0 16px rgba(120,10,20,.9))}
+  .claim-bot{height:150px;background:linear-gradient(180deg,#e6293c 0%,#b31a2a 55%,#7d0f1b 100%);
+    clip-path:polygon(0 100%,0 58%,29% 58%,37% 0,63% 0,71% 58%,100% 58%,100% 100%);
+    filter:drop-shadow(0 -1.5px 0 rgba(255,120,130,.55))}
+  @media (max-width:700px){
+    .claim-top{height:64px}.claim-bot{height:110px}
+    .claim-inner{margin-bottom:-70px}
+    .claim-drop{height:48px}
+  }
+
   /* ---- finale + footer ---- */
   .sec-launch{background:linear-gradient(180deg,#050203 0%,#180509 30%,#3f0a11 62%,#62101a 100%)}
   .launch-grid{position:absolute;inset:0;pointer-events:none;opacity:.35;
@@ -803,6 +832,18 @@
         <div class="titem sv" style="transition-delay:.24s"><span class="tnum">03</span>
           <div><h3>Deploy is gated</h3><p>Going live is earned. If the audit doesn't clear the bar, the run halts and reports it plainly — a halt is a result, never a failure to hide.</p></div></div>
       </div>
+    </section>
+
+    <!-- claim band -->
+    <section class="sec sec-claim">
+      <div class="claim-top" aria-hidden="true"></div>
+      <div class="claim-inner sv">
+        <p class="claim-a">Most AI gives answers.</p>
+        <h2 class="claim-b">Aurexis creates reality.</h2>
+        <span class="claim-drop" aria-hidden="true"></span>
+        <svg class="claim-mark" viewBox="0 0 100 110" aria-hidden="true"><use href="#aurexisMark"/></svg>
+      </div>
+      <div class="claim-bot" aria-hidden="true"></div>
     </section>
 
     <!-- finale + footer -->
