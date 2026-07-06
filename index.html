@@ -375,7 +375,9 @@
   .boot .bt-title{font-family:var(--disp);font-weight:400;text-transform:uppercase;text-align:center;
     font-size:clamp(2.4rem,7.5vw,5.4rem);line-height:.95;letter-spacing:.02em;color:var(--gold);
     text-shadow:0 0 14px rgba(231,185,77,.9),0 0 46px rgba(231,185,77,.55),0 0 110px rgba(231,185,77,.3);
-    margin-bottom:46px}
+    margin-bottom:18px}
+  .boot .bt-since{font-family:var(--mono);font-size:.78rem;letter-spacing:.52em;padding-left:.52em;
+    text-transform:uppercase;color:#ff4653;text-shadow:0 0 12px rgba(255,60,80,.65);margin-bottom:40px}
   .boot .bt-barwrap{display:flex;align-items:center;gap:14px;margin-bottom:6px}
   .boot .bt-cap{width:14px;height:34px;position:relative;flex:0 0 auto}
   .boot .bt-cap::before,.boot .bt-cap::after{content:"";position:absolute;left:0;right:0;height:2px;
@@ -514,6 +516,8 @@
   .fb-track i{position:absolute;right:2px;top:2px;bottom:2px;width:34%;
     background:repeating-linear-gradient(90deg,#ff3547 0 10px,transparent 10px 14px)}
   .fb-tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#ff6d7c}
+  .fb-since{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+    color:rgba(255,255,255,.82);border-left:1px solid rgba(255,120,130,.5);padding-left:18px}
   .fb-legal{margin-left:auto;display:flex;gap:18px}
   .fb-legal a{font-family:var(--sans);font-weight:700;font-size:.92rem;color:#fff;text-decoration:underline;text-underline-offset:4px}
 
@@ -649,6 +653,7 @@
         <div class="ft-bar sv">
           <span class="fb-track" aria-hidden="true"><i></i></span>
           <span class="fb-tag">Nothing is simulated</span>
+          <span class="fb-since">Since 2026</span>
           <span class="fb-legal"><a href="#">Privacy</a><a href="#">Terms</a></span>
         </div>
       </footer>
@@ -741,6 +746,7 @@
     <span class="bt-drop" aria-hidden="true"></span>
     <svg class="bt-mark" viewBox="0 0 100 110" aria-hidden="true"><use href="#aurexisMark"/></svg>
     <h2 class="bt-title" aria-hidden="true">Aurexis is<br>Initializing</h2>
+    <span class="bt-since" aria-hidden="true">Since 2026</span>
     <div class="bt-barwrap" aria-hidden="true">
       <span class="bt-cap"><i></i></span>
       <div class="bt-barbox">
