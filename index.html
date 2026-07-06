@@ -493,6 +493,65 @@
   .titem h3{font-family:var(--sans);font-weight:600;font-size:1.5rem;color:#f2f4fa;margin-bottom:12px}
   .titem p{font-family:var(--sans);font-size:.98rem;line-height:1.65;color:#aab0be}
 
+  /* ---- wired: sources hub + integration orbit (reference-matched) ---- */
+  .sec-wired{background:
+    radial-gradient(120% 75% at 50% 26%,rgba(230,41,60,.05),transparent 62%),
+    repeating-linear-gradient(0deg,transparent 0 44px,rgba(150,175,255,.024) 44px 45px),
+    repeating-linear-gradient(90deg,transparent 0 44px,rgba(150,175,255,.024) 44px 45px),
+    linear-gradient(180deg,#050608,#070709);
+    padding:6rem 5vw 8rem}
+  .wired-cap{max-width:560px;height:30px;margin:0 auto 3rem;
+    border:1.4px solid rgba(190,205,230,.22);border-bottom:0;border-radius:2px 2px 0 0}
+  .wired-grid{max-width:1560px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:start}
+  .wcol{text-align:left}
+  .wcol h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;line-height:.9;letter-spacing:.01em;
+    font-size:clamp(2.1rem,4.1vw,4rem);color:#f6f7fb;
+    text-shadow:0 0 10px rgba(255,255,255,.5),0 0 34px rgba(210,222,255,.4),0 0 82px rgba(150,175,255,.22)}
+  .wcol .wsub{font-family:var(--sans);font-size:1.02rem;line-height:1.6;color:#9aa1b0;max-width:44ch;margin:15px 0 0}
+  .hub-diagram,.orbit-diagram{width:100%;max-width:660px;height:auto;margin:2.2rem auto 0;display:block;overflow:visible}
+
+  /* source tiles */
+  .hub-diagram .tile{fill:url(#tileG);stroke:rgba(255,255,255,.08);stroke-width:1.2;
+    filter:drop-shadow(0 14px 22px rgba(0,0,0,.55))}
+  .hub-diagram .ic{fill:#c2c9d6}
+  .hub-diagram .tileg{cursor:pointer}
+  .hub-diagram .tile,.hub-diagram .ic{transition:stroke .28s ease,fill .28s ease,filter .28s ease}
+  .hub-diagram .tileg:hover .tile{stroke:rgba(255,74,92,.7)}
+  .hub-diagram .tileg:hover .ic{fill:#ff5765;filter:drop-shadow(0 0 7px rgba(255,60,80,.85))}
+
+  /* ribbon wires (red + steel bundles, PCB bends) */
+  .hub-diagram .wg{fill:none;stroke:rgba(200,212,234,.36);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .hub-diagram .wr{fill:none;stroke:#e6293c;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+    filter:drop-shadow(0 0 4px rgba(230,41,60,.5))}
+  .hub-diagram .flow{fill:none;stroke:#ff6472;stroke-width:2.4;stroke-linecap:round;
+    stroke-dasharray:1 24;animation:wireflow 2.6s linear infinite;filter:drop-shadow(0 0 6px rgba(255,80,100,.9))}
+  @keyframes wireflow{to{stroke-dashoffset:-150}}
+
+  /* diamond core */
+  .hub-diagram .dmn{fill:url(#hubRed);stroke:rgba(255,150,158,.9);stroke-width:2;
+    filter:drop-shadow(0 0 30px rgba(238,35,56,.5)) drop-shadow(0 10px 26px rgba(0,0,0,.55))}
+  .hub-diagram .dmn-in{fill:none;stroke:rgba(255,185,192,.3);stroke-width:1.4}
+  .brandglyph{fill:#fff;filter:drop-shadow(0 1px 2px rgba(90,0,8,.5))}
+
+  /* integration orbit — layered filled hexagons */
+  .orbit-diagram .h1{fill:#0d0e12;stroke:rgba(255,255,255,.05);stroke-width:1}
+  .orbit-diagram .h2{fill:#141519;stroke:rgba(255,255,255,.04);stroke-width:1}
+  .orbit-diagram .hred{fill:url(#hubRed);filter:drop-shadow(0 0 36px rgba(238,35,56,.45))}
+  .orbit-diagram .hhole{fill:#17181e;stroke:rgba(255,90,100,.13);stroke-width:1}
+  .orbit-diagram .ocore{fill:url(#hubRed);filter:drop-shadow(0 0 16px rgba(238,35,56,.75))}
+
+  /* app chips */
+  .orbit-diagram .ochip{cursor:pointer}
+  .orbit-diagram .ochip>circle{fill:url(#chipG);stroke:rgba(255,255,255,.1);stroke-width:1.2;
+    filter:drop-shadow(0 10px 18px rgba(0,0,0,.5))}
+  .orbit-diagram .oic{fill:#d2d7e0}
+  .orbit-diagram .oln{fill:none;stroke:#d2d7e0;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .orbit-diagram .ochip>circle,.orbit-diagram .oic,.orbit-diagram .oln{transition:stroke .28s ease,fill .28s ease,filter .28s ease}
+  .orbit-diagram .ochip:hover>circle{stroke:rgba(255,74,92,.75)}
+  .orbit-diagram .ochip:hover .oic{fill:#ff5765;filter:drop-shadow(0 0 7px rgba(255,60,80,.85))}
+  .orbit-diagram .ochip:hover .oln{stroke:#ff5765;filter:drop-shadow(0 0 7px rgba(255,60,80,.85))}
+  @media (max-width:980px){ .wired-grid{grid-template-columns:1fr;gap:4.5rem} }
+
   /* ---- finale + footer ---- */
   .sec-launch{background:linear-gradient(180deg,#050203 0%,#180509 30%,#3f0a11 62%,#62101a 100%)}
   .launch-grid{position:absolute;inset:0;pointer-events:none;opacity:.35;
@@ -574,7 +633,7 @@
     .fcol.join{grid-column:1/-1}
     .ft .wm{font-size:34vw}
   }
-  @media (prefers-reduced-motion:reduce){ .scrollmod .arw,.sweep,.strut .glow,.strut .glow2,.canopy-top::before,.web .blip,.rlines i,#sky::after{animation:none}
+  @media (prefers-reduced-motion:reduce){ .scrollmod .arw,.sweep,.strut .glow,.strut .glow2,.canopy-top::before,.web .blip,.rlines i,#sky::after,.hub-diagram .flow{animation:none}
     .sv{opacity:1;transform:none;transition:none}
     .ring{animation-duration:22s} }  /* ring keeps turning (site-defining motion), just gentler */
 </style>
@@ -593,6 +652,18 @@
       <radialGradient id="rgCore" cx=".5" cy=".45" r=".65">
         <stop offset="0" stop-color="#3a0a12"/><stop offset="1" stop-color="#0b0d15"/>
       </radialGradient>
+      <linearGradient id="hubRed" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ff4353"/><stop offset=".55" stop-color="#d81f33"/><stop offset="1" stop-color="#8f1220"/>
+      </linearGradient>
+      <radialGradient id="bloomRed" cx=".5" cy=".5" r=".5">
+        <stop offset="0" stop-color="rgba(238,35,56,.5)"/><stop offset=".6" stop-color="rgba(238,35,56,.16)"/><stop offset="1" stop-color="rgba(238,35,56,0)"/>
+      </radialGradient>
+      <linearGradient id="tileG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#20232b"/><stop offset="1" stop-color="#0d0f14"/>
+      </linearGradient>
+      <linearGradient id="chipG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#1c1e26"/><stop offset="1" stop-color="#0f1116"/>
+      </linearGradient>
       <clipPath id="hexClip"><polygon points="50,8 91.5,31.5 91.5,78.5 50,102 8.5,78.5 8.5,31.5"/></clipPath>
       <symbol id="aurexisMark" viewBox="0 0 100 110">
         <polygon points="50,4 95,29.5 95,80.5 50,106 5,80.5 5,29.5" fill="none" stroke="url(#lgChrome)" stroke-width="5"/>
@@ -608,6 +679,97 @@
 
   <!-- ============ post-flight sections ============ -->
   <main class="after" id="after">
+
+    <!-- every number has a source + works with your stack: live-source hub & tool orbit -->
+    <section class="sec sec-wired" id="sec-wired">
+      <div class="wired-cap sv" aria-hidden="true"></div>
+      <div class="wired-grid">
+
+        <!-- (a) every number has a source — live-source hub -->
+        <div class="wcol sv">
+          <h2>Every number has a source</h2>
+          <p class="wsub">Most tools simulate — Aurexis sources. Live APIs, security scanners, reachability probes and real telemetry wire straight into the engine, and every figure in your run traces back to a fetch.</p>
+          <svg class="hub-diagram" viewBox="0 0 680 520" role="img" aria-label="Live sources wired into the Aurexis engine">
+            <g>
+              <path class="wg" d="M146 122.5 H235 L330 217.5"/>
+              <path class="wr" d="M146 127.5 H235 L330 222.5"/>
+              <path class="wr" d="M146 132.5 H235 L330 227.5"/>
+              <path class="wg" d="M146 137.5 H235 L330 232.5"/>
+              <path class="wr" d="M146 252.5 H340"/>
+              <path class="wr" d="M146 257.5 H340"/>
+              <path class="wr" d="M146 262.5 H340"/>
+              <path class="wg" d="M146 267.5 H340"/>
+              <path class="wg" d="M146 382.5 H235 L330 287.5"/>
+              <path class="wr" d="M146 387.5 H235 L330 292.5"/>
+              <path class="wr" d="M146 392.5 H235 L330 297.5"/>
+              <path class="wg" d="M146 397.5 H235 L330 302.5"/>
+              <path class="wg" d="M534 122.5 H445 L350 217.5"/>
+              <path class="wr" d="M534 127.5 H445 L350 222.5"/>
+              <path class="wr" d="M534 132.5 H445 L350 227.5"/>
+              <path class="wg" d="M534 137.5 H445 L350 232.5"/>
+              <path class="wr" d="M534 252.5 H340"/>
+              <path class="wr" d="M534 257.5 H340"/>
+              <path class="wr" d="M534 262.5 H340"/>
+              <path class="wg" d="M534 267.5 H340"/>
+              <path class="wg" d="M534 382.5 H445 L350 287.5"/>
+              <path class="wr" d="M534 387.5 H445 L350 292.5"/>
+              <path class="wr" d="M534 392.5 H445 L350 297.5"/>
+              <path class="wg" d="M534 397.5 H445 L350 302.5"/>
+              <path class="flow" d="M146 260 H340"/>
+              <path class="flow" d="M534 260 H340"/>
+              <path class="flow" d="M146 130 H235 L330 225"/>
+              <path class="flow" d="M534 390 H445 L350 295"/>
+            </g>
+
+            <g class="tileg"><rect class="tile" x="54" y="84" width="92" height="92" rx="20"/><!-- github.search -->
+              <g class="ic" transform="translate(100,130)"><path fill-rule="evenodd" d="M-4 -13.5 a9.5 9.5 0 1 0 0.01 0 Z M-4 -9.1 a5.1 5.1 0 1 1 -0.01 0 Z"/><path d="M2 4.8 L4.8 2 L13.5 10.7 L10.7 13.5 Z"/></g></g>
+            <g class="tileg"><rect class="tile" x="54" y="214" width="92" height="92" rx="20"/><!-- uptime.watch -->
+              <g class="ic" transform="translate(100,260)"><rect x="-19" y="-14" width="6" height="27" rx="2"/><rect x="-9" y="-7" width="6" height="20" rx="2"/><rect x="1" y="-1" width="6" height="14" rx="2"/><rect x="11" y="5" width="6" height="8" rx="2"/></g></g>
+            <g class="tileg"><rect class="tile" x="54" y="344" width="92" height="92" rx="20"/><!-- secrets.scan -->
+              <g class="ic" transform="translate(100,390)"><path fill-rule="evenodd" d="M-8 -8.2 a8.2 8.2 0 1 0 0.01 0 Z M-8 -3.6 a3.6 3.6 0 1 1 -0.01 0 Z"/><path d="M0.4 -2.6 H16.5 V7 H12.7 V2.6 H10 V6.2 H6.5 V2.6 H0.4 Z"/></g></g>
+            <g class="tileg"><rect class="tile" x="534" y="84" width="92" height="92" rx="20"/><!-- reach.probe -->
+              <g class="ic" transform="translate(580,130)"><path fill-rule="evenodd" d="M0 -14 a14 14 0 1 0 0.01 0 Z M0 -9.3 a9.3 9.3 0 1 1 -0.01 0 Z"/><circle r="4.2"/><rect x="-1.8" y="-19.5" width="3.6" height="4.6" rx="1.3"/><rect x="-1.8" y="14.9" width="3.6" height="4.6" rx="1.3"/><rect x="-19.5" y="-1.8" width="4.6" height="3.6" rx="1.3"/><rect x="14.9" y="-1.8" width="4.6" height="3.6" rx="1.3"/></g></g>
+            <g class="tileg"><rect class="tile" x="534" y="214" width="92" height="92" rx="20"/><!-- dep.audit -->
+              <g class="ic" transform="translate(580,260)"><path fill-rule="evenodd" d="M0 -17.5 L14.5 -11.5 V-1.5 C14.5 8 9 14.5 0 18 C-9 14.5 -14.5 8 -14.5 -1.5 V-11.5 Z M-7.2 -0.6 L-2.2 4.4 L7.8 -5.6 L5 -8.4 L-2.2 -1.2 L-4.4 -3.4 Z"/></g></g>
+            <g class="tileg"><rect class="tile" x="534" y="344" width="92" height="92" rx="20"/><!-- static.sast -->
+              <g class="ic" transform="translate(580,390)"><path fill-rule="evenodd" d="M-11.5 -16.5 H3.5 L12.5 -7.5 V16.5 H-11.5 Z M-2 -4.5 L-7.5 1 L-2 6.5 L0.2 4.3 L-3.1 1 L0.2 -2.3 Z M3 6.5 L6.8 -4.5 H9.6 L5.8 6.5 Z"/></g></g>
+
+            <rect class="dmn" x="281" y="201" width="118" height="118" rx="22" transform="rotate(45 340 260)"/>
+            <rect class="dmn-in" x="295" y="215" width="90" height="90" rx="15" transform="rotate(45 340 260)"/>
+            <text class="brandglyph" x="340" y="280" text-anchor="middle" font-family="Anton, Arial Black, sans-serif" font-size="56">A</text>
+          </svg>
+        </div>
+
+        <!-- (b) works with your stack — tool orbit -->
+        <div class="wcol sv" style="transition-delay:.1s">
+          <h2>Works with your stack</h2>
+          <p class="wsub">The engine plugs into the tools a venture actually runs on — repos, billing, deploy, comms, AI — so building and growing happen in the flow of work, not outside it.</p>
+          <svg class="orbit-diagram" viewBox="0 0 680 620" role="img" aria-label="Aurexis at the core of your working stack">
+            <circle cx="340" cy="310" r="150" fill="url(#bloomRed)" opacity=".5"/>
+            <polygon class="h1" points="340,105 517.5,207.5 517.5,412.5 340,515 162.5,412.5 162.5,207.5"/>
+            <polygon class="h2" points="340,142 485.5,226 485.5,394 340,478 194.5,394 194.5,226"/>
+            <polygon class="hred" points="340,178 454.3,244 454.3,376 340,442 225.7,376 225.7,244"/>
+            <polygon class="hhole" points="340,216 421.4,263 421.4,357 340,404 258.6,357 258.6,263"/>
+            <polygon class="ocore" points="340,258 385,284 385,336 340,362 295,336 295,284"/>
+            <text class="brandglyph" x="340" y="327" text-anchor="middle" font-family="Anton, Arial Black, sans-serif" font-size="46">A</text>
+
+            <g class="ochip" transform="translate(340,105)"><circle r="32"/>
+              <g class="oic"><path d="M0 -14 C1.8 -5 5.5 -1.8 14 0 C5.5 1.8 1.8 5.5 0 14 C-1.8 5.5 -5.5 1.8 -14 0 C-5.5 -1.8 -1.8 -5.5 0 -14 Z"/><path d="M10 -13 l1.1 2.8 l2.8 1.1 l-2.8 1.1 l-1.1 2.8 l-1.1 -2.8 l-2.8 -1.1 l2.8 -1.1 z"/></g></g>
+            <g class="ochip" transform="translate(162.5,207.5)"><circle r="32"/>
+              <g class="oic" transform="translate(-14,-14) scale(1.75)"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></g></g>
+            <g class="ochip" transform="translate(517.5,207.5)"><circle r="32"/><!-- billing -->
+              <g class="oic"><path fill-rule="evenodd" d="M-14.5 -10 H14.5 A3.2 3.2 0 0 1 17.7 -6.8 V6.8 A3.2 3.2 0 0 1 14.5 10 H-14.5 A3.2 3.2 0 0 1 -17.7 6.8 V-6.8 A3.2 3.2 0 0 1 -14.5 -10 Z M-17.7 -5 H17.7 V-1.2 H-17.7 Z"/></g></g>
+            <g class="ochip" transform="translate(162.5,412.5)"><circle r="32"/>
+              <g class="oic"><rect x="1.5" y="-14" width="5.5" height="12" rx="2.75"/><rect x="-7" y="2" width="5.5" height="12" rx="2.75"/><rect x="-14" y="1.5" width="12" height="5.5" rx="2.75"/><rect x="2" y="-7" width="12" height="5.5" rx="2.75"/></g></g>
+            <g class="ochip" transform="translate(517.5,412.5)"><circle r="32"/><!-- deploy console -->
+              <g class="oic"><path fill-rule="evenodd" d="M-14 -11 H14 A3.5 3.5 0 0 1 17.5 -7.5 V7.5 A3.5 3.5 0 0 1 14 11 H-14 A3.5 3.5 0 0 1 -17.5 7.5 V-7.5 A3.5 3.5 0 0 1 -14 -11 Z M-11.5 -5.8 L-4.6 0 L-11.5 5.8 L-13.6 3.3 L-9.7 0 L-13.6 -3.3 Z M-1.5 3.6 H8.5 V6.6 H-1.5 Z"/></g></g>
+            <g class="ochip" transform="translate(340,515)"><circle r="32"/>
+              <g class="oln"><path d="M0 -14 L12 -7 V7 L0 14 L-12 7 V-7 Z"/><path d="M0 -14 V0 M0 0 L12 -7 M0 0 L-12 -7"/></g></g>
+          </svg>
+        </div>
+
+      </div>
+    </section>
 
     <!-- sentinel security -->
     <section class="sec sec-sentinel" id="sec-sentinel">
