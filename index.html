@@ -1074,6 +1074,36 @@
     .abt-card .n{font-family:var(--mono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);opacity:.85}
     .abt-card h3{font-weight:600;font-size:1.12rem;margin:11px 0 10px;color:var(--ink)}
     .abt-card p{font-size:.9rem;line-height:1.6;color:#aab0be}
+    /* why-different: terminal diff panel */
+    .abt-diff{margin:0 0 38px}
+    .abt-kicker2{display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.3em;
+      text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+    .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .diff-pane{position:relative;border-radius:12px;overflow:hidden;
+      background:linear-gradient(180deg,#0d1017,#080a10);border:1px solid rgba(255,255,255,.08)}
+    .diff-pane::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+      background:repeating-linear-gradient(0deg,rgba(0,0,0,.2) 0 1px,transparent 1px 3px)}
+    .diff-pane.bad{border-color:rgba(230,41,60,.3)}
+    .diff-pane.good{border-color:rgba(231,185,77,.35)}
+    .dp-head{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;padding:10px 16px;
+      display:flex;gap:10px;align-items:center}
+    .diff-pane.bad .dp-head{color:#ff6d7c;background:rgba(230,41,60,.08);border-bottom:1px solid rgba(230,41,60,.25)}
+    .diff-pane.good .dp-head{color:var(--gold2);background:rgba(231,185,77,.07);border-bottom:1px solid rgba(231,185,77,.28)}
+    .dp-head i{font-style:normal;width:18px;height:18px;border-radius:4px;display:grid;place-items:center;
+      font-weight:700;font-size:.8rem}
+    .diff-pane.bad .dp-head i{background:rgba(230,41,60,.2);color:#ff8b95}
+    .diff-pane.good .dp-head i{background:rgba(231,185,77,.18);color:var(--gold2)}
+    .diff-pane ul{list-style:none;margin:0;padding:14px 16px;display:grid;gap:10px}
+    .diff-pane li{font-family:var(--mono);font-size:.78rem;line-height:1.55;padding-left:18px;position:relative}
+    .diff-pane li::before{position:absolute;left:0;font-weight:700}
+    .diff-pane.bad li{color:#98a0af}
+    .diff-pane.bad li::before{content:"−";color:#ff5d6e}
+    .diff-pane.good li{color:#d3d8e4}
+    .diff-pane.good li::before{content:"+";color:var(--gold)}
+    .diff-verdict{margin-top:14px;padding:12px 16px;border:1px dashed rgba(231,185,77,.38);border-radius:10px;
+      color:#e7d9b4;font-size:.74rem;letter-spacing:.06em;background:rgba(231,185,77,.05)}
+    @media (max-width:760px){ .diff-grid{grid-template-columns:1fr} }
+
     .abt-run{font-family:var(--mono);font-size:.82rem;letter-spacing:.03em;color:#9fc0ff;text-align:center;
       padding:16px 18px;border-radius:12px;margin-bottom:38px;overflow-x:auto;white-space:nowrap;
       background:linear-gradient(120deg,rgba(30,42,70,.55),rgba(15,21,37,.68));border:1px solid rgba(140,170,255,.2);
@@ -1139,6 +1169,31 @@
             <p>For founders who&rsquo;d rather see the truth than a flattering demo &mdash; without having to be a developer, a security expert, and a marketer all at once. The run collapses all of that into one honest pass.</p>
           </div>
         </div>
+        <div class="abt-diff">
+          <span class="abt-kicker2">// why aurexis is different</span>
+          <div class="diff-grid">
+            <div class="diff-pane bad">
+              <div class="dp-head"><i>−</i> typical.ai-tools</div>
+              <ul>
+                <li>A confidence score computed from your own description of the idea</li>
+                <li>"Market sizes" no free source can actually produce</li>
+                <li>Demo dashboards pre-filled with invented traction</li>
+                <li>"Deployed" means a job was queued — not that anything is live</li>
+              </ul>
+            </div>
+            <div class="diff-pane good">
+              <div class="dp-head"><i>+</i> aurexis.run</div>
+              <ul>
+                <li>Every number fetched, scanned or probed — stamped with endpoint + timestamp</li>
+                <li>What can't be known is marked unavailable, never faked</li>
+                <li>Day-one dashboards read "no data yet" — the honest empty room</li>
+                <li>Live is earned: deploys gated on security, URLs verified reachable</li>
+              </ul>
+            </div>
+          </div>
+          <div class="diff-verdict mono">diff → a number is either traced to a real source, or marked honestly absent. that discipline is the product.</div>
+        </div>
+
         <div class="abt-run">profile &rarr; discover &rarr; blueprint &rarr; forge &rarr; sentinel &rarr; deploy &rarr; dashboard &rarr; studio</div>
         <div class="abt-cta">
           <button class="primary" id="abtJourney">Begin Your Journey</button>
