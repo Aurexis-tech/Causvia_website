@@ -498,9 +498,9 @@
   .launch-grid{position:absolute;inset:0;pointer-events:none;opacity:.35;
     background:repeating-linear-gradient(0deg,transparent 0 52px,rgba(255,120,130,.06) 52px 53px),
       repeating-linear-gradient(90deg,transparent 0 52px,rgba(255,120,130,.06) 52px 53px)}
-  .launch-city{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
-    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 100%);
-    mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 100%)}
+  .launch-city{position:absolute;left:0;right:0;top:0;height:62%;width:100%;pointer-events:none;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 70%,transparent 100%);
+    mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 70%,transparent 100%)}
   .launch-inner{position:relative;text-align:center;padding:10rem 5vw 8rem;max-width:900px;margin:0 auto}
   .mega{font-family:var(--disp);font-weight:400;text-transform:uppercase;line-height:.92;
     font-size:clamp(3rem,9vw,7.4rem);color:#fff;
@@ -514,8 +514,12 @@
   .lcta:hover{transform:translateY(-3px);filter:brightness(1.05)}
 
   .ft{position:relative;padding:4rem 5vw 5.5rem;overflow:hidden}
-  .ft .wm{position:absolute;left:50%;bottom:-4vw;transform:translateX(-50%);pointer-events:none;
-    font-family:var(--disp);font-size:19vw;line-height:1;letter-spacing:.02em;color:rgba(0,0,0,.16);white-space:nowrap}
+  .ft .wm{position:absolute;left:52%;bottom:-2vw;transform:translateX(-50%);pointer-events:none;
+    font-family:var(--disp);font-size:17.5vw;line-height:1;letter-spacing:.03em;
+    color:rgba(22,3,7,.52);text-shadow:0 1px 0 rgba(255,120,130,.07);white-space:nowrap}
+  .ft .wmk{position:absolute;left:-5vw;bottom:-7vw;width:34vw;pointer-events:none}
+  .ft .wmk polygon{fill:rgba(22,3,7,.48)}
+  .ft .wmk text{font-family:var(--disp);font-size:52px;fill:rgba(94,15,23,.6)}
   .ft-cols{position:relative;max-width:1500px;margin:0 auto;display:grid;
     grid-template-columns:1.3fr 1fr 1fr 1fr;gap:4vw;align-items:start}
   .fcol h5{display:inline-block;font-family:var(--mono);font-weight:700;font-size:.78rem;letter-spacing:.14em;
@@ -645,6 +649,7 @@
       </div>
 
       <footer class="ft">
+        <svg class="wmk" viewBox="0 0 100 110" aria-hidden="true"><polygon points="50,4 95,29.5 95,80.5 50,106 5,80.5 5,29.5"/><text x="50" y="72" text-anchor="middle">A</text></svg>
         <span class="wm" aria-hidden="true">AUREXIS</span>
         <div class="ft-cols">
           <div class="fcol join sv">
@@ -1335,6 +1340,10 @@
       dl+="M"+(1210-hw1)+" "+by+" L"+(1210+hw2)+" "+(by-30)+" M"+(1210+hw1)+" "+by+" L"+(1210-hw2)+" "+(by-30)+" "; }
     pathTo(lt,dl);
     layer(0.55,1.2,170,460,12);   // near — bright, continuous foreground
+    /* pin the city to the hero region so it always fades out before the footer */
+    function sizeCity(){ var inner=document.querySelector(".launch-inner"); if(!inner) return;
+      svg.style.height=(inner.offsetTop+inner.offsetHeight+80)+"px"; }
+    sizeCity(); addEventListener("resize",sizeCity);
   })();
 
   function webglOK(){ try{ var c=document.createElement("canvas");
