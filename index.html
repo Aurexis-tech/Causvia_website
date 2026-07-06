@@ -446,17 +446,35 @@
   .ring{position:relative;width:212px;height:258px;transform-style:preserve-3d;
     animation:ringspin 14s linear infinite}
   @keyframes ringspin{from{transform:rotateY(0)}to{transform:rotateY(-360deg)}}
-  .bcard{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;
+  .bcard{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;cursor:pointer;
     transform:rotateY(calc(var(--i)*72deg)) translateZ(250px);
-    background:linear-gradient(180deg,#12161f,#0a0d13);border:1px solid rgba(255,255,255,.09);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 26px 60px -30px rgba(0,0,0,.9);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
-  .bcard .bic{width:118px;height:118px;border-radius:12px;display:grid;place-items:center;
-    background:linear-gradient(180deg,#171c28,#0e1119);box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
+    background:linear-gradient(180deg,#13171f,#0a0d13);border:1px solid rgba(255,255,255,.1);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 26px 60px -30px rgba(0,0,0,.9);
+    display:flex;flex-direction:column;align-items:center;padding:20px 20px 0;overflow:hidden;
+    transition:border-color .25s ease,background .25s ease,box-shadow .25s ease}
+  .bcard .bic{width:118px;height:118px;border-radius:12px;display:grid;place-items:center;margin:auto 0;
+    background:linear-gradient(180deg,#181d29,#0e1119);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 0 22px rgba(0,0,0,.45);
+    transition:background .25s ease,box-shadow .25s ease}
   .bcard .bic svg{width:56px;height:56px;fill:none;stroke:rgba(213,222,238,.6);stroke-width:1.5;
-    stroke-linecap:round;stroke-linejoin:round}
+    stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s ease,filter .25s ease}
   .bcard b{font-family:var(--mono);font-weight:700;font-size:.82rem;letter-spacing:.14em;
-    color:#dde3ef;text-transform:uppercase}
+    color:#dde3ef;text-transform:uppercase;width:calc(100% + 40px);margin:auto -20px 0;
+    padding:15px 0 17px;text-align:center;background:rgba(0,0,0,.3);
+    border-top:1px solid rgba(255,255,255,.07);transition:color .25s ease,background .25s ease}
+  /* red engage state — on hover or tap */
+  .bcard:hover,.bcard.lit{
+    border-color:rgba(255,32,54,.7);
+    background:linear-gradient(180deg,#2a0b10,#150507);
+    box-shadow:inset 0 1px 0 rgba(255,120,130,.32),0 26px 60px -30px rgba(0,0,0,.9),
+      0 0 52px -8px rgba(255,32,54,.65)}
+  .bcard:hover .bic,.bcard.lit .bic{
+    background:linear-gradient(180deg,#3a0d13,#1a0509);
+    box-shadow:inset 0 1px 0 rgba(255,120,130,.28),inset 0 0 26px rgba(120,8,18,.55)}
+  .bcard:hover .bic svg,.bcard.lit .bic svg{
+    stroke:#ff3547;filter:drop-shadow(0 0 8px rgba(255,53,71,.9))}
+  .bcard:hover b,.bcard.lit b{
+    color:#ff8b95;background:rgba(40,4,9,.5);border-top-color:rgba(255,80,95,.3)}
 
   /* ---- numbered trio ---- */
   .sec-trio{background:linear-gradient(180deg,#05070c,#04060a);padding:0 5vw 8rem}
@@ -1250,6 +1268,15 @@
       if(en.isIntersecting){ en.target.classList.add("in"); svIO.unobserve(en.target); } }); },{threshold:.16});
     [].slice.call(document.querySelectorAll(".sv")).forEach(function(el){ svIO.observe(el); });
   } else { [].slice.call(document.querySelectorAll(".sv")).forEach(function(el){ el.classList.add("in"); }); }
+
+  /* scan-badge ring: click/tap locks a card into its red engaged state */
+  [].slice.call(document.querySelectorAll(".bcard")).forEach(function(c){
+    c.addEventListener("click",function(){
+      var was=c.classList.contains("lit");
+      [].slice.call(document.querySelectorAll(".bcard.lit")).forEach(function(o){ o.classList.remove("lit"); });
+      if(!was) c.classList.add("lit");
+    });
+  });
 
   /* ---- finale backdrop: structured red wireframe city (architectural elevations) ---- */
   (function(){
