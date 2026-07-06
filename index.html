@@ -1251,46 +1251,58 @@
     [].slice.call(document.querySelectorAll(".sv")).forEach(function(el){ svIO.observe(el); });
   } else { [].slice.call(document.querySelectorAll(".sv")).forEach(function(el){ el.classList.add("in"); }); }
 
-  /* ---- finale backdrop: procedural red wireframe skyline ---- */
+  /* ---- finale backdrop: structured red wireframe city (architectural elevations) ---- */
   (function(){
     var svg=document.getElementById("launchCity"); if(!svg) return;
-    var NS="http://www.w3.org/2000/svg", BASE=900;
+    var NS="http://www.w3.org/2000/svg", BASE=884;
     function grp(op,sw){ var g=document.createElementNS(NS,"g");
       g.setAttribute("stroke","#ff2036"); g.setAttribute("fill","none");
       g.setAttribute("stroke-width",sw); g.setAttribute("opacity",op); svg.appendChild(g); return g; }
-    function pathTo(g,d,op){ if(!d) return; var p=document.createElementNS(NS,"path");
-      p.setAttribute("d",d); if(op) p.setAttribute("opacity",op); g.appendChild(p); }
-    function skyline(op,sw,hMin,hMax,gapMin){
-      var g=grp(op,sw), d="", wins="", x=-40;
-      while(x<1640){
-        var w=62+Math.random()*128, h=hMin+Math.random()*(hMax-hMin), y=BASE-h;
-        d+="M"+x+" "+BASE+" V"+y+" H"+(x+w)+" V"+BASE+" ";
-        if(Math.random()<0.35){ var cw=w*0.5, ch=24+Math.random()*42;      // setback cap
-          d+="M"+(x+(w-cw)/2)+" "+y+" V"+(y-ch)+" H"+(x+(w+cw)/2)+" V"+y+" "; }
-        if(Math.random()<0.25) d+="M"+(x+w/2)+" "+y+" V"+(y-26-Math.random()*30)+" ";  // mast
-        for(var fy=y+22; fy<BASE-12; fy+=26){                              // floor lines
-          d+="M"+(x+3)+" "+fy+" H"+(x+w-3)+" ";
-          if(Math.random()<0.5){ for(var wx=x+11; wx<x+w-9; wx+=16){       // window ticks
-            if(Math.random()<0.55) wins+="M"+wx+" "+(fy-15)+" V"+(fy-5)+" "; } }
+    function pathTo(g,d,op,sw){ if(!d) return; var p=document.createElementNS(NS,"path");
+      p.setAttribute("d",d); if(op) p.setAttribute("opacity",op); if(sw) p.setAttribute("stroke-width",sw);
+      g.appendChild(p); }
+    /* a layer of buildings: crisp outlines + a fine regular floor/column grid per tier */
+    function layer(op,swMain,swGrid,hMin,hMax,gapMin,gapVar,floorH){
+      var g=grp(op,swMain), dS="", dG="", x=-30;
+      while(x<1630){
+        var w=54+Math.random()*96, h=hMin+Math.random()*(hMax-hMin);
+        var tiers=Math.random()<0.42?(2+((Math.random()*2)|0)):1;
+        var bx=x, bw=w, remH=h, ty=BASE;
+        for(var t=0;t<tiers;t++){
+          var th=(t===tiers-1)?remH:remH*(0.45+Math.random()*0.2);
+          var top=ty-th;
+          dS+="M"+bx+" "+ty+" V"+top+" H"+(bx+bw)+" V"+ty+" ";
+          dS+="M"+(bx-2)+" "+top+" H"+(bx+bw+2)+" ";                                    // parapet lip
+          for(var fy=top+floorH; fy<ty-4; fy+=floorH) dG+="M"+(bx+1.5)+" "+fy+" H"+(bx+bw-1.5)+" ";
+          var cW=13+Math.random()*6;
+          for(var cx2=bx+cW; cx2<bx+bw-4; cx2+=cW) dG+="M"+cx2+" "+(top+2)+" V"+(ty-2)+" ";
+          remH-=th; ty=top;
+          var inset=bw*0.14; bx+=inset; bw-=inset*2;
         }
-        x+=w+gapMin+Math.random()*70;
+        if(Math.random()<0.5) dS+="M"+(bx+bw*0.3)+" "+ty+" V"+(ty-7)+" H"+(bx+bw*0.62)+" V"+ty+" "; // penthouse
+        if(Math.random()<0.4){ var mx=bx+bw/2, mh=14+Math.random()*26;                   // mast + rungs
+          dS+="M"+mx+" "+ty+" V"+(ty-mh)+" ";
+          for(var ry=ty-5; ry>ty-mh+2; ry-=6) dS+="M"+(mx-2.5)+" "+ry+" H"+(mx+2.5)+" "; }
+        x+=w+gapMin+Math.random()*gapVar;
       }
-      pathTo(g,d); pathTo(g,wins,"0.65");
+      pathTo(g,dG,"0.55",swGrid);
+      pathTo(g,dS,null,swMain);
     }
-    skyline(0.16,1,240,640,14);            // far layer
-    /* landmark: tapered spire */
-    var lm=grp(0.4,1.1), dm="M700 "+BASE+" L742 300 L748 236 L754 300 L796 "+BASE+" ";
-    for(var ly=330; ly<BASE-14; ly+=34){ var t=(ly-236)/(BASE-236), hw=5+t*45;
-      dm+="M"+(748-hw)+" "+ly+" H"+(748+hw)+" "; }
-    dm+="M748 236 V196 "; pathTo(lm,dm);
-    /* landmark: lattice mast */
-    var lt=grp(0.34,1), dl="M1128 "+BASE+" L1146 400 M1174 "+BASE+" L1156 400 M1146 400 H1156 M1151 400 V330 ";
-    for(var by=BASE-30; by>420; by-=40){ var t2=(by-400)/(BASE-400), off=9*t2;
-      var lx=1146- (1146-1128)*t2*-1; /* interpolate edges */
-      var leftX=1128+(1146-1128)*(1-t2), rightX=1174-(1174-1156)*(1-t2);
-      dl+="M"+leftX+" "+by+" L"+rightX+" "+(by-40)+" M"+rightX+" "+by+" L"+leftX+" "+(by-40)+" "; }
+    layer(0.13,1,0.5,150,420,6,26,12);      // far — dense, dim
+    layer(0.26,1.1,0.5,180,520,10,34,13);   // mid
+    /* landmark: banded pyramid spire */
+    var lm=grp(0.5,1.2), dm="M676 "+BASE+" L731 178 M794 "+BASE+" L739 178 M731 178 H739 M735 178 V132 M731 150 H739 ";
+    for(var ly=196; ly<BASE-8; ly+=13){ var t1=(ly-178)/(BASE-178), hw=4+t1*55;
+      dm+="M"+(735-hw)+" "+ly+" H"+(735+hw)+" "; }
+    pathTo(lm,dm);
+    /* landmark: tapering lattice tower with crossarms */
+    var lt=grp(0.42,1.1), dl="M1266 "+BASE+" L1287 560 L1296 210 M1334 "+BASE+" L1313 560 L1304 210 ";
+    dl+="M1266 560 H1334 M1264 300 H1336 M1272 352 H1328 M1296 210 H1304 M1300 210 V150 M1297 168 H1303 M1298 186 H1302 ";
+    function latHW(y){ return y>560 ? 13+(y-560)/(BASE-560)*21 : 4+(y-210)/(560-210)*9; }
+    for(var by=BASE-16; by>226; by-=34){ var hw1=latHW(by), hw2=latHW(by-34);
+      dl+="M"+(1300-hw1)+" "+by+" L"+(1300+hw2)+" "+(by-34)+" M"+(1300+hw1)+" "+by+" L"+(1300-hw2)+" "+(by-34)+" "; }
     pathTo(lt,dl);
-    skyline(0.4,1.2,130,470,22);           // near layer
+    layer(0.5,1.3,0.6,120,380,26,60,13);    // near — brighter, shorter so landmarks tower above
   })();
 
   function webglOK(){ try{ var c=document.createElement("canvas");
