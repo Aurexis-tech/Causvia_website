@@ -71,25 +71,30 @@
   .card{position:fixed;z-index:3;min-width:238px;max-width:302px;padding:15px 17px;
     border-radius:16px;opacity:0;transform:translateY(8px) scale(.985);
     transition:opacity .45s cubic-bezier(.2,.8,.2,1),transform .45s cubic-bezier(.2,.8,.2,1);pointer-events:none;
-    background:linear-gradient(158deg,rgba(24,28,44,.8),rgba(9,12,20,.87));
+    background:linear-gradient(158deg,
+      color-mix(in srgb, var(--c,#E7B94D) 30%, rgba(14,16,26,.86)),
+      color-mix(in srgb, var(--c,#E7B94D) 11%, rgba(8,10,16,.9)));
     -webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);
-    border:1px solid rgba(255,255,255,.1);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 24px 64px -28px rgba(0,0,0,.9),0 0 42px -14px var(--c,#E7B94D)}
+    border:1px solid color-mix(in srgb, var(--c,#E7B94D) 55%, transparent);
+    box-shadow:inset 0 1px 0 color-mix(in srgb, var(--c,#E7B94D) 42%, rgba(255,255,255,.1)),
+      0 24px 64px -28px rgba(0,0,0,.9),0 0 48px -10px var(--c,#E7B94D)}
   .card::after{content:"";position:absolute;left:0;top:16px;bottom:16px;width:2px;border-radius:2px;
     background:linear-gradient(180deg,var(--c,#E7B94D),transparent);box-shadow:0 0 12px var(--c,#E7B94D)}
   .card.on{opacity:1;transform:none}
   .card .h{display:flex;align-items:center;gap:10px;margin-bottom:5px}
   .card .em{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:0 0 auto;
-    background:linear-gradient(180deg,var(--gold2),var(--gold));
-    box-shadow:0 4px 12px -4px rgba(231,185,77,.55),inset 0 1px 0 rgba(255,255,255,.5)}
+    background:linear-gradient(180deg, color-mix(in srgb, var(--c,#E7B94D) 65%, #fff), var(--c,#E7B94D));
+    box-shadow:0 4px 14px -4px var(--c,#E7B94D),inset 0 1px 0 rgba(255,255,255,.55)}
   .card .em svg{width:18px;height:18px}
   .card .stwrap{display:flex;flex-direction:column;gap:1px}
-  .card .st{font-size:.58rem;letter-spacing:.24em;color:var(--gold);text-transform:uppercase}
+  .card .st{font-size:.58rem;letter-spacing:.24em;color:color-mix(in srgb, var(--c,#E7B94D) 75%, #fff);text-transform:uppercase}
   .card .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--c,#E7B94D);
     box-shadow:0 0 8px var(--c,#E7B94D);margin-right:6px;vertical-align:middle}
   .card .live{font-size:.54rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
-  .card .ti{font-family:var(--sans);font-weight:600;font-size:1.05rem;color:var(--ink);letter-spacing:.005em}
-  .card .ds{font-family:var(--sans);font-weight:400;font-size:.82rem;line-height:1.5;color:#b7bbc7;margin-top:4px}
+  .card .ti{font-family:var(--sans);font-weight:600;font-size:1.05rem;letter-spacing:.005em;
+    color:color-mix(in srgb, var(--c,#E7B94D) 16%, #fff)}
+  .card .ds{font-family:var(--sans);font-weight:400;font-size:.82rem;line-height:1.5;margin-top:4px;
+    color:color-mix(in srgb, var(--c,#E7B94D) 40%, #cfd4e0)}
 
   .cock{position:fixed;inset:0;z-index:4;pointer-events:none}
 
