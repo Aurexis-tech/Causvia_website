@@ -1160,9 +1160,37 @@
     .abt-cta .ghost:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
     .abt-cta .arw{display:inline-block;transition:transform .2s ease}
     .abt-cta button:hover .arw{transform:translateX(4px)}
+    /* section rhythm */
+    .abt-sec{margin:0 0 46px}
+    .abt-h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;letter-spacing:.02em;
+      font-size:clamp(1.4rem,3vw,2.15rem);color:#eef2fa;margin:0 0 8px}
+    .abt-h2 .num{font-family:var(--mono);font-size:.5em;letter-spacing:.1em;color:var(--gold);margin-right:.7em;
+      vertical-align:middle;border:1px solid rgba(231,185,77,.4);border-radius:5px;padding:3px 6px}
+    .abt-lead{font-size:.98rem;line-height:1.62;color:#aab0be;max-width:66ch;margin:0 0 24px}
+    /* stage map */
+    .stage-map{display:grid;gap:1px;border-left:1px solid rgba(231,185,77,.22);margin-left:5px}
+    .smap-row{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:baseline;
+      padding:12px 0 12px 22px;position:relative}
+    .smap-row::before{content:"";position:absolute;left:-4px;top:19px;width:7px;height:7px;border-radius:50%;
+      background:var(--gold);box-shadow:0 0 9px rgba(231,185,77,.65)}
+    .smap-row.gate::before{background:#e6293c;box-shadow:0 0 9px rgba(230,41,60,.7)}
+    .smap-n{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;color:var(--gold);min-width:2.2em}
+    .smap-row.gate .smap-n{color:#ff6d7c}
+    .smap-b{min-width:0}
+    .smap-nm{display:block;font-family:var(--sans);font-weight:600;font-size:1.06rem;color:#fff}
+    .smap-d{display:block;font-size:.9rem;line-height:1.5;color:#a0a7b6;margin-top:3px}
+    /* moat tiles */
+    .moat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .moat-tile{background:linear-gradient(158deg,rgba(24,28,44,.62),rgba(9,12,20,.78));
+      border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px 20px 22px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+    .moat-tile .mt-n{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);opacity:.85}
+    .moat-tile h4{font-family:var(--sans);font-weight:600;font-size:1.05rem;color:#eef2fa;margin:9px 0 8px}
+    .moat-tile p{font-size:.88rem;line-height:1.56;color:#a0a7b6}
+    .abt-closer{text-align:center;max-width:60ch;margin:0 auto 26px;font-size:1rem;line-height:1.6;color:#c2c8d4}
     .abt-foot{padding:14px 24px;border-top:1px solid rgba(231,185,77,.16);background:rgba(0,0,0,.35);
       font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:center}
-    @media (max-width:760px){ .abt-grid{grid-template-columns:1fr} }
+    @media (max-width:760px){ .abt-grid,.moat-grid{grid-template-columns:1fr} }
   </style>
   <div class="ov" id="ov" aria-hidden="true">
     <div class="ovbar"><span class="t" id="ovTitle"></span><button class="ovx" id="ovClose">&#10005; Close</button></div>
@@ -1193,25 +1221,24 @@
         <span class="abt-kicker">The Opportunity-to-Reality Engine</span>
         <h1 class="abt-h1">From who you are to a live product.</h1>
         <p class="abt-creed">Aurexis runs the whole distance &mdash; profile, opportunity, build, security, deploy, dashboard, AI reach &mdash; as one continuous, honest run. <span>Nothing is simulated. Every number traces to a real source.</span></p>
-        <div class="abt-grid">
-          <div class="abt-card">
-            <span class="n">01 // The Engine</span>
-            <h3>One continuous run</h3>
-            <p>Not a suite of tools &mdash; a single engine. You go from who you are to a live, in-market product in one pass, and you watch each step actually work. No stage is sold off or spun out.</p>
-          </div>
-          <div class="abt-card">
-            <span class="n">02 // The Moat</span>
-            <h3>Sourced, not simulated</h3>
-            <p>Most tools hand you a confident score built from your own words. Aurexis only shows a number when it comes from a real fetch, scan, or probe &mdash; and honestly marks what it can&rsquo;t know. Empty tiles say &ldquo;no data yet&rdquo; instead of inventing traction.</p>
-          </div>
-          <div class="abt-card">
-            <span class="n">03 // Who it&rsquo;s for</span>
-            <h3>Built for the truth</h3>
-            <p>For founders who&rsquo;d rather see the truth than a flattering demo &mdash; without having to be a developer, a security expert, and a marketer all at once. The run collapses all of that into one honest pass.</p>
+
+        <div class="abt-sec">
+          <h2 class="abt-h2"><span class="num">01</span>One run, seven stages</h2>
+          <p class="abt-lead">Not a suite of tools &mdash; a single engine. You move from who you are to a live, in-market product in one continuous pass, and watch each step actually work. No stage is sold off or spun out.</p>
+          <div class="stage-map">
+            <div class="smap-row"><span class="smap-n">01</span><span class="smap-b"><span class="smap-nm">Profile</span><span class="smap-d">Reads who you are &mdash; each trait cited back to your own answers, never invented.</span></span></div>
+            <div class="smap-row"><span class="smap-n">02</span><span class="smap-b"><span class="smap-nm">Discover</span><span class="smap-d">A real opportunity matched to you, pulled live from developer ecosystems &mdash; every number stamped with its source and timestamp.</span></span></div>
+            <div class="smap-row"><span class="smap-n">03</span><span class="smap-b"><span class="smap-nm">Blueprint</span><span class="smap-d">The opportunity becomes a concrete, schema-validated spec &mdash; screens, features, and a data model.</span></span></div>
+            <div class="smap-row"><span class="smap-n">04</span><span class="smap-b"><span class="smap-nm">Forge</span><span class="smap-d">Builds the product on a rented builder &mdash; called &ldquo;done&rdquo; only when the preview URL actually responds.</span></span></div>
+            <div class="smap-row"><span class="smap-n">05</span><span class="smap-b"><span class="smap-nm">Sentinel</span><span class="smap-d">Real scanners audit the code and produce a score from findings &mdash; and your code is never executed.</span></span></div>
+            <div class="smap-row gate"><span class="smap-n">&#10192;</span><span class="smap-b"><span class="smap-nm">Deploy</span><span class="smap-d">Promoted to a live URL &mdash; gated on security and verified reachable, or the run halts and says why.</span></span></div>
+            <div class="smap-row"><span class="smap-n">06</span><span class="smap-b"><span class="smap-nm">Dashboard</span><span class="smap-d">Real telemetry once live &mdash; empty tiles read &ldquo;no data yet&rdquo; instead of inventing traction.</span></span></div>
+            <div class="smap-row"><span class="smap-n">07</span><span class="smap-b"><span class="smap-nm">Studio</span><span class="smap-d">Works to get you recommended inside AI assistants &mdash; honest ~0% at launch, the true starting line.</span></span></div>
           </div>
         </div>
-        <div class="abt-diff">
-          <span class="abt-kicker2">// why aurexis is different</span>
+
+        <div class="abt-sec abt-diff">
+          <h2 class="abt-h2"><span class="num">02</span>Why Aurexis is different</h2>
           <div class="diff-grid">
             <div class="diff-pane bad">
               <div class="dp-head"><i>−</i> typical.ai-tools</div>
@@ -1235,7 +1262,18 @@
           <div class="diff-verdict mono">diff → a number is either traced to a real source, or marked honestly absent. that discipline is the product.</div>
         </div>
 
-        <div class="abt-run">profile &rarr; discover &rarr; blueprint &rarr; forge &rarr; sentinel &rarr; deploy &rarr; dashboard &rarr; studio</div>
+        <div class="abt-sec">
+          <h2 class="abt-h2"><span class="num">03</span>Why it holds up</h2>
+          <p class="abt-lead">The build itself is commoditized &mdash; plenty of tools turn a prompt into an app. Aurexis&rsquo;s defensibility is the honest run around it, and honesty that&rsquo;s enforced so it survives every future change.</p>
+          <div class="moat-grid">
+            <div class="moat-tile"><span class="mt-n">Enforced, not promised</span><h4>Honesty encoded in types &amp; tests</h4><p>A model-invented number physically cannot reach the output &mdash; the type system forbids it, and a dedicated test fails the build if it ever tries.</p></div>
+            <div class="moat-tile"><span class="mt-n">Focus</span><h4>Rent the commoditized parts</h4><p>The builder and deploy host are rented behind swappable ports. Effort goes to the defensible seams: grounded discovery and the operate-and-grow surface.</p></div>
+            <div class="moat-tile"><span class="mt-n">Integrity</span><h4>Halt honestly, never fake a finish</h4><p>A run can complete, halt &mdash; nothing real to continue with &mdash; or fail. Three visible outcomes; the ability to stop and say why is a feature.</p></div>
+            <div class="moat-tile"><span class="mt-n">Auditable</span><h4>Evidence is first-class</h4><p>Sources and citations are structured fields, never stringified &mdash; so every number traces back to the exact fetch, scan, or probe it came from.</p></div>
+          </div>
+        </div>
+
+        <p class="abt-closer">Built for founders who&rsquo;d rather see the truth than a flattering demo &mdash; without having to be a developer, a security expert, and a marketer all at once.</p>
         <div class="abt-cta">
           <button class="primary" id="abtJourney">Begin Your Journey</button>
           <button class="ghost" id="abtLaunch">Launch the Engine <span class="arw">&#9656;</span></button>
