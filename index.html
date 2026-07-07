@@ -1088,6 +1088,25 @@
     .xd-caps li::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border-radius:2px;
       background:var(--rc,#E7B94D);box-shadow:0 0 10px -1px var(--rc,#E7B94D)}
     .xd-caps b{color:var(--ink);font-weight:600}
+    /* explorer: sub-section label */
+    .xd-sub{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rc,#E7B94D);
+      margin:0 0 13px;display:flex;align-items:center;gap:10px}
+    .xd-sub::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--rc,#E7B94D) 45%,transparent),transparent)}
+    /* explorer: "how it runs" ordered flow */
+    .xd-how{list-style:none;display:grid;gap:11px;margin:0 0 26px;padding:0}
+    .xd-how li{display:flex;gap:13px;align-items:flex-start;font-family:var(--sans);font-size:.93rem;line-height:1.55;color:#b3b9c6}
+    .xh-n{flex:0 0 auto;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;margin-top:1px;
+      font-family:var(--mono);font-size:.74rem;font-weight:700;color:#0c0f16;
+      background:linear-gradient(180deg,color-mix(in srgb,var(--rc,#E7B94D) 82%,#fff),var(--rc,#E7B94D));
+      box-shadow:0 3px 9px -3px var(--rc,#E7B94D)}
+    /* explorer: deliverable callout */
+    .xd-delivers{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:14px;margin-bottom:22px;
+      background:linear-gradient(120deg,color-mix(in srgb,var(--rc,#E7B94D) 13%,transparent),transparent);
+      border:1px solid color-mix(in srgb,var(--rc,#E7B94D) 32%,transparent)}
+    .xd-del-tag{font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;color:#0c0f16;
+      background:linear-gradient(180deg,color-mix(in srgb,var(--rc,#E7B94D) 82%,#fff),var(--rc,#E7B94D));
+      padding:4px 8px;border-radius:5px;font-weight:700;flex:0 0 auto;margin-top:1px;white-space:nowrap}
+    .xd-del-tx{font-family:var(--sans);font-size:.92rem;line-height:1.5;color:#dbe0ea;font-weight:500}
     .xd-edge{display:flex;gap:12px;align-items:flex-start;padding:15px 17px;border-radius:14px;margin-bottom:22px;
       background:linear-gradient(120deg,rgba(231,185,77,.11),rgba(231,185,77,.03));
       border:1px solid rgba(231,185,77,.24);box-shadow:0 0 34px -16px rgba(231,185,77,.55)}
@@ -1211,6 +1230,25 @@
       border:1px solid rgba(231,185,77,.4);border-radius:6px;padding:4px 8px;background:rgba(231,185,77,.06)}
     .abt-h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(231,185,77,.35),transparent)}
     .abt-lead{font-size:.98rem;line-height:1.62;color:#aab0be;max-width:66ch;margin:0 0 26px}
+    .abt-lead b{color:#dfe4ee;font-weight:600}
+    /* the doctrine section — "nothing is simulated" */
+    .abt-creed-sec{padding:clamp(22px,3vw,30px) clamp(18px,3vw,30px) clamp(24px,3vw,32px);border-radius:18px;
+      background:radial-gradient(120% 100% at 0% 0%,rgba(231,185,77,.08),transparent 58%),linear-gradient(160deg,rgba(22,18,10,.6),rgba(9,8,6,.55));
+      border:1px solid rgba(231,185,77,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 30px 74px -42px rgba(0,0,0,.9)}
+    .abt-creed-sec .abt-h2{color:#fff}
+    .creed-list{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:4px 0 22px}
+    .creed-pt{position:relative;padding:13px 15px 13px 34px;border-radius:12px;font-size:.92rem;line-height:1.52;color:#c2c8d4;
+      background:linear-gradient(120deg,rgba(255,255,255,.035),transparent);border:1px solid rgba(255,255,255,.07)}
+    .creed-pt::before{content:"";position:absolute;left:13px;top:1.25em;width:8px;height:8px;border-radius:2px;
+      background:var(--gold);box-shadow:0 0 11px -1px var(--gold)}
+    .creed-pt b{color:var(--gold2);font-weight:700}
+    .creed-outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .outcome{padding:14px 16px;border-radius:13px;font-size:.85rem;line-height:1.45;color:#aeb4c0;
+      background:linear-gradient(160deg,rgba(24,28,44,.62),rgba(9,12,20,.72));border:1px solid rgba(255,255,255,.08)}
+    .outcome b{display:block;font-family:var(--disp);text-transform:uppercase;letter-spacing:.05em;font-size:1.02rem;margin-bottom:5px}
+    .outcome.ok b{color:#39e0a3}.outcome.halt b{color:var(--gold2)}.outcome.fail b{color:#ff6d7c}
+    .outcome.ok{border-color:rgba(57,224,163,.3)}.outcome.halt{border-color:rgba(231,185,77,.32)}.outcome.fail{border-color:rgba(255,109,124,.3)}
+    @media(max-width:640px){ .creed-list,.creed-outcomes{grid-template-columns:1fr} }
     /* stage map — engine schematic */
     .stage-map{display:grid;gap:8px}
     .smap-row{display:grid;grid-template-columns:auto auto 1fr;gap:16px;align-items:center;
@@ -1293,7 +1331,24 @@
         <p class="abt-creed">Aurexis runs the whole distance &mdash; profile, opportunity, build, security, deploy, dashboard, AI reach &mdash; as one continuous, honest run. <span>Nothing is simulated. Every number traces to a real source.</span></p>
 
         <div class="abt-sec">
-          <h2 class="abt-h2"><span class="num">01</span>One run, seven stages</h2>
+          <h2 class="abt-h2"><span class="num">01</span>What Aurexis is</h2>
+          <p class="abt-lead">Aurexis is a single engine that takes a person from a profile of <b>who they are</b> to a <b>real, deployed, in-market product</b> &mdash; in one continuous run. Not a chatbot handing out advice. Not a bundle of disconnected tools you stitch together yourself. One system that walks the entire distance and shows its work at every step.</p>
+          <div class="abt-run">profile you &rarr; source a real opportunity &rarr; spec it &rarr; build &amp; verify it &rarr; prove it&rsquo;s secure &rarr; gate the deploy &rarr; operate on real data &rarr; grow its reach</div>
+          <div class="abt-grid">
+            <div class="abt-card"><span class="n">One engine</span><h3>Not a suite</h3><p>Seven stages, one unbroken pass. Nothing is sold off as a separate tool or bolted on afterwards &mdash; the whole journey is the product.</p></div>
+            <div class="abt-card"><span class="n">It does the work</span><h3>Not just answers</h3><p>Most AI tells you what you <em>could</em> do. Aurexis profiles you, finds the opportunity, writes the spec, builds the app, audits it, ships it, and operates it.</p></div>
+            <div class="abt-card"><span class="n">It shows its proof</span><h3>Not a demo</h3><p>Every figure is stamped with the exact fetch, scan, or probe it came from &mdash; or marked honestly absent. You see the truth, not a flattering mock-up.</p></div>
+          </div>
+        </div>
+
+        <div class="abt-sec">
+          <h2 class="abt-h2"><span class="num">02</span>Why it exists</h2>
+          <p class="abt-lead">Turning an idea into a live product usually means being three people at once &mdash; a <b>developer</b>, a <b>security expert</b>, and a <b>marketer</b> &mdash; or hiring all three and hoping they align. Most &ldquo;AI builders&rdquo; paper over that gap with confident theatre: invented market sizes, dashboards pre-filled with fake traction, a &ldquo;deployed&rdquo; badge on something that never actually went live.</p>
+          <p class="abt-lead">Aurexis exists to close that gap for real &mdash; to carry a non-technical founder from a raw idea to a running product, without the pretending. The hard parts are done for you; the honesty is kept intact.</p>
+        </div>
+
+        <div class="abt-sec">
+          <h2 class="abt-h2"><span class="num">03</span>One run, seven stages</h2>
           <p class="abt-lead">Not a suite of tools &mdash; a single engine. You move from who you are to a live, in-market product in one continuous pass, and watch each step actually work. No stage is sold off or spun out.</p>
           <div class="stage-map">
             <div class="smap-row" data-i="0"><span class="smap-ic"></span><span class="smap-n">01</span><span class="smap-b"><span class="smap-nm">Profile</span><span class="smap-d">Reads who you are &mdash; each trait cited back to your own answers, never invented.</span></span></div>
@@ -1307,8 +1362,24 @@
           </div>
         </div>
 
+        <div class="abt-sec abt-creed-sec">
+          <h2 class="abt-h2"><span class="num">04</span>The one rule: nothing is simulated</h2>
+          <p class="abt-lead">This is the heart of Aurexis, and the reason to trust it. At every step, a number is either traced to a real fetch, scan, or probe &mdash; or it is <b>marked honestly absent</b>. Nothing is invented to look impressive. And that discipline is enforced, not promised: a model-invented figure physically cannot reach the output.</p>
+          <div class="creed-list">
+            <div class="creed-pt"><b>Real signal</b> &mdash; opportunities are drawn live from the GitHub Search API, each stamped with its endpoint and timestamp.</div>
+            <div class="creed-pt"><b>Real audit</b> &mdash; security scores come from actual scanners run on the code, never a vibe-check.</div>
+            <div class="creed-pt"><b>Real deploy</b> &mdash; &ldquo;live&rdquo; means a URL verified reachable, gated on security clearing the bar.</div>
+            <div class="creed-pt"><b>Honest empty</b> &mdash; a day-one dashboard reads &ldquo;no data yet&rdquo; and AI reach reads ~0%: the true starting line, not fabricated traction.</div>
+          </div>
+          <div class="creed-outcomes">
+            <span class="outcome ok"><b>Complete</b>The run finished with real, usable results.</span>
+            <span class="outcome halt"><b>Halt</b>Nothing real to continue with &mdash; and it tells you why.</span>
+            <span class="outcome fail"><b>Fail</b>Something broke, reported plainly, never hidden.</span>
+          </div>
+        </div>
+
         <div class="abt-sec abt-diff">
-          <h2 class="abt-h2"><span class="num">02</span>Why Aurexis is different</h2>
+          <h2 class="abt-h2"><span class="num">05</span>Why Aurexis is different</h2>
           <div class="diff-grid">
             <div class="diff-pane bad">
               <div class="dp-head"><i>−</i> typical.ai-tools</div>
@@ -1333,7 +1404,7 @@
         </div>
 
         <div class="abt-sec">
-          <h2 class="abt-h2"><span class="num">03</span>Why it holds up</h2>
+          <h2 class="abt-h2"><span class="num">06</span>Why it holds up</h2>
           <p class="abt-lead">The build itself is commoditized &mdash; plenty of tools turn a prompt into an app. Aurexis&rsquo;s defensibility is the honest run around it, and honesty that&rsquo;s enforced so it survives every future change.</p>
           <div class="moat-grid">
             <div class="moat-tile"><span class="mt-n">Enforced, not promised</span><h4>Honesty encoded in types &amp; tests</h4><p>A model-invented number physically cannot reach the output &mdash; the type system forbids it, and a dedicated test fails the build if it ever tries.</p></div>
@@ -1341,6 +1412,20 @@
             <div class="moat-tile"><span class="mt-n">Integrity</span><h4>Halt honestly, never fake a finish</h4><p>A run can complete, halt &mdash; nothing real to continue with &mdash; or fail. Three visible outcomes; the ability to stop and say why is a feature.</p></div>
             <div class="moat-tile"><span class="mt-n">Auditable</span><h4>Evidence is first-class</h4><p>Sources and citations are structured fields, never stringified &mdash; so every number traces back to the exact fetch, scan, or probe it came from.</p></div>
           </div>
+        </div>
+
+        <div class="abt-sec">
+          <h2 class="abt-h2"><span class="num">07</span>Who it&rsquo;s for</h2>
+          <div class="abt-grid">
+            <div class="abt-card"><span class="n">Founders</span><h3>Idea, not a team</h3><p>People with a direction who don&rsquo;t want to assemble developers, security, and marketing before they can see anything real.</p></div>
+            <div class="abt-card"><span class="n">Non-technical builders</span><h3>Ship without the stack</h3><p>You don&rsquo;t need to write code or run scanners. Aurexis does the technical work and hands you the controls.</p></div>
+            <div class="abt-card"><span class="n">Truth-seekers</span><h3>Proof over polish</h3><p>Anyone who&rsquo;d rather see an honest empty room than a demo full of numbers that were never real.</p></div>
+          </div>
+        </div>
+
+        <div class="abt-sec">
+          <h2 class="abt-h2"><span class="num">08</span>Where it&rsquo;s going</h2>
+          <p class="abt-lead">Aurexis begins in business &mdash; but the profile &rarr; opportunity &rarr; build &rarr; operate loop is domain-agnostic by design. The same honest engine is built to expand into <b>finance</b>, <b>education</b>, and beyond, carrying the same rule with it: every number traced to a real source, or marked absent. The discipline is what scales.</p>
         </div>
 
         <p class="abt-closer">Built for founders who&rsquo;d rather see the truth than a flattering demo &mdash; without having to be a developer, a security expert, and a marketer all at once.</p>
@@ -1473,6 +1558,42 @@
       edge:"~0% on a new deployment is the truth, not a bug — reach the product hasn't earned is never inflated.",
       tech:"assistant queries + web grounding → AI-visibility % (honest ~0% at launch)" }
   ];
+  /* per-stage: how the stage actually runs + the concrete deliverable */
+  var STAGE_EXTRA=[
+    { how:["A handful of taps capture how you actually work — what energizes you, your risk appetite, your target domain.",
+           "Your answers feed a weighted trait model across Build, Strategy, Vision, Rigor and Boldness.",
+           "The model resolves you into a named signature and cites every score back to your own input."],
+      delivers:"A founder profile and trait radar that every later stage is matched against." },
+    { how:["Your profile is turned into search intent against live developer ecosystems.",
+           "The GitHub Search API returns real repositories, new-project activity and stars — in real time.",
+           "Candidates are scored against your profile and stamped with their exact endpoint and timestamp."],
+      delivers:"A ranked shortlist of buildable opportunities, each backed by numbers you can verify yourself." },
+    { how:["The chosen opportunity is expanded into a named product concept and a target user.",
+           "Core features, the actual screens and a data model are drafted as one structured spec.",
+           "The spec is schema-validated so it is genuinely buildable before anything is built."],
+      delivers:"A validated build specification — screens, features and data model — ready for the builder." },
+    { how:["The validated blueprint is submitted to a production builder (v0 by Vercel).",
+           "Aurexis orchestrates the build — generating the real components and wiring the features.",
+           "The preview URL is polled until it actually responds, or the build is reported not-yet-successful."],
+      delivers:"A working application at a preview URL, confirmed reachable — not a queued job." },
+    { how:["Real scanners run across the freshly built codebase — dependency audit, secrets detection, static analysis.",
+           "Findings are collected and graded by severity, never reduced to a black-box pass/fail.",
+           "A single defensible score is computed from the actual results — and your code is never executed."],
+      delivers:"A trustable security score with the findings behind it, and a clear go / no-go for deploy." },
+    { how:["Sentinel's score is checked against the deploy threshold.",
+           "If it clears, the product is promoted to a live URL; if it doesn't, the run halts.",
+           "A reachability check confirms the world can actually reach it before it is marked live."],
+      delivers:"A live, reachable URL — or an honest halt that explains exactly why it stopped." },
+    { how:["The live deployment streams real telemetry — uptime, latency and status.",
+           "Operational tiles read from the running product, not a mockup.",
+           "Metrics with nothing yet display “no data yet” instead of a fabricated figure."],
+      delivers:"An operating console showing the real state of your product — empty rooms included." },
+    { how:["Neutral buyer queries that never name your product are put to AI assistants (Claude with web search, optionally Perplexity).",
+           "Aurexis checks whether your product surfaces and is recommended — grounded in real, earned mentions.",
+           "Visibility is measured over time as the product earns genuine coverage."],
+      delivers:"An honest AI-visibility score that climbs only as your product earns real reach." }
+  ];
+  STAGE_EXTRA.forEach(function(e,i){ if(STAGES_FULL[i]){ STAGES_FULL[i].how=e.how; STAGES_FULL[i].delivers=e.delivers; } });
 
   (function(){
     var menu=document.getElementById("featMenu"); if(!menu) return;
@@ -1507,12 +1628,16 @@
       railBtns.forEach(function(b,j){ b.classList.toggle("on",j===i);
         if(j===i){ b.setAttribute("aria-selected","true"); } else { b.removeAttribute("aria-selected"); } });
       var caps=s.caps.map(function(c){ return '<li><b>'+c[0]+'</b> — '+c[1]+'</li>'; }).join("");
+      var how=(s.how||[]).map(function(h,idx){ return '<li><span class="xh-n">'+(idx+1)+'</span><span>'+h+'</span></li>'; }).join("");
       detail.style.setProperty("--rc",s.color);
       detail.innerHTML='<div class="xd-wrap">'
         +'<div class="xd-kicker">'+s.tag+'</div>'
         +'<h2 class="xd-headline">'+s.headline+'</h2>'
         +'<p class="xd-what">'+s.what+'</p>'
+        +(how?'<div class="xd-sub">How it runs</div><ol class="xd-how">'+how+'</ol>':'')
+        +'<div class="xd-sub">What it does</div>'
         +'<ul class="xd-caps">'+caps+'</ul>'
+        +(s.delivers?'<div class="xd-delivers"><span class="xd-del-tag">You walk away with</span><span class="xd-del-tx">'+s.delivers+'</span></div>':'')
         +'<div class="xd-edge"><span class="xd-edge-tag">Honest edge</span><span class="xd-edge-tx">'+s.edge+'</span></div>'
         +'<div class="xd-tech">'+s.tech+'</div>'
         +'<button class="xd-fly" id="xdFly">▸ Fly to this stage</button>'
