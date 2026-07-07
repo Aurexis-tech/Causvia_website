@@ -1086,11 +1086,16 @@
     }
 
     /* ---- About overlay ---- */
-    .abt{position:fixed;inset:0;z-index:99998;display:none;flex-direction:column;
-      background:linear-gradient(180deg,#070c1a,#04060e);color:var(--ink);font-family:var(--sans)}
+    .abt{position:fixed;inset:0;z-index:99998;display:none;flex-direction:column;color:var(--ink);font-family:var(--sans);
+      background:
+        radial-gradient(120% 60% at 50% -2%, rgba(231,185,77,.07), transparent 55%),
+        repeating-linear-gradient(0deg,transparent 0 44px,rgba(150,175,255,.02) 44px 45px),
+        repeating-linear-gradient(90deg,transparent 0 44px,rgba(150,175,255,.02) 44px 45px),
+        linear-gradient(180deg,#080d1a,#04060e)}
     .abt.open{display:flex;animation:ovin .3s ease}
     .abt-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;
-      padding:15px 22px;border-bottom:1px solid rgba(231,185,77,.28);background:rgba(0,0,0,.4)}
+      padding:15px 22px;border-bottom:1px solid rgba(231,185,77,.28);
+      background:rgba(6,9,16,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
     .abt-brand{font-family:var(--disp);letter-spacing:.16em;text-transform:uppercase;font-size:1.02rem;
       display:inline-flex;align-items:center;gap:11px}
     .abt-brand svg{width:22px;height:24px;filter:drop-shadow(0 0 7px rgba(230,41,60,.45))}
@@ -1098,15 +1103,21 @@
       background:rgba(231,185,77,.14);border:1px solid rgba(231,185,77,.45);padding:9px 16px;border-radius:9px;
       cursor:pointer;transition:background .2s}
     .abt-close:hover{background:rgba(231,185,77,.26)}
-    .abt-scroll{flex:1;overflow-y:auto}
-    .abt-wrap{max-width:960px;margin:0 auto;padding:clamp(30px,5vw,64px) clamp(20px,4vw,40px)}
+    .abt-scroll{flex:1;overflow-y:auto;position:relative}
+    .abt-wm{position:absolute;top:-46px;left:50%;transform:translateX(-50%);width:min(560px,88vw);opacity:.05;pointer-events:none;z-index:0}
+    .abt-wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:clamp(42px,6vw,80px) clamp(20px,4vw,44px) clamp(34px,5vw,64px)}
+    .abt-wrap::before,.abt-wrap::after{content:"";position:absolute;top:16px;width:26px;height:26px;pointer-events:none;border:0 solid rgba(231,185,77,.4)}
+    .abt-wrap::before{left:6px;border-top-width:2px;border-left-width:2px}
+    .abt-wrap::after{right:6px;border-top-width:2px;border-right-width:2px}
     .abt-kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);
-      display:inline-flex;align-items:center;gap:12px;margin-bottom:18px}
-    .abt-kicker::before{content:"";width:26px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
-    .abt-h1{font-family:var(--disp);text-transform:uppercase;font-size:clamp(2.2rem,6vw,4.2rem);line-height:.92;
+      display:inline-flex;align-items:center;gap:12px;margin-bottom:20px}
+    .abt-kicker::before,.abt-kicker::after{content:"";width:26px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+    .abt-kicker::after{background:linear-gradient(90deg,var(--gold),transparent)}
+    .abt-h1{font-family:var(--disp);text-transform:uppercase;font-size:clamp(2.3rem,6vw,4.4rem);line-height:.9;
       margin-bottom:22px;background:linear-gradient(180deg,#fff,#a6b6ec);
       -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 46px rgba(120,150,255,.4))}
-    .abt-creed{font-size:clamp(1.05rem,2.2vw,1.35rem);line-height:1.5;color:#c9d0de;max-width:60ch;margin-bottom:44px}
+    .abt-creed{font-size:clamp(1.05rem,2.2vw,1.32rem);line-height:1.55;color:#c9d0de;max-width:62ch;margin-bottom:50px;
+      padding-bottom:46px;border-bottom:1px solid rgba(231,185,77,.14)}
     .abt-creed span{color:var(--gold2)}
     .abt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:36px}
     .abt-card{background:linear-gradient(158deg,rgba(24,28,44,.7),rgba(9,12,20,.8));
@@ -1161,36 +1172,62 @@
     .abt-cta .arw{display:inline-block;transition:transform .2s ease}
     .abt-cta button:hover .arw{transform:translateX(4px)}
     /* section rhythm */
-    .abt-sec{margin:0 0 46px}
+    .abt-sec{margin:0 0 50px}
     .abt-h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;letter-spacing:.02em;
-      font-size:clamp(1.4rem,3vw,2.15rem);color:#eef2fa;margin:0 0 8px}
-    .abt-h2 .num{font-family:var(--mono);font-size:.5em;letter-spacing:.1em;color:var(--gold);margin-right:.7em;
-      vertical-align:middle;border:1px solid rgba(231,185,77,.4);border-radius:5px;padding:3px 6px}
-    .abt-lead{font-size:.98rem;line-height:1.62;color:#aab0be;max-width:66ch;margin:0 0 24px}
-    /* stage map */
-    .stage-map{display:grid;gap:1px;border-left:1px solid rgba(231,185,77,.22);margin-left:5px}
-    .smap-row{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:baseline;
-      padding:12px 0 12px 22px;position:relative}
-    .smap-row::before{content:"";position:absolute;left:-4px;top:19px;width:7px;height:7px;border-radius:50%;
-      background:var(--gold);box-shadow:0 0 9px rgba(231,185,77,.65)}
-    .smap-row.gate::before{background:#e6293c;box-shadow:0 0 9px rgba(230,41,60,.7)}
-    .smap-n{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;color:var(--gold);min-width:2.2em}
-    .smap-row.gate .smap-n{color:#ff6d7c}
+      font-size:clamp(1.5rem,3vw,2.2rem);color:#eef2fa;margin:0 0 12px;display:flex;align-items:center;gap:14px}
+    .abt-h2 .num{font-family:var(--mono);font-size:.42em;letter-spacing:.1em;color:var(--gold);
+      border:1px solid rgba(231,185,77,.4);border-radius:6px;padding:4px 8px;background:rgba(231,185,77,.06)}
+    .abt-h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(231,185,77,.35),transparent)}
+    .abt-lead{font-size:.98rem;line-height:1.62;color:#aab0be;max-width:66ch;margin:0 0 26px}
+    /* stage map — engine schematic */
+    .stage-map{display:grid;gap:8px}
+    .smap-row{display:grid;grid-template-columns:auto auto 1fr;gap:16px;align-items:center;
+      padding:14px 16px;border-radius:12px;
+      background:linear-gradient(120deg,rgba(20,24,38,.5),rgba(9,12,20,.5));border:1px solid rgba(255,255,255,.06);
+      transition:border-color .2s ease,background .2s ease,transform .2s ease}
+    .smap-row:hover{border-color:rgba(231,185,77,.4);transform:translateX(4px);
+      background:linear-gradient(120deg,rgba(30,26,18,.6),rgba(12,11,16,.6))}
+    .smap-row.gate{border-color:rgba(230,41,60,.28)}
+    .smap-row.gate:hover{border-color:rgba(230,41,60,.55);background:linear-gradient(120deg,rgba(34,10,14,.6),rgba(12,8,10,.6))}
+    .smap-ic{width:40px;height:40px;flex:0 0 auto;border-radius:10px;display:grid;place-items:center;
+      background:linear-gradient(180deg,var(--gold2),var(--gold));box-shadow:0 3px 10px -3px rgba(231,185,77,.5)}
+    .smap-ic svg{width:22px;height:22px}
+    .smap-row.gate .smap-ic{background:linear-gradient(180deg,#ff6d7c,#c11f31);box-shadow:0 3px 10px -3px rgba(230,41,60,.55)}
+    .smap-row.gate .smap-ic svg{stroke:#fff}
+    .smap-n{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--gold);min-width:1.8em;text-align:center}
+    .smap-row.gate .smap-n{color:#ff8b95}
     .smap-b{min-width:0}
     .smap-nm{display:block;font-family:var(--sans);font-weight:600;font-size:1.06rem;color:#fff}
-    .smap-d{display:block;font-size:.9rem;line-height:1.5;color:#a0a7b6;margin-top:3px}
+    .smap-d{display:block;font-size:.9rem;line-height:1.5;color:#a0a7b6;margin-top:2px}
     /* moat tiles */
     .moat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .moat-tile{background:linear-gradient(158deg,rgba(24,28,44,.62),rgba(9,12,20,.78));
-      border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px 20px 22px;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
-    .moat-tile .mt-n{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);opacity:.85}
-    .moat-tile h4{font-family:var(--sans);font-weight:600;font-size:1.05rem;color:#eef2fa;margin:9px 0 8px}
+    .moat-tile{position:relative;background:linear-gradient(158deg,rgba(24,28,44,.62),rgba(9,12,20,.78));
+      border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:22px 22px 24px;overflow:hidden;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease}
+    .moat-tile::before,.moat-tile::after{content:"";position:absolute;width:12px;height:12px;pointer-events:none;border:0 solid rgba(231,185,77,.45)}
+    .moat-tile::before{top:9px;left:9px;border-top-width:2px;border-left-width:2px}
+    .moat-tile::after{bottom:9px;right:9px;border-bottom-width:2px;border-right-width:2px}
+    .moat-tile:hover{border-color:rgba(231,185,77,.3);transform:translateY(-3px);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 20px 44px -22px rgba(0,0,0,.9),0 0 40px -16px rgba(231,185,77,.4)}
+    .moat-tile .mt-n{display:inline-block;font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+      color:var(--gold);opacity:.9;padding-left:16px}
+    .moat-tile h4{font-family:var(--sans);font-weight:600;font-size:1.06rem;color:#eef2fa;margin:10px 0 8px}
     .moat-tile p{font-size:.88rem;line-height:1.56;color:#a0a7b6}
-    .abt-closer{text-align:center;max-width:60ch;margin:0 auto 26px;font-size:1rem;line-height:1.6;color:#c2c8d4}
+    .abt-closer{text-align:center;max-width:60ch;margin:0 auto 30px;font-size:1.02rem;line-height:1.6;color:#c2c8d4}
+    /* staggered entrance when the overlay opens */
+    .abt.open .abt-wrap>*{animation:abtrise .5s cubic-bezier(.2,.8,.2,1) both}
+    .abt.open .abt-wrap>*:nth-child(2){animation-delay:.04s}
+    .abt.open .abt-wrap>*:nth-child(3){animation-delay:.09s}
+    .abt.open .abt-wrap>*:nth-child(4){animation-delay:.15s}
+    .abt.open .abt-wrap>*:nth-child(5){animation-delay:.21s}
+    .abt.open .abt-wrap>*:nth-child(6){animation-delay:.27s}
+    .abt.open .abt-wrap>*:nth-child(7){animation-delay:.33s}
+    .abt.open .abt-wrap>*:nth-child(8){animation-delay:.39s}
+    @keyframes abtrise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+    @media (prefers-reduced-motion:reduce){ .abt.open .abt-wrap>*{animation:none} }
     .abt-foot{padding:14px 24px;border-top:1px solid rgba(231,185,77,.16);background:rgba(0,0,0,.35);
       font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:center}
-    @media (max-width:760px){ .abt-grid,.moat-grid{grid-template-columns:1fr} }
+    @media (max-width:760px){ .abt-grid,.moat-grid{grid-template-columns:1fr} .smap-row{grid-template-columns:auto 1fr} .smap-n{display:none} }
   </style>
   <div class="ov" id="ov" aria-hidden="true">
     <div class="ovbar"><span class="t" id="ovTitle"></span><button class="ovx" id="ovClose">&#10005; Close</button></div>
@@ -1217,6 +1254,7 @@
       <button class="abt-close" id="abtClose">&#10005; Close</button>
     </div>
     <div class="abt-scroll">
+      <svg class="abt-wm" viewBox="0 0 100 110" aria-hidden="true"><use href="#aurexisMark"/></svg>
       <div class="abt-wrap">
         <span class="abt-kicker">The Opportunity-to-Reality Engine</span>
         <h1 class="abt-h1">From who you are to a live product.</h1>
@@ -1226,14 +1264,14 @@
           <h2 class="abt-h2"><span class="num">01</span>One run, seven stages</h2>
           <p class="abt-lead">Not a suite of tools &mdash; a single engine. You move from who you are to a live, in-market product in one continuous pass, and watch each step actually work. No stage is sold off or spun out.</p>
           <div class="stage-map">
-            <div class="smap-row"><span class="smap-n">01</span><span class="smap-b"><span class="smap-nm">Profile</span><span class="smap-d">Reads who you are &mdash; each trait cited back to your own answers, never invented.</span></span></div>
-            <div class="smap-row"><span class="smap-n">02</span><span class="smap-b"><span class="smap-nm">Discover</span><span class="smap-d">A real opportunity matched to you, pulled live from developer ecosystems &mdash; every number stamped with its source and timestamp.</span></span></div>
-            <div class="smap-row"><span class="smap-n">03</span><span class="smap-b"><span class="smap-nm">Blueprint</span><span class="smap-d">The opportunity becomes a concrete, schema-validated spec &mdash; screens, features, and a data model.</span></span></div>
-            <div class="smap-row"><span class="smap-n">04</span><span class="smap-b"><span class="smap-nm">Forge</span><span class="smap-d">Builds the product on a rented builder &mdash; called &ldquo;done&rdquo; only when the preview URL actually responds.</span></span></div>
-            <div class="smap-row"><span class="smap-n">05</span><span class="smap-b"><span class="smap-nm">Sentinel</span><span class="smap-d">Real scanners audit the code and produce a score from findings &mdash; and your code is never executed.</span></span></div>
-            <div class="smap-row gate"><span class="smap-n">&#10192;</span><span class="smap-b"><span class="smap-nm">Deploy</span><span class="smap-d">Promoted to a live URL &mdash; gated on security and verified reachable, or the run halts and says why.</span></span></div>
-            <div class="smap-row"><span class="smap-n">06</span><span class="smap-b"><span class="smap-nm">Dashboard</span><span class="smap-d">Real telemetry once live &mdash; empty tiles read &ldquo;no data yet&rdquo; instead of inventing traction.</span></span></div>
-            <div class="smap-row"><span class="smap-n">07</span><span class="smap-b"><span class="smap-nm">Studio</span><span class="smap-d">Works to get you recommended inside AI assistants &mdash; honest ~0% at launch, the true starting line.</span></span></div>
+            <div class="smap-row" data-i="0"><span class="smap-ic"></span><span class="smap-n">01</span><span class="smap-b"><span class="smap-nm">Profile</span><span class="smap-d">Reads who you are &mdash; each trait cited back to your own answers, never invented.</span></span></div>
+            <div class="smap-row" data-i="1"><span class="smap-ic"></span><span class="smap-n">02</span><span class="smap-b"><span class="smap-nm">Discover</span><span class="smap-d">A real opportunity matched to you, pulled live from developer ecosystems &mdash; every number stamped with its source and timestamp.</span></span></div>
+            <div class="smap-row" data-i="2"><span class="smap-ic"></span><span class="smap-n">03</span><span class="smap-b"><span class="smap-nm">Blueprint</span><span class="smap-d">The opportunity becomes a concrete, schema-validated spec &mdash; screens, features, and a data model.</span></span></div>
+            <div class="smap-row" data-i="3"><span class="smap-ic"></span><span class="smap-n">04</span><span class="smap-b"><span class="smap-nm">Forge</span><span class="smap-d">Builds the product on a rented builder &mdash; called &ldquo;done&rdquo; only when the preview URL actually responds.</span></span></div>
+            <div class="smap-row" data-i="4"><span class="smap-ic"></span><span class="smap-n">05</span><span class="smap-b"><span class="smap-nm">Sentinel</span><span class="smap-d">Real scanners audit the code and produce a score from findings &mdash; and your code is never executed.</span></span></div>
+            <div class="smap-row gate"><span class="smap-ic"></span><span class="smap-n">&#10192;</span><span class="smap-b"><span class="smap-nm">Deploy</span><span class="smap-d">Promoted to a live URL &mdash; gated on security and verified reachable, or the run halts and says why.</span></span></div>
+            <div class="smap-row" data-i="5"><span class="smap-ic"></span><span class="smap-n">06</span><span class="smap-b"><span class="smap-nm">Dashboard</span><span class="smap-d">Real telemetry once live &mdash; empty tiles read &ldquo;no data yet&rdquo; instead of inventing traction.</span></span></div>
+            <div class="smap-row" data-i="6"><span class="smap-ic"></span><span class="smap-n">07</span><span class="smap-b"><span class="smap-nm">Studio</span><span class="smap-d">Works to get you recommended inside AI assistants &mdash; honest ~0% at launch, the true starting line.</span></span></div>
           </div>
         </div>
 
@@ -1316,6 +1354,11 @@
 
   /* ---- full stage content: 7 stages + the Deploy gate ---- */
   var GATE_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V7l8-4 8 4v14"/><path d="M3 21h18"/><path d="M10 21v-5a2 2 0 0 1 4 0v5"/></svg>';
+  /* fill the About stage-map icon chips */
+  [].slice.call(document.querySelectorAll(".smap-ic")).forEach(function(chip){
+    var row=chip.parentNode, i=row.dataset.i;
+    chip.innerHTML = (i==null) ? GATE_ICON : GLY[+i];
+  });
   var THRU="Profile you → source a real opportunity → spec it → build and verify it → prove it's secure → gate the deploy → operate it on real data → grow its reach. At every step, a number is either traced to a real fetch, scan, or probe, or it's marked honestly absent. That discipline is the whole product.";
   var STAGES_FULL=[
     { num:"01", name:"Profile", color:COL[0], icon:0, stage:0,
