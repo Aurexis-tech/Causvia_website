@@ -575,19 +575,32 @@
     filter:drop-shadow(0 2px 0 rgba(216,229,255,.14))}
   .claim-inner{position:relative;z-index:1;text-align:center;padding:3.5rem 5vw 0;
     display:flex;flex-direction:column;align-items:center;margin-bottom:-92px}
+  .claim-kick{font-family:var(--mono);font-size:.7rem;letter-spacing:.34em;text-transform:uppercase;
+    color:#ff6b78;display:inline-flex;align-items:center;gap:12px;margin-bottom:20px}
+  .claim-kick::before,.claim-kick::after{content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,80,100,.85))}
+  .claim-kick::after{background:linear-gradient(90deg,rgba(255,80,100,.85),transparent)}
   .claim-a{font-family:var(--disp);text-transform:uppercase;letter-spacing:.04em;
-    font-size:clamp(1.2rem,2.6vw,2.1rem);color:rgba(233,238,248,.5)}
+    font-size:clamp(1.2rem,2.6vw,2.1rem);color:rgba(233,238,248,.62)}
   .claim-b{font-family:var(--disp);font-weight:400;text-transform:uppercase;line-height:.95;margin-top:10px;
     font-size:clamp(2.2rem,5.6vw,4.8rem);color:#ff2036;
-    text-shadow:0 0 14px rgba(255,32,54,.9),0 0 48px rgba(255,32,54,.5),0 0 110px rgba(255,32,54,.3)}
-  .claim-drop{position:relative;width:2px;height:72px;margin-top:26px;
+    text-shadow:0 0 14px rgba(255,32,54,.9),0 0 48px rgba(255,32,54,.5),0 0 110px rgba(255,32,54,.3);
+    animation:claimpulse 3.6s ease-in-out infinite}
+  @keyframes claimpulse{0%,100%{text-shadow:0 0 14px rgba(255,32,54,.9),0 0 48px rgba(255,32,54,.5),0 0 110px rgba(255,32,54,.3)}
+    50%{text-shadow:0 0 20px rgba(255,32,54,1),0 0 66px rgba(255,32,54,.7),0 0 150px rgba(255,32,54,.45)}}
+  .claim-sub{font-family:var(--sans);font-size:clamp(.92rem,1.5vw,1.08rem);line-height:1.55;color:#aab2c2;max-width:48ch;margin-top:20px}
+  .claim-drop{position:relative;width:2px;height:60px;margin-top:24px;
     background:linear-gradient(180deg,transparent,#e6293c);box-shadow:0 0 8px rgba(230,41,60,.5)}
   .claim-drop::after{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);
     border:5px solid transparent;border-top-color:#e6293c}
-  .claim-mark{width:46px;height:50px;margin-top:16px;filter:drop-shadow(0 0 16px rgba(120,10,20,.9))}
-  .claim-bot{height:150px;background:linear-gradient(180deg,#e6293c 0%,#b31a2a 55%,#7d0f1b 100%);
+  .claim-plinth{margin-top:16px;display:grid;place-items:center}
+  .claim-glow{grid-area:1/1;width:172px;height:172px;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle,rgba(255,70,90,.42),transparent 68%)}
+  .claim-mark{grid-area:1/1;width:52px;height:57px;filter:drop-shadow(0 0 20px rgba(255,60,80,.8))}
+  .claim-bot{height:150px;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.09) 0 2px,transparent 2px 5px),linear-gradient(180deg,#ff3446 0%,#c11f31 46%,#7d0f1b 100%);
     clip-path:polygon(0 100%,0 58%,29% 58%,37% 0,63% 0,71% 58%,100% 58%,100% 100%);
-    filter:drop-shadow(0 -1.5px 0 rgba(255,120,130,.55))}
+    filter:drop-shadow(0 -2px 0 rgba(255,160,170,.7)) drop-shadow(0 0 30px rgba(230,41,60,.35))}
+  @media(prefers-reduced-motion:reduce){ .claim-b{animation:none} }
   @media (max-width:700px){
     .claim-top{height:64px}.claim-bot{height:110px}
     .claim-inner{margin-bottom:-70px}
@@ -881,10 +894,12 @@
     <section class="sec sec-claim">
       <div class="claim-top" aria-hidden="true"></div>
       <div class="claim-inner sv">
+        <span class="claim-kick">The Aurexis difference</span>
         <p class="claim-a">Most AI gives answers.</p>
         <h2 class="claim-b">Aurexis creates reality.</h2>
+        <p class="claim-sub">Not another answer engine &mdash; a single run that ends in a real, deployed, in-market product.</p>
         <span class="claim-drop" aria-hidden="true"></span>
-        <svg class="claim-mark" viewBox="0 0 100 110" aria-hidden="true"><use href="#aurexisMark"/></svg>
+        <div class="claim-plinth" aria-hidden="true"><span class="claim-glow"></span><svg class="claim-mark" viewBox="0 0 100 110"><use href="#aurexisMark"/></svg></div>
       </div>
       <div class="claim-bot" aria-hidden="true"></div>
     </section>
