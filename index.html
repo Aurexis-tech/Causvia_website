@@ -531,7 +531,8 @@
   .hub-diagram .tileg:hover .hlbl{fill:#ff6b78}
   .hub-diagram .hbloom{animation:obloompulse 4.5s ease-in-out infinite}
 
-  /* ribbon wires (red + steel bundles, PCB bends) */
+  /* ribbon wires — thin steel bundles that curve smoothly into the core */
+  .hub-diagram .rib{fill:none;stroke:rgba(202,213,234,.34);stroke-width:1.1;stroke-linecap:round}
   .hub-diagram .wg{fill:none;stroke:rgba(200,212,234,.36);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .hub-diagram .wr{fill:none;stroke:#e6293c;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
     filter:drop-shadow(0 0 4px rgba(230,41,60,.5))}
@@ -776,34 +777,24 @@
           <svg class="hub-diagram" viewBox="0 0 680 520" role="img" aria-label="Live sources wired into the Aurexis engine">
             <circle class="hbloom" cx="340" cy="260" r="132" fill="url(#bloomRed)"/>
             <g>
-              <path class="wg" d="M146 122.5 H235 L330 217.5"/>
-              <path class="wr" d="M146 127.5 H235 L330 222.5"/>
-              <path class="wr" d="M146 132.5 H235 L330 227.5"/>
-              <path class="wg" d="M146 137.5 H235 L330 232.5"/>
-              <path class="wr" d="M146 252.5 H340"/>
-              <path class="wr" d="M146 257.5 H340"/>
-              <path class="wr" d="M146 262.5 H340"/>
-              <path class="wg" d="M146 267.5 H340"/>
-              <path class="wg" d="M146 382.5 H235 L330 287.5"/>
-              <path class="wr" d="M146 387.5 H235 L330 292.5"/>
-              <path class="wr" d="M146 392.5 H235 L330 297.5"/>
-              <path class="wg" d="M146 397.5 H235 L330 302.5"/>
-              <path class="wg" d="M534 122.5 H445 L350 217.5"/>
-              <path class="wr" d="M534 127.5 H445 L350 222.5"/>
-              <path class="wr" d="M534 132.5 H445 L350 227.5"/>
-              <path class="wg" d="M534 137.5 H445 L350 232.5"/>
-              <path class="wr" d="M534 252.5 H340"/>
-              <path class="wr" d="M534 257.5 H340"/>
-              <path class="wr" d="M534 262.5 H340"/>
-              <path class="wg" d="M534 267.5 H340"/>
-              <path class="wg" d="M534 382.5 H445 L350 287.5"/>
-              <path class="wr" d="M534 387.5 H445 L350 292.5"/>
-              <path class="wr" d="M534 392.5 H445 L350 297.5"/>
-              <path class="wg" d="M534 397.5 H445 L350 302.5"/>
-              <path class="flow" d="M146 260 H340"/>
-              <path class="flow" d="M534 260 H340"/>
-              <path class="flow" d="M146 130 H235 L330 225"/>
-              <path class="flow" d="M534 390 H445 L350 295"/>
+              <path class="rib" d="M146 125 C213.5 125 228.5 215 296 215"/>
+              <path class="rib" d="M146 130 C213.5 130 228.5 220 296 220"/>
+              <path class="rib" d="M146 135 C213.5 135 228.5 225 296 225"/>
+              <path class="rib" d="M146 255 C198.2 255 209.8 255 262 255"/>
+              <path class="rib" d="M146 260 C198.2 260 209.8 260 262 260"/>
+              <path class="rib" d="M146 265 C198.2 265 209.8 265 262 265"/>
+              <path class="rib" d="M146 385 C213.5 385 228.5 295 296 295"/>
+              <path class="rib" d="M146 390 C213.5 390 228.5 300 296 300"/>
+              <path class="rib" d="M146 395 C213.5 395 228.5 305 296 305"/>
+              <path class="rib" d="M534 125 C466.5 125 451.5 215 384 215"/>
+              <path class="rib" d="M534 130 C466.5 130 451.5 220 384 220"/>
+              <path class="rib" d="M534 135 C466.5 135 451.5 225 384 225"/>
+              <path class="rib" d="M534 255 C481.8 255 470.2 255 418 255"/>
+              <path class="rib" d="M534 260 C481.8 260 470.2 260 418 260"/>
+              <path class="rib" d="M534 265 C481.8 265 470.2 265 418 265"/>
+              <path class="rib" d="M534 385 C466.5 385 451.5 295 384 295"/>
+              <path class="rib" d="M534 390 C466.5 390 451.5 300 384 300"/>
+              <path class="rib" d="M534 395 C466.5 395 451.5 305 384 305"/>
             </g>
 
             <g class="tileg"><rect class="tile" x="54" y="84" width="92" height="92" rx="20"/><!-- github.search -->
