@@ -2240,16 +2240,21 @@
           }
         }
         cand.sort(function(a,b){ return a.dz-b.dz; });
-        var showN=Math.min(3,cand.length), onSet={};
+        var showN=Math.min(3,cand.length), onSet={}, placed=[];
         for(var ci=0; ci<showN; ci++){ var c=cand[ci]; var ci2=c.idx; onSet[ci2]=1;
           if(ci===0) activeStage=ci2;
           var card=cards[ci2], sx=c.sx, sy=c.sy;
           card.classList.add("on");
           if(cardW[ci2]==null){ cardW[ci2]=card.offsetWidth||260; cardH[ci2]=card.offsetHeight||150; }
           var cw=cardW[ci2], ch=cardH[ci2];
-          var cardX = (sx < W*0.5) ? sx+46 : sx-46-cw;          // place away from the anchor
+          var cardX = (sx < W*0.5) ? sx-46-cw : sx+46;          // OUTWARD: card on the tower's own side, away from centre
           cardX = Math.max(16, Math.min(W-cw-16, cardX));        // clamp fully on-screen (real width)
           var cardY = Math.max(74, Math.min(H-ch-16, sy-ch*0.4));
+          /* keep cards from stacking: if this one overlaps a card already placed this frame, drop it below */
+          for(var pj=0; pj<placed.length; pj++){ var pr=placed[pj];
+            if(cardX < pr.x+pr.w+12 && cardX+cw+12 > pr.x && cardY < pr.y+pr.h && cardY+ch > pr.y){
+              cardY = Math.min(H-ch-16, pr.y+pr.h+12); } }
+          placed.push({x:cardX,y:cardY,w:cw,h:ch});
           card.style.left=cardX+"px"; card.style.top=cardY+"px";
           var nearX = (cardX + cw*0.5 < sx) ? cardX+cw : cardX;  // connect from the edge facing the tower
           var ly = Math.max(cardY+14, Math.min(cardY+ch-14, sy));
