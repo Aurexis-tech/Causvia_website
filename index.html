@@ -545,17 +545,20 @@
   .hub-diagram .dmn-in{fill:none;stroke:rgba(255,185,192,.3);stroke-width:1.4}
   .brandglyph{fill:#fff;filter:drop-shadow(0 1px 2px rgba(90,0,8,.5))}
 
-  /* integration orbit — layered filled hexagons */
-  .orbit-diagram .h1{fill:#0d0e12;stroke:rgba(255,255,255,.05);stroke-width:1}
-  .orbit-diagram .h2{fill:#141519;stroke:rgba(255,255,255,.04);stroke-width:1}
-  .orbit-diagram .hred{fill:url(#hubRed);filter:drop-shadow(0 0 36px rgba(238,35,56,.45))}
-  .orbit-diagram .hhole{fill:#17181e;stroke:rgba(255,90,100,.13);stroke-width:1}
-  .orbit-diagram .ocore{fill:url(#hubRed);filter:drop-shadow(0 0 16px rgba(238,35,56,.75))}
+  /* integration orbit — machined reactor core */
+  .orbit-diagram .oc-guide{fill:none;stroke:rgba(190,205,230,.06);stroke-width:1}
+  .orbit-diagram .oc-bezel{fill:url(#ocHousing);stroke:url(#ocBevel);stroke-width:1.4;
+    filter:drop-shadow(0 20px 44px rgba(0,0,0,.6))}
+  .orbit-diagram .oc-face{fill:url(#ocFace);filter:drop-shadow(0 0 46px rgba(230,41,60,.4))}
+  .orbit-diagram .oc-face-edge{fill:none;stroke:#ff6b78;stroke-width:1.3;opacity:.8}
+  .orbit-diagram .oc-well{fill:url(#rgCore);stroke:rgba(0,0,0,.45);stroke-width:1.2}
+  .orbit-diagram .oc-well-lip{fill:none;stroke:rgba(255,120,132,.5);stroke-width:1}
+  .orbit-diagram .oc-glyph{fill:url(#lgChrome);filter:drop-shadow(0 2px 3px rgba(0,0,0,.65)) drop-shadow(0 0 10px rgba(255,60,80,.35))}
 
   /* app chips */
   .orbit-diagram .ochip{cursor:pointer}
-  .orbit-diagram .ochip>circle{fill:url(#chipG);stroke:rgba(255,255,255,.1);stroke-width:1.2;
-    filter:drop-shadow(0 10px 18px rgba(0,0,0,.5))}
+  .orbit-diagram .ochip>circle{fill:url(#chipGlass);stroke:url(#chipRim);stroke-width:1.5;
+    filter:drop-shadow(0 8px 16px rgba(0,0,0,.6))}
   .orbit-diagram .oic{fill:#d2d7e0}
   .orbit-diagram .oln{fill:none;stroke:#d2d7e0;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
   .orbit-diagram .ochip>circle,.orbit-diagram .oic,.orbit-diagram .oln{transition:stroke .28s ease,fill .28s ease,filter .28s ease}
@@ -563,11 +566,11 @@
   .orbit-diagram .ochip:hover .oic{fill:#ff5765;filter:drop-shadow(0 0 7px rgba(255,60,80,.85))}
   .orbit-diagram .ochip:hover .oln{stroke:#ff5765;filter:drop-shadow(0 0 7px rgba(255,60,80,.85))}
   /* orbit ring · spokes · inward data-flow pulses · tool labels */
-  .orbit-diagram .oring{fill:none;stroke:rgba(190,205,230,.15);stroke-width:1.4;stroke-dasharray:2 10;stroke-linecap:round}
-  .orbit-diagram .ospoke{fill:none;stroke:rgba(200,212,234,.22);stroke-width:1.6;stroke-linecap:round}
-  .orbit-diagram .oflow{fill:none;stroke:#ff5765;stroke-width:2.6;stroke-linecap:round;stroke-dasharray:1 18;
-    filter:drop-shadow(0 0 5px rgba(255,80,100,.9));animation:wireflow 2.4s linear infinite}
-  .orbit-diagram .olbl{fill:#828a9c;font-family:var(--mono);font-size:12px;letter-spacing:1.2px;transition:fill .28s ease}
+  .orbit-diagram .oring{fill:none;stroke:rgba(200,214,235,.12);stroke-width:1;stroke-dasharray:1.5 9;stroke-linecap:round}
+  .orbit-diagram .ospoke{fill:none;stroke:rgba(200,214,235,.16);stroke-width:1.1;stroke-linecap:round}
+  .orbit-diagram .oflow{fill:none;stroke:#ff5765;stroke-width:2;stroke-linecap:round;stroke-dasharray:1 22;
+    filter:drop-shadow(0 0 5px rgba(255,80,100,.85));animation:wireflow 2.4s linear infinite}
+  .orbit-diagram .olbl{fill:#9aa3b5;font-family:var(--mono);font-size:11.5px;letter-spacing:2px;transition:fill .28s ease}
   .orbit-diagram .ochip:hover .olbl{fill:#ff6b78}
   .orbit-diagram .obloom{animation:obloompulse 4.5s ease-in-out infinite}
   @keyframes obloompulse{0%,100%{opacity:.42}50%{opacity:.6}}
@@ -727,6 +730,22 @@
       <linearGradient id="chipG" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stop-color="#1c1e26"/><stop offset="1" stop-color="#0f1116"/>
       </linearGradient>
+      <radialGradient id="ocFace" cx=".5" cy=".38" r=".64">
+        <stop offset="0" stop-color="#ff6675"/><stop offset=".4" stop-color="#e42537"/>
+        <stop offset=".78" stop-color="#9a1521"/><stop offset="1" stop-color="#4a0a12"/>
+      </radialGradient>
+      <linearGradient id="ocBevel" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#eef2fb" stop-opacity=".55"/><stop offset=".5" stop-color="#8892a6" stop-opacity=".16"/><stop offset="1" stop-color="#4a5266" stop-opacity=".07"/>
+      </linearGradient>
+      <linearGradient id="ocHousing" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#171a22"/><stop offset="1" stop-color="#0a0c11"/>
+      </linearGradient>
+      <radialGradient id="chipGlass" cx=".5" cy=".28" r=".82">
+        <stop offset="0" stop-color="#2a2f3b"/><stop offset="1" stop-color="#0b0d12"/>
+      </radialGradient>
+      <linearGradient id="chipRim" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#e8eefa" stop-opacity=".5"/><stop offset=".45" stop-color="#96a0b4" stop-opacity=".12"/><stop offset="1" stop-color="#78829a" stop-opacity=".04"/>
+      </linearGradient>
       <clipPath id="hexClip"><polygon points="50,8 91.5,31.5 91.5,78.5 50,102 8.5,78.5 8.5,31.5"/></clipPath>
       <symbol id="aurexisMark" viewBox="0 0 100 110">
         <polygon points="50,4 95,29.5 95,80.5 50,106 5,80.5 5,29.5" fill="none" stroke="url(#lgChrome)" stroke-width="5"/>
@@ -815,14 +834,14 @@
           <h2>Works with your stack</h2>
           <p class="wsub">The engine plugs into the tools a venture actually runs on — repos, billing, deploy, comms, AI — so building and growing happen in the flow of work, not outside it.</p>
           <svg class="orbit-diagram" viewBox="0 0 680 620" role="img" aria-label="Aurexis at the core of your working stack — repos, billing, comms, deploy, runtime and AI">
-            <circle class="obloom" cx="340" cy="310" r="150" fill="url(#bloomRed)"/>
-            <polygon class="h1" points="340,105 517.5,207.5 517.5,412.5 340,515 162.5,412.5 162.5,207.5"/>
-            <polygon class="h2" points="340,142 485.5,226 485.5,394 340,478 194.5,394 194.5,226"/>
+            <circle class="obloom" cx="340" cy="310" r="146" fill="url(#bloomRed)"/>
+            <polygon class="oc-bezel" points="340,150 480,230 480,390 340,470 200,390 200,230"/>
             <polygon class="oring" points="340,105 517.5,207.5 517.5,412.5 340,515 162.5,412.5 162.5,207.5"/>
-            <polygon class="hred" points="340,178 454.3,244 454.3,376 340,442 225.7,376 225.7,244"/>
-            <polygon class="hhole" points="340,216 421.4,263 421.4,357 340,404 258.6,357 258.6,263"/>
-            <polygon class="ocore" points="340,258 385,284 385,336 340,362 295,336 295,284"/>
-            <text class="brandglyph" x="340" y="327" text-anchor="middle" font-family="Anton, Arial Black, sans-serif" font-size="46">A</text>
+            <polygon class="oc-face" points="340,178 454.3,244 454.3,376 340,442 225.7,376 225.7,244"/>
+            <polygon class="oc-face-edge" points="340,178 454.3,244 454.3,376 340,442 225.7,376 225.7,244"/>
+            <polygon class="oc-well" points="340,216 421.4,263 421.4,357 340,404 258.6,357 258.6,263"/>
+            <polygon class="oc-well-lip" points="340,224 414.4,267 414.4,353 340,396 265.6,353 265.6,267"/>
+            <text class="oc-glyph" x="340" y="328" text-anchor="middle" font-family="Anton, Arial Black, sans-serif" font-size="46">A</text>
 
             <!-- spokes: each tool feeds the core -->
             <g class="owires">
