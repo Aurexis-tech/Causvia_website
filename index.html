@@ -2186,83 +2186,96 @@
     var gR=new THREE.Mesh(gg,gateMat); gR.position.set(7,48,-300); scene.add(gR);
     var gBar=new THREE.Mesh(new THREE.BoxGeometry(16.4,2.4,2.4),gateMat); gBar.position.set(0,92,-300); scene.add(gBar);
 
-    var maxScroll=function(){ return document.getElementById("runway").offsetHeight - innerHeight; };
     var prog=0,targetProg=0;
-    function onScroll(){ var m=maxScroll(); targetProg=m>0?Math.min(1,Math.max(0,scrollY/m)):0; }
+    /* cached DOM refs + layout metrics — avoids per-frame getElementById and forced reflow */
+    var elHero=document.getElementById("hero"), elEndcta=document.getElementById("endcta"),
+        elRunway=document.getElementById("runway"), elPlThumb=document.getElementById("plThumb"),
+        secA=document.getElementById("sec-sentinel"), secB=document.getElementById("sec-launch");
+    var rwH=0, aTop=1e9, bTop=1e9, docH=1;
+    function measure(){ rwH=elRunway.offsetHeight;
+      aTop=secA?rwH+secA.offsetTop:1e9; bTop=secB?rwH+secB.offsetTop:1e9;
+      docH=Math.max(1,document.documentElement.scrollHeight-innerHeight); }
+    measure(); addEventListener("load",measure);
+    var maxScroll=function(){ return rwH - innerHeight; };
+    function onScroll(){ var m=rwH-innerHeight; targetProg=m>0?Math.min(1,Math.max(0,scrollY/m)):0; }
     addEventListener("scroll",onScroll,{passive:true}); onScroll();
     function easeInOut(t){ return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2; }
     var tmp=new THREE.Vector3();
 
+    var lastLines="";
     function frame(now){
       prog += (targetProg-prog)*0.075;
       var p=prog, e=easeInOut(p);
+      var mEnd=rwH-innerHeight, pastFlight=scrollY>mEnd+innerHeight*0.35;
+      var offCanvas=scrollY>mEnd+innerHeight*0.6;   // flight fully covered by after-content → skip the WebGL work
+      var activeStage=-1;
 
-      var cz = 340 - e*560;
-      var cy = 100 - easeInOut(Math.min(1,p*1.15))*64;   // 100 -> 36, glides through the canyon above street clutter
-      var cx = Math.sin(p*Math.PI*1.6)*4;                // gentle sway, stays well inside the clear avenue
-      var bank = Math.cos(p*Math.PI*1.6)*0.045;
-      camera.position.set(cx,cy,cz);
-      if(starField) starField.position.set(cx,cy,cz);
-      camera.up.set(Math.sin(bank),Math.cos(bank),0);
-      camera.lookAt(cx*0.4, cy-11, cz-80);
+      elHero.style.opacity=String(Math.max(0,1-p*16));
+      elEndcta.className="endcta"+((p>0.93&&!pastFlight)?" on":"");
 
-      document.getElementById("hero").style.opacity=String(Math.max(0,1-p*16));
-      var mEnd=maxScroll(), pastFlight=scrollY>mEnd+innerHeight*0.35;
-      document.getElementById("endcta").className="endcta"+((p>0.93&&!pastFlight)?" on":"");
-      if(gateMat) gateMat.opacity=Math.max(0,Math.min(1,(p-0.78)/0.22))*0.85;
+      if(!offCanvas){
+        var cz = 340 - e*560;
+        var cy = 100 - easeInOut(Math.min(1,p*1.15))*64;   // 100 -> 36, glides through the canyon above street clutter
+        var cx = Math.sin(p*Math.PI*1.6)*4;                // gentle sway, stays well inside the clear avenue
+        var bank = Math.cos(p*Math.PI*1.6)*0.045;
+        camera.position.set(cx,cy,cz);
+        if(starField) starField.position.set(cx,cy,cz);
+        camera.up.set(Math.sin(bank),Math.cos(bank),0);
+        camera.lookAt(cx*0.4, cy-11, cz-80);
 
-      if(!RM){ var f=0.72+Math.sin(now*0.002)*0.24;
-        winWarmMat.opacity=f; winCoolMat.opacity=0.5+Math.sin(now*0.0016+1.5)*0.22;
-        beaconMat.opacity=0.5+Math.abs(Math.sin(now*0.004))*0.5; }
+        if(gateMat) gateMat.opacity=Math.max(0,Math.min(1,(p-0.78)/0.22))*0.85;
 
-      var W=innerWidth,H=innerHeight,lines="",activeStage=-1;
-      var cand=[];
-      for(var i=0;i<stageTowers.length;i++){
-        var stt=stageTowers[i];
-        tmp.copy(stt.top).project(camera);
-        var inFront=tmp.z<1, sx=(tmp.x*0.5+0.5)*W, sy=(-tmp.y*0.5+0.5)*H;
-        var dz=camera.position.z - stt.top.z;
-        if(inFront && dz>14 && dz<205 && sx>-120 && sx<W+120 && sy>-60 && sy<H+60){
-          cand.push({idx:stt.i, sx:sx, sy:sy, dz:dz});
+        if(!RM){ var f=0.72+Math.sin(now*0.002)*0.24;
+          winWarmMat.opacity=f; winCoolMat.opacity=0.5+Math.sin(now*0.0016+1.5)*0.22;
+          beaconMat.opacity=0.5+Math.abs(Math.sin(now*0.004))*0.5; }
+
+        var W=innerWidth,H=innerHeight,lines="";
+        var cand=[];
+        for(var i=0;i<stageTowers.length;i++){
+          var stt=stageTowers[i];
+          tmp.copy(stt.top).project(camera);
+          var inFront=tmp.z<1, sx=(tmp.x*0.5+0.5)*W, sy=(-tmp.y*0.5+0.5)*H;
+          var dz=camera.position.z - stt.top.z;
+          if(inFront && dz>14 && dz<205 && sx>-120 && sx<W+120 && sy>-60 && sy<H+60){
+            cand.push({idx:stt.i, sx:sx, sy:sy, dz:dz});
+          }
         }
-      }
-      cand.sort(function(a,b){ return a.dz-b.dz; });
-      var showN=Math.min(3,cand.length), onSet={};
-      for(var ci=0; ci<showN; ci++){ var c=cand[ci]; var ci2=c.idx; onSet[ci2]=1;
-        if(ci===0) activeStage=ci2;
-        var card=cards[ci2], sx=c.sx, sy=c.sy;
-        card.classList.add("on");
-        if(cardW[ci2]==null){ cardW[ci2]=card.offsetWidth||260; cardH[ci2]=card.offsetHeight||150; }
-        var cw=cardW[ci2], ch=cardH[ci2];
-        var cardX = (sx < W*0.5) ? sx+46 : sx-46-cw;          // place away from the anchor
-        cardX = Math.max(16, Math.min(W-cw-16, cardX));        // clamp fully on-screen (real width)
-        var cardY = Math.max(74, Math.min(H-ch-16, sy-ch*0.4));
-        card.style.left=cardX+"px"; card.style.top=cardY+"px";
-        var nearX = (cardX + cw*0.5 < sx) ? cardX+cw : cardX;  // connect from the edge facing the tower
-        var ly = Math.max(cardY+14, Math.min(cardY+ch-14, sy));
-        var midx = nearX + (nearX<sx ? 20 : -20);
-        lines+='<line x1="'+nearX+'" y1="'+ly+'" x2="'+midx+'" y2="'+ly+'" stroke="'+COL[ci2]+'" stroke-width="1.4"/>'
-             +'<line x1="'+midx+'" y1="'+ly+'" x2="'+sx+'" y2="'+sy+'" stroke="'+COL[ci2]+'" stroke-width="1.4" opacity=".7"/>'
-             +'<circle cx="'+sx+'" cy="'+sy+'" r="5.5" fill="'+COL[ci2]+'"/>'
-             +'<circle cx="'+sx+'" cy="'+sy+'" r="10" fill="none" stroke="'+COL[ci2]+'" opacity=".5"/>';
-        if(!wasOn[ci2]){ wasOn[ci2]=true; blip(); }
-      }
-      for(var k2=0;k2<cards.length;k2++){ if(!onSet[k2]){ cards[k2].classList.remove("on"); wasOn[k2]=false; } }
-      wires.innerHTML=lines;
-      var secA=document.getElementById("sec-sentinel"), secB=document.getElementById("sec-launch");
-      var rwH=document.getElementById("runway").offsetHeight;   // sections live inside a positioned <main> after the runway
+        cand.sort(function(a,b){ return a.dz-b.dz; });
+        var showN=Math.min(3,cand.length), onSet={};
+        for(var ci=0; ci<showN; ci++){ var c=cand[ci]; var ci2=c.idx; onSet[ci2]=1;
+          if(ci===0) activeStage=ci2;
+          var card=cards[ci2], sx=c.sx, sy=c.sy;
+          card.classList.add("on");
+          if(cardW[ci2]==null){ cardW[ci2]=card.offsetWidth||260; cardH[ci2]=card.offsetHeight||150; }
+          var cw=cardW[ci2], ch=cardH[ci2];
+          var cardX = (sx < W*0.5) ? sx+46 : sx-46-cw;          // place away from the anchor
+          cardX = Math.max(16, Math.min(W-cw-16, cardX));        // clamp fully on-screen (real width)
+          var cardY = Math.max(74, Math.min(H-ch-16, sy-ch*0.4));
+          card.style.left=cardX+"px"; card.style.top=cardY+"px";
+          var nearX = (cardX + cw*0.5 < sx) ? cardX+cw : cardX;  // connect from the edge facing the tower
+          var ly = Math.max(cardY+14, Math.min(cardY+ch-14, sy));
+          var midx = nearX + (nearX<sx ? 20 : -20);
+          lines+='<line x1="'+nearX+'" y1="'+ly+'" x2="'+midx+'" y2="'+ly+'" stroke="'+COL[ci2]+'" stroke-width="1.4"/>'
+               +'<line x1="'+midx+'" y1="'+ly+'" x2="'+sx+'" y2="'+sy+'" stroke="'+COL[ci2]+'" stroke-width="1.4" opacity=".7"/>'
+               +'<circle cx="'+sx+'" cy="'+sy+'" r="5.5" fill="'+COL[ci2]+'"/>'
+               +'<circle cx="'+sx+'" cy="'+sy+'" r="10" fill="none" stroke="'+COL[ci2]+'" opacity=".5"/>';
+          if(!wasOn[ci2]){ wasOn[ci2]=true; blip(); }
+        }
+        for(var k2=0;k2<cards.length;k2++){ if(!onSet[k2]){ cards[k2].classList.remove("on"); wasOn[k2]=false; } }
+        if(lines!==lastLines){ wires.innerHTML=lines; lastLines=lines; }
+
+        renderer.render(scene,camera);
+      } else if(lastLines!==""){ wires.innerHTML=""; lastLines=""; }
+
+      /* cheap scroll-driven indicators — cached metrics, no reflow */
       var probe=scrollY+innerHeight*0.55;
-      var inB=!!secB && probe>=rwH+secB.offsetTop;
-      var inA=!inB && !!secA && probe>=rwH+secA.offsetTop;
+      var inB=!!secB && probe>=bTop;
+      var inA=!inB && !!secA && probe>=aTop;
       if(inA||inB) activeStage=-1;
       for(var d2=0;d2<railDots.length;d2++) railDots[d2].className = (d2===activeStage)?"act":"";
       if(secDots.length===2){ secDots[0].className="sec"+(inA?" act":""); secDots[1].className="sec"+(inB?" act":""); }
-      var plT=document.getElementById("plThumb");
-      if(plT){ var docEl=document.documentElement;
-        var pp=Math.min(1,Math.max(0,scrollY/Math.max(1,docEl.scrollHeight-innerHeight)));
-        plT.style.top=(pp*88)+"%"; }
+      if(elPlThumb){ var pp=Math.min(1,Math.max(0,scrollY/docH)); elPlThumb.style.top=(pp*88)+"%"; }
 
-      renderer.render(scene,camera);
       raf=requestAnimationFrame(frame);
     }
     raf=requestAnimationFrame(frame);
@@ -2273,7 +2286,7 @@
     addEventListener("resize",function(){
       camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
       renderer.setSize(innerWidth,innerHeight);
-      cardW=[]; cardH=[];
+      cardW=[]; cardH=[]; measure();
       wires.setAttribute("width",innerWidth); wires.setAttribute("height",innerHeight); });
     wires.setAttribute("width",innerWidth); wires.setAttribute("height",innerHeight);
 
