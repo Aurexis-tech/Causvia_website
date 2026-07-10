@@ -533,6 +533,11 @@
 
   /* ribbon wires — thin steel bundles that curve smoothly into the core */
   .hub-diagram .rib{fill:none;stroke:rgba(202,213,234,.34);stroke-width:1.1;stroke-linecap:round}
+  /* occasional red sparks that run along a ribbon into the core */
+  .hub-diagram .spark{fill:none;stroke:#ff4d5e;stroke-width:3.2;stroke-linecap:round;
+    stroke-dasharray:3 480;filter:drop-shadow(0 0 7px rgba(255,70,90,.95));
+    animation:sparkrun 4s linear infinite}
+  @keyframes sparkrun{to{stroke-dashoffset:-483}}
   .hub-diagram .wg{fill:none;stroke:rgba(200,212,234,.36);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .hub-diagram .wr{fill:none;stroke:#e6293c;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
     filter:drop-shadow(0 0 4px rgba(230,41,60,.5))}
@@ -795,6 +800,12 @@
               <path class="rib" d="M534 385 C466.5 385 451.5 295 384 295"/>
               <path class="rib" d="M534 390 C466.5 390 451.5 300 384 300"/>
               <path class="rib" d="M534 395 C466.5 395 451.5 305 384 305"/>
+              <path class="spark" d="M146 130 C213.5 130 228.5 220 296 220" style="animation-delay:-0.5s;animation-duration:4s"/>
+              <path class="spark" d="M146 260 C198.2 260 209.8 260 262 260" style="animation-delay:-2.6s;animation-duration:4.7s"/>
+              <path class="spark" d="M146 390 C213.5 390 228.5 300 296 300" style="animation-delay:-1.4s;animation-duration:3.8s"/>
+              <path class="spark" d="M534 130 C466.5 130 451.5 220 384 220" style="animation-delay:-3.3s;animation-duration:4.4s"/>
+              <path class="spark" d="M534 260 C481.8 260 470.2 260 418 260" style="animation-delay:-0.9s;animation-duration:4.1s"/>
+              <path class="spark" d="M534 390 C466.5 390 451.5 300 384 300" style="animation-delay:-2.1s;animation-duration:4.6s"/>
             </g>
 
             <g class="tileg"><rect class="tile" x="54" y="84" width="92" height="92" rx="20"/><!-- github.search -->
