@@ -1999,11 +1999,13 @@
       var m=new THREE.Mesh(g,pickFace()); if((seg||14)<=4) m.rotation.y=0.785; m.position.set(cx,baseY+ht/2,cz);
       m.add(new THREE.LineSegments(new THREE.EdgesGeometry(g), gold?edgeGold:edgeCool)); scene.add(m); return m; }
     function latticeTower(cx,cz,base,h,gold){ var col=gold?edgeGold:edgeLat;
-      var g=new THREE.CylinderGeometry(base*0.12, base*0.5, h, 4, 1, true);
-      var fr=new THREE.LineSegments(new THREE.EdgesGeometry(g),col); fr.rotation.y=0.785; fr.position.set(cx,h/2,cz); scene.add(fr);
+      var g=new THREE.CylinderGeometry(base*0.12, base*0.5, h, 4);           // solid, capped taper (was open wireframe)
+      var m=new THREE.Mesh(g,pickFace()); m.rotation.y=0.785; m.position.set(cx,h/2,cz);
+      m.add(new THREE.LineSegments(new THREE.EdgesGeometry(g),col)); scene.add(m);   // lit faces + edge overlay
       for(var i=1;i<=3;i++){ var yy=h*(i/4), rr=base*(0.5-0.32*(i/4));
-        var ring=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(rr*2,0.4,rr*2)),col);
-        ring.rotation.y=0.785; ring.position.set(cx,yy,cz); scene.add(ring); }
+        var band=new THREE.Mesh(new THREE.BoxGeometry(rr*2+0.3,0.6,rr*2+0.3),darkMat);   // solid observation bands
+        band.rotation.y=0.785; band.position.set(cx,yy,cz); scene.add(band);
+        band.add(new THREE.LineSegments(new THREE.EdgesGeometry(band.geometry),col)); }
       var ant=new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,h*0.3,6),FACE[0]); ant.position.set(cx,h+h*0.15,cz); scene.add(ant);
       beacons.push(cx,h+h*0.3,cz);
       for(var k=0;k<6;k++){ cool.push(cx+(Math.random()-.5)*base, 2+Math.random()*h, cz+(Math.random()-.5)*base); }
