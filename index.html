@@ -1806,8 +1806,8 @@
     },90);
   })();
 
-  /* --- Launch the Engine → prototype  ·  Begin Your Journey → Google Form --- */
-  var FORM_URL  = "https://docs.google.com/forms/d/e/1FAIpQLSfrUt3OG37jJKtuVnT4yRfppAU-UnTvz0n4TUfDbEt3wAnmZA/viewform?embedded=true";
+  /* --- Launch the Engine → prototype  ·  Begin Your Journey → sign-in / create-account --- */
+  var FORM_URL  = "auth.html"; /* the Aurexis auth page, served from public/ */
   var PROTO_URL = "engine.html"; /* the interactive engine prototype, served from public/ */
   var ov=document.getElementById("ov"), ovFrame=document.getElementById("ovFrame"), ovTitle=document.getElementById("ovTitle");
   function openOverlay(url,title,isForm){
@@ -1819,10 +1819,10 @@
   document.getElementById("ovClose").addEventListener("click",closeOverlay);
   addEventListener("keydown",function(e){ if(e.key==="Escape" && ov.classList.contains("open")) closeOverlay(); });
   document.getElementById("launch").addEventListener("click",function(){ openOverlay(PROTO_URL,"Aurexis Engine \u00b7 Prototype",false); });
-  document.getElementById("demoTop").addEventListener("click",function(){ openOverlay(FORM_URL,"Begin Your Journey \u00b7 Request Access",true); });
+  document.getElementById("demoTop").addEventListener("click",function(){ openOverlay(FORM_URL,"Begin Your Journey \u00b7 Sign in",false); });
 
   /* ---- post-flight section wiring ---- */
-  function openAccess(){ openOverlay(FORM_URL,"Begin Your Journey \u00b7 Request Access",true); }
+  function openAccess(){ openOverlay(FORM_URL,"Begin Your Journey \u00b7 Sign in",false); }
   var _fc=document.getElementById("finalCta"); if(_fc) _fc.addEventListener("click",openAccess);
   var _fj=document.getElementById("ftJoin"); if(_fj) _fj.addEventListener("click",openAccess);
   var _fj2=document.getElementById("ftJourney"); if(_fj2) _fj2.addEventListener("click",function(e){ e.preventDefault(); openAccess(); });
