@@ -228,6 +228,14 @@ canvas#dust{position:absolute;inset:0;pointer-events:none;opacity:var(--lit);tra
  </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* Aurexis login — Supabase project */
+window.sb = window.supabase.createClient(
+  'https://ffmxfmnljysrvpwlipib.supabase.co',
+  'sb_publishable_7Yzk280MVsChT5H-_OvHZw_jVIpMKa_'
+);
+</script>
 <script>
 const root=document.documentElement,knob=document.getElementById('knob'),shade=document.getElementById('shade'),
  panel=document.getElementById('panel'),lamp=document.getElementById('lamp'),tabs=document.getElementById('tabs'),
@@ -395,21 +403,46 @@ function bind(){
  const t=document.getElementById('terms');if(t)t.onchange=()=>{V.terms=t.checked;validate()};
  const r=document.getElementById('rem');if(r)r.onchange=()=>{V.remember=r.checked};
  const go=document.getElementById('go');if(go)go.onclick=submit;
- const g=document.getElementById('g');if(g)g.onclick=()=>alert('→ Wire to Supabase OAuth');
+ const g=document.getElementById('g');if(g)g.onclick=async()=>{
+  const tgt=(window.top||window);
+  const back=(tgt.location&&tgt.location.origin)||location.origin;
+  const {error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:back}});
+  if(error) alert('Google sign-in isn’t enabled yet. Turn on the Google provider in Supabase, then this will work.');
+ };
 }
-function submit(){
+async function submit(){
  if(busy)return;busy=true;
  const go=document.getElementById('go');
  go.disabled=true;go.innerHTML='<span class="spin"></span>'+(mode==='up'?'Creating…':'Signing in…');
- setTimeout(()=>{                 // ← replace with the real auth call
-  busy=false;
+ setErr('email','');setErr('pw','');
+ try{
+  let res;
+  if(mode==='up'){
+   res=await sb.auth.signUp({email:V.email,password:V.pw,options:{data:{full_name:V.name.trim()}}});
+  }else{
+   res=await sb.auth.signInWithPassword({email:V.email,password:V.pw});
+  }
+  if(res.error) throw res.error;
+  const needConfirm = mode==='up' && res.data && res.data.user && !res.data.session;
   body.innerHTML='<div class="done"><div class="dring">'+tick+'</div>'+
    '<h3>'+(mode==='up'?'Account created':'Signed in')+'</h3>'+
    '<p>'+(mode==='up'
-     ? 'Next: Stage 01 — Profile. Seven questions, then the engine reads your signature.'
+     ? (needConfirm
+        ? 'Check your inbox to confirm your email, then sign in. Next: Stage 01 — Profile.'
+        : 'Next: Stage 01 — Profile. Seven questions, then the engine reads your signature.')
      : 'Taking you back to your runs.')+'</p>'+
    '<div class="foot" style="justify-content:center"><span class="d"><span class="dot"></span>Nothing is simulated</span></div></div>';
- },1400);
+ }catch(err){
+  busy=false;
+  go.disabled=false;go.innerHTML=(mode==='up'?'Create account':'Sign in');
+  const msg=(err&&err.message)||'Something went wrong. Please try again.';
+  if(/registered|already/i.test(msg)) setErr('email','That email is already registered — try signing in.');
+  else if(/invalid login|credentials/i.test(msg)) setErr('pw','Email or password is incorrect.');
+  else if(/not confirmed/i.test(msg)) setErr('email','Confirm your email first — check your inbox.');
+  else if(/email/i.test(msg)) setErr('email',msg);
+  else setErr('pw',msg);
+  validate();
+ }
 }
 tabs.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
  if(b.dataset.m===mode)return;
