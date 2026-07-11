@@ -404,10 +404,14 @@ function bind(){
  const r=document.getElementById('rem');if(r)r.onchange=()=>{V.remember=r.checked};
  const go=document.getElementById('go');if(go)go.onclick=submit;
  const g=document.getElementById('g');if(g)g.onclick=async()=>{
-  const tgt=(window.top||window);
-  const back=(tgt.location&&tgt.location.origin)||location.origin;
-  const {error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:back}});
-  if(error) alert('Google sign-in isn’t enabled yet. Turn on the Google provider in Supabase, then this will work.');
+  const top=(window.top||window);
+  let origin;try{origin=top.location.origin}catch(e){origin=location.origin}
+  const {data,error}=await sb.auth.signInWithOAuth({
+   provider:'google',
+   options:{redirectTo:origin+'/auth.html',skipBrowserRedirect:true}
+  });
+  if(error||!data||!data.url){ alert('Google sign-in isn’t enabled yet. Enable the Google provider in Supabase, then this will work.'); return; }
+  top.location.href=data.url;   // leave the iframe and go to Google at the top level
  };
 }
 async function submit(){
@@ -452,6 +456,21 @@ tabs.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
  render();
 });
 render();
+
+/* ---------- returning from Google OAuth (top-level redirect back to /auth.html) ---------- */
+if(/[?&]code=|access_token=/.test(location.search+location.hash)){
+ sb.auth.getSession().then(({data})=>{
+  if(data&&data.session){
+   on=true;setLit(1);
+   const md=data.session.user.user_metadata||{};
+   const nm=(md.full_name||md.name||'').split(' ')[0];
+   body.innerHTML='<div class="done"><div class="dring">'+tick+'</div>'+
+    '<h3>Signed in'+(nm?' as '+nm:'')+'</h3>'+
+    '<p>Taking you back to your runs.</p>'+
+    '<div class="foot" style="justify-content:center"><span class="d"><span class="dot"></span>Nothing is simulated</span></div></div>';
+  }
+ });
+}
 
 /* ---------- DUST ---------- */
 const c=document.getElementById('dust'),x=c.getContext('2d');
