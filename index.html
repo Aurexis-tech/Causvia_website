@@ -277,8 +277,11 @@
   .nav a:hover{opacity:1;color:var(--gold)}
   .nav .brand{font-family:"Anton",sans-serif;font-weight:400;font-size:1.15rem;letter-spacing:.18em;
     color:var(--ink);text-transform:uppercase;display:inline-flex;align-items:center;gap:9px;padding:0 4px}
-  .nav .brand .brandmark{width:28px;height:31px;flex:0 0 auto;
-    filter:drop-shadow(0 0 9px rgba(230,41,60,.45))}
+  .nav .brand .brandmark{width:30px;height:30px;flex:0 0 auto;position:relative;overflow:hidden;
+    -webkit-mask-image:radial-gradient(closest-side at 50% 49%,#000 84%,transparent);
+            mask-image:radial-gradient(closest-side at 50% 49%,#000 84%,transparent);
+    filter:drop-shadow(0 0 8px rgba(230,41,60,.4))}
+  .nav .brand .brandmark img{position:absolute;display:block;width:167%;left:-33%;top:-8%}
   .nav .snd{position:absolute;left:26px;color:var(--muted);letter-spacing:.26em;font-size:.72rem;
     background:none;border:0;cursor:pointer;pointer-events:auto;font-family:inherit}
   .nav .demo{position:absolute;right:16px;top:50%;transform:translateY(-50%);display:flex;align-items:center;
@@ -1034,7 +1037,7 @@
   <nav class="nav">
     <button class="snd" id="snd">‖‖ Sound: Off</button>
     <a href="#" id="aboutBtn">About</a>
-    <span class="brand"><svg class="brandmark" viewBox="0 0 100 110" aria-hidden="true"><use href="#aurexisMark"/></svg>Aurexis</span>
+    <span class="brand"><span class="brandmark" aria-hidden="true"><img src="/aurexis-logo.png" alt=""></span>Aurexis</span>
     <div class="feat" id="featWrap">
       <button class="feat-btn" id="featBtn" aria-haspopup="true" aria-expanded="false">Features<svg class="cx" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="feat-menu" id="featMenu" role="menu" aria-label="The seven stages"></div>
