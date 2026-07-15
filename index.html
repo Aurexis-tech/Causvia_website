@@ -380,9 +380,10 @@
   .boot{position:fixed;inset:0;z-index:100000;background:#0a0a0c;display:flex;flex-direction:column;
     align-items:center;justify-content:center;font-family:var(--mono);transition:opacity .6s ease}
   .boot.done{opacity:0;pointer-events:none}
-  .boot .bt-logo{width:min(440px,78vw);height:auto;margin-bottom:26px;
-    -webkit-mask-image:radial-gradient(128% 118% at 50% 47%,#000 72%,transparent);
-            mask-image:radial-gradient(128% 118% at 50% 47%,#000 72%,transparent)}
+  .boot .bt-logo{display:block;width:min(280px,58vw);aspect-ratio:1;position:relative;overflow:hidden;margin-bottom:16px;
+    -webkit-mask-image:radial-gradient(closest-side at 50% 49%,#000 84%,transparent);
+            mask-image:radial-gradient(closest-side at 50% 49%,#000 84%,transparent)}
+  .boot .bt-logo img{position:absolute;display:block;width:167%;left:-33%;top:-8%}
   .boot .bt-drop{position:absolute;top:0;left:50%;transform:translateX(-50%);width:2px;height:15vh;
     background:linear-gradient(180deg,transparent,var(--gold));box-shadow:0 0 8px rgba(231,185,77,.55)}
   .boot .bt-drop::after{content:"";position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);
@@ -1060,7 +1061,7 @@
   <!-- boot loader -->
   <div class="boot" id="boot" role="status" aria-label="Aurexis is initializing">
     <span class="bt-drop" aria-hidden="true"></span>
-    <img class="bt-logo" src="/aurexis-logo.png" alt="Aurexis — Opportunity to Reality" aria-hidden="true">
+    <span class="bt-logo" aria-hidden="true"><img src="/aurexis-logo.png" alt=""></span>
     <span class="bt-since" aria-hidden="true">Since 2026</span>
     <div class="bt-barwrap" aria-hidden="true">
       <span class="bt-cap"><i></i></span>
