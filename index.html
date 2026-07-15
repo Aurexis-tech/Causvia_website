@@ -376,9 +376,12 @@
   .rail b.act{background:var(--gold);box-shadow:0 0 10px var(--gold);border-color:var(--gold)}
 
   /* ---- boot loader ---- */
-  .boot{position:fixed;inset:0;z-index:100000;background:#050708;display:flex;flex-direction:column;
+  .boot{position:fixed;inset:0;z-index:100000;background:#0a0a0c;display:flex;flex-direction:column;
     align-items:center;justify-content:center;font-family:var(--mono);transition:opacity .6s ease}
   .boot.done{opacity:0;pointer-events:none}
+  .boot .bt-logo{width:min(440px,78vw);height:auto;margin-bottom:26px;
+    -webkit-mask-image:radial-gradient(128% 118% at 50% 47%,#000 72%,transparent);
+            mask-image:radial-gradient(128% 118% at 50% 47%,#000 72%,transparent)}
   .boot .bt-drop{position:absolute;top:0;left:50%;transform:translateX(-50%);width:2px;height:15vh;
     background:linear-gradient(180deg,transparent,var(--gold));box-shadow:0 0 8px rgba(231,185,77,.55)}
   .boot .bt-drop::after{content:"";position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);
@@ -643,6 +646,9 @@
   .ft .wmk{position:absolute;left:-5vw;bottom:-7vw;width:34vw;pointer-events:none}
   .ft .wmk polygon{fill:rgba(22,3,7,.48)}
   .ft .wmk text{font-family:var(--disp);font-size:52px;fill:rgba(94,15,23,.6)}
+  .ft .ft-logo{position:relative;display:block;width:min(300px,64vw);height:auto;margin:0 auto 3.4rem;
+    -webkit-mask-image:radial-gradient(126% 116% at 50% 47%,#000 71%,transparent);
+            mask-image:radial-gradient(126% 116% at 50% 47%,#000 71%,transparent)}
   .ft-cols{position:relative;max-width:1500px;margin:0 auto;display:grid;
     grid-template-columns:1.3fr 1fr 1fr 1fr;gap:4vw;align-items:start}
   .fcol h5{display:inline-block;font-family:var(--mono);font-weight:700;font-size:.78rem;letter-spacing:.14em;
@@ -934,6 +940,7 @@
       <footer class="ft">
         <svg class="wmk" viewBox="0 0 100 110" aria-hidden="true"><polygon points="50,4 95,29.5 95,80.5 50,106 5,80.5 5,29.5"/><text x="50" y="72" text-anchor="middle">A</text></svg>
         <span class="wm" aria-hidden="true">AUREXIS</span>
+        <img class="ft-logo" src="/aurexis-logo.png" alt="Aurexis — Opportunity to Reality" loading="lazy">
         <div class="ft-cols">
           <div class="fcol join sv">
             <h5>Join the run</h5>
@@ -1056,8 +1063,7 @@
   <!-- boot loader -->
   <div class="boot" id="boot" role="status" aria-label="Aurexis is initializing">
     <span class="bt-drop" aria-hidden="true"></span>
-    <svg class="bt-mark" viewBox="0 0 100 110" aria-hidden="true"><use href="#aurexisMark"/></svg>
-    <h2 class="bt-title" aria-hidden="true">Aurexis is<br>Initializing</h2>
+    <img class="bt-logo" src="/aurexis-logo.png" alt="Aurexis — Opportunity to Reality" aria-hidden="true">
     <span class="bt-since" aria-hidden="true">Since 2026</span>
     <div class="bt-barwrap" aria-hidden="true">
       <span class="bt-cap"><i></i></span>
