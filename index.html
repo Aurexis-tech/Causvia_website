@@ -1814,7 +1814,7 @@
 
   /* --- Launch the Engine → prototype  ·  Begin Your Journey → sign-in / create-account --- */
   var FORM_URL  = "auth.html"; /* the Aurexis auth page, served from public/ */
-  var PROTO_URL = "engine.html"; /* the interactive engine prototype, served from public/ */
+  var ENGINE_URL = "https://app.aurexis.app"; /* the LIVE engine (deployed). Full navigation, not the overlay: app.aurexis.app sends frame-ancestors 'none' / X-Frame-Options DENY, so it cannot be shown in an iframe. */
   var ov=document.getElementById("ov"), ovFrame=document.getElementById("ovFrame"), ovTitle=document.getElementById("ovTitle");
   function openOverlay(url,title,isForm){
     ovTitle.textContent=title; ov.classList.toggle("form",!!isForm);
@@ -1824,7 +1824,7 @@
   function closeOverlay(){ ov.classList.remove("open"); ov.setAttribute("aria-hidden","true"); document.body.style.overflow=""; }
   document.getElementById("ovClose").addEventListener("click",closeOverlay);
   addEventListener("keydown",function(e){ if(e.key==="Escape" && ov.classList.contains("open")) closeOverlay(); });
-  document.getElementById("launch").addEventListener("click",function(){ openOverlay(PROTO_URL,"Aurexis Engine \u00b7 Prototype",false); });
+  document.getElementById("launch").addEventListener("click",function(){ window.location.href = ENGINE_URL; });
   document.getElementById("demoTop").addEventListener("click",function(){ openOverlay(FORM_URL,"Begin Your Journey \u00b7 Sign in",false); });
 
   /* ---- post-flight section wiring ---- */
