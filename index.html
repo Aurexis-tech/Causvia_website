@@ -1813,7 +1813,7 @@
   })();
 
   /* --- Launch the Engine → prototype  ·  Begin Your Journey → sign-in / create-account --- */
-  var FORM_URL  = "auth.html"; /* the Aurexis auth page, served from public/ */
+  var FORM_URL = "https://app.aurexis.app/auth"; /* the LIVE sign-in / create-account page. Full navigation, not the overlay: app.aurexis.app forbids iframing (frame-ancestors 'none' / X-Frame-Options DENY). */
   var ENGINE_URL = "https://app.aurexis.app"; /* the LIVE engine (deployed). Full navigation, not the overlay: app.aurexis.app sends frame-ancestors 'none' / X-Frame-Options DENY, so it cannot be shown in an iframe. */
   var ov=document.getElementById("ov"), ovFrame=document.getElementById("ovFrame"), ovTitle=document.getElementById("ovTitle");
   function openOverlay(url,title,isForm){
@@ -1825,10 +1825,10 @@
   document.getElementById("ovClose").addEventListener("click",closeOverlay);
   addEventListener("keydown",function(e){ if(e.key==="Escape" && ov.classList.contains("open")) closeOverlay(); });
   document.getElementById("launch").addEventListener("click",function(){ window.location.href = ENGINE_URL; });
-  document.getElementById("demoTop").addEventListener("click",function(){ openOverlay(FORM_URL,"Begin Your Journey \u00b7 Sign in",false); });
+  document.getElementById("demoTop").addEventListener("click",function(){ window.location.href = FORM_URL; });
 
   /* ---- post-flight section wiring ---- */
-  function openAccess(){ openOverlay(FORM_URL,"Begin Your Journey \u00b7 Sign in",false); }
+  function openAccess(){ window.location.href = FORM_URL; }
   var _fc=document.getElementById("finalCta"); if(_fc) _fc.addEventListener("click",openAccess);
   var _fj=document.getElementById("ftJoin"); if(_fj) _fj.addEventListener("click",openAccess);
   var _fj2=document.getElementById("ftJourney"); if(_fj2) _fj2.addEventListener("click",function(e){ e.preventDefault(); openAccess(); });
